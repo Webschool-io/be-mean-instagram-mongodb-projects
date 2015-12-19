@@ -1433,7 +1433,7 @@ db.grantRolesToUser(
 )
 ```
 
-**4.** Adicionar o papel `grantRolesToUser` e `revokeRole` para o usuário com Escrita e Leitura.
+**4.** Remover o papel `grantRolesToUser` para o usuário com Escrita e Leitura.
 
 ```js
 > db.revokeRolesFromUser(
@@ -1554,14 +1554,6 @@ db.grantRolesToUser(
 {
   "ok": 1
 }
-```
-
-```js
-> mongod --replSet rs2 --port 27013 --dbpath /data/shar2
-```
-
-```js
-> mongod --replSet rs3 --port 27014 --dbpath /data/shar3
 ```
 
 ```js
