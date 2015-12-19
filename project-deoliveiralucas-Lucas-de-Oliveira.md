@@ -111,7 +111,8 @@ Quando comecei a estudar MongoDb poderia dizer que em um sistema onde é necess�
 **1.** Cadastre 10 usuários diferentes.
 
 ```js
-user = {
+db.users.insert(user)
+{
     "_id" : ObjectId("56697bfaf79cf5abc20173f9"),
     "name" : "Lucas",
     "bio" : "Short bio",
@@ -127,10 +128,10 @@ user = {
         "disabled" : false,
         "hash_token" : "5r4t0er4560d4f56g04d56fg40"
     }
-};
-db.users.insert(user);
+}
 
-user = {
+db.users.insert(user)
+{
     "_id" : ObjectId("566aed8d951310bddea47c27"),
     "name" : "João",
     "bio" : "Short bio joão",
@@ -146,10 +147,10 @@ user = {
         "disabled" : false,
         "hash_token" : "5r4t0er4560d4f56g04d56fg40"
     }
-};
-db.users.insert(user);
+}
 
-user = {
+db.users.insert(user)
+{
     "_id" : ObjectId("566aedeba8367b5041ad8013"),
     "name" : "Maria",
     "bio" : "Short bio maria",
@@ -165,10 +166,10 @@ user = {
         "disabled" : false,
         "hash_token" : "5r4t0er4560d4f56g04d56fg40"
     }
-};
-db.users.insert(user);
+}
 
-user = {
+db.users.insert(user)
+{
     "_id" : ObjectId("566aedfba8367b5041ad8014"),
     "name" : "Rafael",
     "bio" : "Short bio rafael",
@@ -184,10 +185,10 @@ user = {
         "disabled" : false,
         "hash_token" : "5r4t0er4560d4f56g04d56fg40"
     }
-};
-db.users.insert(user);
+}
 
-user = {
+db.users.insert(user)
+{
     "_id" : ObjectId("566aee0ba8367b5041ad8015"),
     "name" : "Edilson",
     "bio" : "Short bio edilson",
@@ -203,10 +204,10 @@ user = {
         "disabled" : false,
         "hash_token" : "5r4t0er4560d4f56g04d56fg40"
     }
-};
-db.users.insert(user);
+}
 
-user = {
+db.users.insert(user)
+{
     "_id" : ObjectId("566aee19a8367b5041ad8016"),
     "name" : "Marcos",
     "bio" : "Short bio marcos",
@@ -222,10 +223,10 @@ user = {
         "disabled" : false,
         "hash_token" : "5r4t0er4560d4f56g04d56fg40"
     }
-};
-db.users.insert(user);
+}
 
-user = {
+db.users.insert(user)
+{
     "_id" : ObjectId("566aefb1a8367b5041ad8017"),
     "name" : "Cesar",
     "bio" : "Short bio cesar",
@@ -241,10 +242,10 @@ user = {
         "disabled" : false,
         "hash_token" : "5r4t0er4560d4f56g04d56fg40"
     }
-};
-db.users.insert(user);
+}
 
-user = {
+db.users.insert(user)
+{
     "_id" : ObjectId("566aefbba8367b5041ad8018"),
     "name" : "Alex",
     "bio" : "Short bio alex",
@@ -260,10 +261,10 @@ user = {
         "disabled" : false,
         "hash_token" : "5r4t0er4560d4f56g04d56fg40"
     }
-};
-db.users.insert(user);
+}
 
-user = {
+db.users.insert(user)
+{
     "_id" : ObjectId("566aefc4a8367b5041ad8019"),
     "name" : "Eder",
     "bio" : "Short bio eder",
@@ -279,10 +280,10 @@ user = {
         "hash_token" : "5r4t0er4560d4f56g04d56fg40",
         "username" : "eder"
     }
-};
-db.users.insert(user);
+}
 
-user = {
+db.users.insert(user)
+{
     "_id" : ObjectId("566aefcda8367b5041ad801a"),
     "name" : "Luiz",
     "bio" : "Short bio luiz",
@@ -298,14 +299,14 @@ user = {
         "disabled" : false,
         "hash_token" : "5r4t0er4560d4f56g04d56fg40"
     }
-};
-db.users.insert(user);
+}
 ```
 
 **2.** Cadastre 5 projetos diferentes.
 
 ```js
-project = {
+db.projects.insert(project)
+{
     "_id" : ObjectId("56697eb7f79cf5abc20173fa"),
     "name" : "Project House",
     "description" : "Build a house",
@@ -370,10 +371,10 @@ project = {
             "activities" : [ ]
         }
     ]
-};
-db.projects.insert(project);
+}
 
-project = {
+db.projects.insert(project)
+{
     "_id" : ObjectId("566b0a6ba8367b5041ad801b"),
     "name" : "Repair a car",
     "description" : "Repair the car problem",
@@ -445,10 +446,10 @@ project = {
             ]
         }
     ]
-};
-db.projects.insert(project);
+}
 
-project = {
+db.projects.insert(project)
+{
     "_id" : ObjectId("566b17fda8367b5041ad801c"),
     "name" : "Build a Website",
     "description" : "Build a personal Website",
@@ -520,10 +521,10 @@ project = {
             ]
         }
     ]
-};
-db.projects.insert(project);
+}
 
-project = {
+db.projects.insert(project)
+{
     "_id" : ObjectId("566b190aa8367b5041ad801d"),
     "name" : "Travel",
     "description" : "Travel to go in the vocation",
@@ -595,10 +596,10 @@ project = {
             ]
         }
     ]
-};
-db.projects.insert(project);
+}
 
-project = {
+db.projects.insert(project)
+{
     "_id" : ObjectId("566b1a27a8367b5041ad801e"),
     "name" : "Final paper",
     "description" : "Do the final paper from university",
@@ -671,8 +672,7 @@ project = {
             ]
         }
     ]
-};
-db.projects.insert(project);
+}
 ```
 
 ## Retrieve - busca
