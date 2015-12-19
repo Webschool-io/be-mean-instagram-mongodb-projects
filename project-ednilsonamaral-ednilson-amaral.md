@@ -79,8 +79,8 @@ A coleção retirada de `projects` foi `activities`. Sua modelagem ficou da segu
 
 ```  
 activities{  
-  id_project: project_id,  
-  goal_name: goal_name,
+  name_project: name_project,  
+  goal_name: goal_name,  
   name: String,  
   description: String,  
   date_begin: Date,  
