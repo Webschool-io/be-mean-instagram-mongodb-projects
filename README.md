@@ -84,6 +84,8 @@ Você deverá escolher qual sua coleção deverá ser *shardeada* para poder agu
 
 ## Qual a modelagem da sua coleção de `projects`?
 
+## Qual a modelagem da sua coleção retirada de `projects`?
+
 ## Create - cadastro
 
 ## Retrieve - busca
