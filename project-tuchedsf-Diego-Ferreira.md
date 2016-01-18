@@ -4,7 +4,7 @@
 
 ## Para qual sistema você usaria o MogoDB (diferente desse)?
 
-Usaria o MongoDb em sistemas onde tivessem altas cargas de escrita, sendo necessário dividi-los ou que tenham uma alta taxa de crescimento, e os dados necessitem de ser recuperados rapidamente, facilitando a escalabilidade horizontal e com isso mantendo boa performance.
+Usaria o MongoDb em sistemas onde tivessem altas cargas de leitura, sendo necessário dividi-los ou que tenham uma alta taxa de crescimento, e os dados necessitem de ser recuperados rapidamente, facilitando a escalabilidade horizontal e com isso mantendo boa performance.
 
 Sobre o projeto atual:
 A escolha da modelagem abaixo se deu devido aos conteudos passados pelo Suissa em aula, principalmente as dicas de modelagem na aula 7. Uma das dicas dadas por ele foi que o mongo preza pela velocidade, e, detrerimento a duplicidade de informações, quanto mais fácil de se encontrar o dado que esta pesquisando melhor. A partir desta informação consegui detectar 3 blocos príncipais, na modelagem apresentada, ou seja 3 assuntos bem destintos (usuario / projeto / atividades ) na modelagem os quais decidi que deveriam ser as coleções existentes no sistema. Ou seja, uma modelagem em como o sistema faz as requisiçoes de informações para o banco de dados.
@@ -98,44 +98,47 @@ activity : {
 
 ##### 1. Cadastre 10 usuários diferentes:
 ```
-Air-de-Diego(mongod-3.0.7) be-mean-final> db.users.insert({name: 'user1',
-...   bio: "Analista",
-...   data_register: "08/12/1025",
-...   avatar_path: "http://github.com/avatar/user1",
-...   auth: {
-...     username: "user1",
-...     email: "user1@project.com",
-...     password: "user1admin",
-...     last_access: "",
-...     online: false,
-...     disable: false,
-...     hash_token: "isdoiauoiuwoiu83793274ksjd893342"
-...   },
-...   background_path: "http://github.com/background-path/user1"})
+db.users.insert({name: 'user1',
+  bio: "Analista",
+  data_register: "08/12/1025",
+  avatar_path: "http://github.com/avatar/user1",
+  auth: {
+    username: "user1",
+     email: "user1@project.com",
+     password: "user1admin",
+     last_access: "",
+     online: false,
+     disable: false,
+     hash_token: "isdoiauoiuwoiu83793274ksjd893342"
+   },
+   background_path: "http://github.com/background-path/user1"})
+
 Inserted 1 record(s) in 317ms
 WriteResult({
   "nInserted": 1
 })
-Air-de-Diego(mongod-3.0.7) be-mean-final> db.users.insert({name: 'user2',
-...   bio: "tester",
-...   data_register: "07/12/1025",
-...   avatar_path: "http://github.com/avatar/user2",
-...   auth: {
-...     username: "user2",
-...     email: "user2@project.com",
-...     password: "user222222",
-...     last_access: "",
-...     online: false,
-...     disable: false,
-...     hash_token: "isdosdf34543iauoiuwoiu83793274ksjd893342"
-...   },
-...   background_path: "http://github.com/background-path/user2"})
+
+db.users.insert({name: 'user2',
+  bio: "tester",
+  data_register: "07/12/1025",
+  avatar_path: "http://github.com/avatar/user2",
+  auth: {
+    username: "user2",
+    email: "user2@project.com",
+    password: "user222222",
+    last_access: "",
+    online: false,
+    disable: false,
+    hash_token: "isdosdf34543iauoiuwoiu83793274ksjd893342"
+  },
+  background_path: "http://github.com/background-path/user2"})
+
 Inserted 1 record(s) in 4ms
 WriteResult({
   "nInserted": 1
 })
 
-Air-de-Diego(mongod-3.0.7) be-mean-final> db.users.insert([
+db.users.insert([
   {name: 'Usuario 03',
   bio: "usuario 03 bio",
   data_register: "07/12/1025",
@@ -147,14 +150,11 @@ Air-de-Diego(mongod-3.0.7) be-mean-final> db.users.insert([
     last_access: "",
     online: false,
     disable: false,
-    hash_token: "isdosdf34543iauoiuwoiu83333793274ksjd33333"
-  },
-  background_path: "http://github.com/background-path/user3"
-
-  },
+    hash_token: "isdosdf34543iauoiuwoiu83333793274ksjd33333"},
+  background_path: "http://github.com/background-path/user3"},
 
   {name: 'Usuario 04',
-    bio: "usuario 04 bio",
+  bio: "usuario 04 bio",
     data_register: "06/12/1025",
     avatar_path: "http://github.com/avatar/user4",
     auth: {
@@ -164,41 +164,40 @@ Air-de-Diego(mongod-3.0.7) be-mean-final> db.users.insert([
       last_access: "",
       online: false,
       disable: false,
-      hash_token: "isdosdf34543iauoiuwoiu83793274ksjd44444"
-    },
+      hash_token: "isdosdf34543iauoiuwoiu83793274ksjd44444"},
     background_path: "http://github.com/background-path/user4"},
-    {name: 'Usuario 05',
-      bio: "usuario 05 bio",
-      data_register: "07/12/1025",
-      {name: 'Usuario 03',
-      bio: "usuario 03 bio",
-      data_register: "07/12/1025",
-      avatar_path: "http://github.com/avatar/user3",
-      auth: {
-        username: "user3",
-        email: "user3@project.com",
-        password: "user33333",
-        last_access: "",
-        online: false,
-        disable: false,
-        hash_token: "isdosdf34543iauoiuwoiu83333793274ksjd33333"
-        },
-      background_path: "http://github.com/background-path/user3"
 
-   }])
+  {name: 'Usuario 05',
+    bio: "usuario 05 bio",
+    data_register: "07/12/1025",
+    {name: 'Usuario 03',
+    bio: "usuario 03 bio",
+    data_register: "07/12/1025",
+    avatar_path: "http://github.com/avatar/user3",
+    auth: {
+      username: "user3",
+      email: "user3@project.com",
+      password: "user33333",
+      last_access: "",
+      online: false,
+      disable: false,
+      hash_token: "isdosdf34543iauoiuwoiu83333793274ksjd33333"},
+    background_path: "http://github.com/background-path/user3"}
+])
+
 Inserted 1 record(s) in 4ms
-   BulkWriteResult({
-     "writeErrors": [ ],
-     "writeConcernErrors": [ ],
-     "nInserted": 3,
-     "nUpserted": 0,
-     "nMatched": 0,
-     "nModified": 0,
-     "nRemoved": 0,
-     "upserted": [ ]
-   })
+BulkWriteResult({
+  "writeErrors": [ ],
+  "writeConcernErrors": [ ],
+  "nInserted": 3,
+  "nUpserted": 0,
+  "nMatched": 0,
+  "nModified": 0,
+  "nRemoved": 0,
+  "upserted": [ ]
+})
 
-Air-de-Diego(mongod-3.0.7) be-mean-final> db.users.insert([
+db.users.insert([
   {name: 'Usuario 06',
     bio: "usuario 06 bio",
     data_register: "09/12/1025",
@@ -210,152 +209,154 @@ Air-de-Diego(mongod-3.0.7) be-mean-final> db.users.insert([
       last_access: "",
       online: false,
       disable: false,
-      hash_token: "isdosdf34543iauoiuwoiu83793274ksjd666666"
-    },
+      hash_token: "isdosdf34543iauoiuwoiu83793274ksjd666666"},
     background_path: "http://github.com/background-path/user6"},
-    {name: 'Usuario 07',
-      bio: "usuario 07 bio",
-      data_register: "07/12/1025",
-      avatar_path: "http://github.com/avatar/user7",
-      auth: {
-        username: "user7",
-        email: "user7@project.com",
-        password: "user77777",
-        last_access: "",
-        online: false,
-        disable: false,
-        hash_token: "isdosdf34543iauoiuwoiu83793274ksjd877777"
-      },
+  
+  {name: 'Usuario 07',
+    bio: "usuario 07 bio",
+    data_register: "07/12/1025",
+    avatar_path: "http://github.com/avatar/user7",
+    auth: {
+      username: "user7",
+      email: "user7@project.com",
+      password: "user77777",
+      last_access: "",
+      online: false,
+      disable: false,
+      hash_token: "isdosdf34543iauoiuwoiu83793274ksjd877777"},
       background_path: "http://github.com/background-path/user7"},
-      {name: 'Usuario 08',
-        bio: "usuario 08 bio",
-        data_register: "07/12/1025",
-        avatar_path: "http://github.com/avatar/user8",
-        auth: {
-          username: "user8",
-          email: "user8@project.com",
-          password: "user88888",
-          last_access: "",
-          online: false,
-          disable: false,
-          hash_token: "isdosdf34543iauoiuwoiu83793274ksjd89334288888"
-        },
-        background_path: "http://github.com/background-path/user8"}      
 
-   ])
-   Inserted 1 record(s) in 4ms
-   BulkWriteResult({
-     "writeErrors": [ ],
-     "writeConcernErrors": [ ],
-     "nInserted": 3,
-     "nUpserted": 0,
-     "nMatched": 0,
-     "nModified": 0,
-     "nRemoved": 0,
-     "upserted": [ ]
-   })
+  {name: 'Usuario 08',
+    bio: "usuario 08 bio",
+    data_register: "07/12/1025",
+    avatar_path: "http://github.com/avatar/user8",
+    auth: {
+      username: "user8",
+      email: "user8@project.com",
+      password: "user88888",
+      last_access: "",
+      online: false,
+      disable: false,
+      hash_token: "isdosdf34543iauoiuwoiu83793274ksjd89334288888"},
+    background_path: "http://github.com/background-path/user8"
+  }      
+])
 
-   Air-de-Diego(mongod-3.0.7) be-mean-final> db.users.insert([
-   ...             {name: 'Usuario 09',
-   ...               bio: "usuario 09 bio",
-   ...               data_register: "07/12/1025",
-   ...               avatar_path: "http://github.com/avatar/user9",
-   ...               auth: {
-   ...                 username: "user9",
-   ...                 email: "user9@project.com",
-   ...                 password: "user99999",
-   ...                 last_access: "",
-   ...                 online: false,
-   ...                 disable: false,
-   ...                 hash_token: "isdosdf34543iauoiuwoiu83793274ksjd89334299999"
-   ...               },
-   ...               background_path: "http://github.com/background-path/user9"},
-   ...               {name: 'Usuario 10',
-   ...                 bio: "usuario 10 bio",
-   ...                 data_register: "07/12/1025",
-   ...                 avatar_path: "http://github.com/avatar/user10",
-   ...                 auth: {
-   ...                   username: "user10",
-   ...                   email: "user10@project.com",
-   ...                   password: "user1010101010",
-   ...                   last_access: "",
-   ...                   online: false,
-   ...                   disable: false,
-   ...                   hash_token: "isdosdf34543iauoiuwoiu83793274ksjd893342101010101010"
-   ...                 },
-   ...                 background_path: "http://github.com/background-path/user10"}
-   ...   ])
-   Inserted 1 record(s) in 2ms
-   BulkWriteResult({
-     "writeErrors": [ ],
-     "writeConcernErrors": [ ],
-     "nInserted": 2,
-     "nUpserted": 0,
-     "nMatched": 0,
-     "nModified": 0,
-     "nRemoved": 0,
-     "upserted": [ ]
-   })
+Inserted 1 record(s) in 4ms
+BulkWriteResult({
+  "writeErrors": [ ],
+  "writeConcernErrors": [ ],
+  "nInserted": 3,
+  "nUpserted": 0,
+  "nMatched": 0,
+  "nModified": 0,
+  "nRemoved": 0,
+  "upserted": [ ]
+})
+
+db.users.insert([
+  {name: 'Usuario 09',
+   bio: "usuario 09 bio",
+   data_register: "07/12/1025",
+   avatar_path: "http://github.com/avatar/user9",
+   auth: {
+     username: "user9",
+     email: "user9@project.com",
+     password: "user99999",
+     last_access: "",
+     online: false,
+     disable: false,
+     hash_token: "isdosdf34543iauoiuwoiu83793274ksjd89334299999"},
+   background_path: "http://github.com/background-path/user9"},
+  
+  {name: 'Usuario 10',
+    bio: "usuario 10 bio",
+    data_register: "07/12/1025",
+    avatar_path: "http://github.com/avatar/user10",
+    auth: {
+      username: "user10",
+      email: "user10@project.com",
+      password: "user1010101010",
+      last_access: "",
+      online: false,
+      disable: false,
+      hash_token: "isdosdf34543iauoiuwoiu83793274ksjd893342101010101010"},
+    background_path: "http://github.com/background-path/user10"}
+])
+
+Inserted 1 record(s) in 2ms
+BulkWriteResult({
+  "writeErrors": [ ],
+  "writeConcernErrors": [ ],
+  "nInserted": 2,
+  "nUpserted": 0,
+  "nMatched": 0,
+  "nModified": 0,
+  "nRemoved": 0,
+  "upserted": [ ]
+})
 ```
 ##### 2. Cadastre 5 projetos diferentes:
 
 ###### Projeto 1:
 ```
 Air-de-Diego(mongod-3.0.7) be-mean-final> db.activities.insert([
-... {
-...   name: "execucao projeto",
-...   description: "execucao projeto cad",
-...   date_begin: "10/12/2015",
-...   date_dream: "10/12/2015",
-...   date_end: "10/12/2015",
-...   realocate: false,
-...   expired: false,
-...   date_realocate: "",
-...   members: [
-...   {"user_id": ObjectId("5666e2033aa0ba636df3f85f"),type_member: "Engenheiro tecnico",notify: true},
-...   {"user_id": ObjectId("5666e2033aa0ba636df3f860"),type_member: "Projetista",notify: true},
-...   {"user_id": ObjectId("5666e2033aa0ba636df3f861"),type_member: "Tecnico",notify: true}
-...   ],
-...   tags: ["engenharia", "civil","projetocad"],
-...   comments : [{
-...     text: "desenho planta inferior",
-...     date_comment: "09/12/2015",
-...     files :[{
-...       path: "teste/projetoCad1",
-...       weight: "22",
-...       name: "Projeto CAD 1"
-...     }],
-...     members: [
-...       {"user_id": ObjectId("5666e2033aa0ba636df3f861"),type_member: "Tecnico",notify: true}
-...     ]
-...     }]
-... },
-... {
-...   name: "Impressao 3d projeto",
-...   description: "impressao 3d projeto cad",
-...   date_begin: "10/12/2015",
-...   date_dream: "10/12/2015",
-...   date_end: "10/12/2015",
-...   realocate: false,
-...   expired: false,
-...   date_realocate: "",
-...   members: [
-...   {"user_id": ObjectId("5666e2033aa0ba636df3f860"),type_member: "Projetista",notify: true}
-...   ],
-...   tags: ["engenharia", "civil","projetocad"],
-...   comments : [{
-...     text: "envio projeto impressao",
-...     date_comment: "09/12/2015",
-...     files :[{
-...       path: "teste/projetoCad1",
-...       weight: "22",
-...       name: "Projeto CAD 1"
-...     }],
-...     members: [
-...       {"user_id": ObjectId("5666e2033aa0ba636df3f861"),type_member: "Tecnico",notify: true}
-...     ]
-...     }]
-... }])
+{
+  name: "execucao projeto",
+  description: "execucao projeto cad",
+  date_begin: "10/12/2015",
+  date_dream: "10/12/2015",
+  date_end: "10/12/2015",
+  realocate: false,
+  expired: false,
+  date_realocate: "",
+  members: [
+    {"user_id": ObjectId("5666e2033aa0ba636df3f85f"),type_member: "Engenheiro tecnico",notify: true},
+    {"user_id": ObjectId("5666e2033aa0ba636df3f860"),type_member: "Projetista",notify: true},
+    {"user_id": ObjectId("5666e2033aa0ba636df3f861"),type_member: "Tecnico",notify: true}
+  ],
+  tags: ["engenharia", "civil","projetocad"],
+  comments : [{
+    text: "desenho planta inferior",
+    date_comment: "09/12/2015",
+    files :[{
+      path: "teste/projetoCad1",
+      weight: "22",
+      name: "Projeto CAD 1"
+    }],
+    members: [
+      {"user_id": ObjectId("5666e2033aa0ba636df3f861"),type_member: "Tecnico",notify: true}
+    ]
+  }]
+},
+
+{
+  name: "Impressao 3d projeto",
+  description: "impressao 3d projeto cad",
+  date_begin: "10/12/2015",
+  date_dream: "10/12/2015",
+  date_end: "10/12/2015",
+  realocate: false,
+  expired: false,
+  date_realocate: "",
+  members: [
+    {"user_id": ObjectId("5666e2033aa0ba636df3f860"),type_member: "Projetista",notify: true}
+  ],
+  tags: ["engenharia", "civil","projetocad"],
+  comments : [{
+    text: "envio projeto impressao",
+    date_comment: "09/12/2015",
+    files :[{
+      path: "teste/projetoCad1",
+      weight: "22",
+      name: "Projeto CAD 1"
+    }],
+    members: [
+      {"user_id": ObjectId("5666e2033aa0ba636df3f861"),type_member: "Tecnico",notify: true}
+    ]
+  }]
+}])
+
 Inserted 1 record(s) in 54ms
 BulkWriteResult({
   "writeErrors": [ ],
@@ -367,27 +368,29 @@ BulkWriteResult({
   "nRemoved": 0,
   "upserted": [ ]
 })
-Air-de-Diego(mongod-3.0.7) be-mean-final> db.projects.insert({
-...   name : "PROJECT 1 - ENGENHARIA CIVIL",
-...   description: "Projeto 1 ",
-...   date_begin: "09/12/2015",
-...   date_dream: "01/02/2016" ,
-...   date_end: "",
-...   visible: true,
-...   realocate: false,
-...   expired: false,
-...   vizualizable_mod: false,
-...   tags: ["engenharia", "civil","projetocad"],
-...   members: [
-...       {"user_id": ObjectId("5666de303aa0ba636df3f85d"),type_member: "Gerente",notify: true},
-...       {"user_id": ObjectId("5666df133aa0ba636df3f85e"),type_member: "Engenheiro chefe",notify: true},
-...       {"user_id": ObjectId("5666e2033aa0ba636df3f85f"),type_member: "Engenheiro tecnico",notify: true},
-...       {"user_id": ObjectId("5666e2033aa0ba636df3f860"),type_member: "Projetista",notify: true},
-...       {"user_id": ObjectId("5666e2033aa0ba636df3f861"),type_member: "Tecnico",notify: true}
-...   ],
-...   goals : [{
-...     name: "Projeto CAD Edificio",
-...     description: "Construcao projeto cad edificio",
+
+Air-de-Diego(mongod-3.0.7) be-mean-final> db.projects.insert(
+{
+  name : "PROJECT 1 - ENGENHARIA CIVIL",
+  description: "Projeto 1 ",
+  date_begin: "09/12/2015",
+  date_dream: "01/02/2016" ,
+  date_end: "",
+  visible: true,
+  realocate: false,
+  expired: false,
+  vizualizable_mod: false,
+  tags: ["engenharia", "civil","projetocad"],
+  members: [
+    {"user_id": ObjectId("5666de303aa0ba636df3f85d"),type_member: "Gerente",notify: true},
+    {"user_id": ObjectId("5666df133aa0ba636df3f85e"),type_member: "Engenheiro chefe",notify: true},
+    {"user_id": ObjectId("5666e2033aa0ba636df3f85f"),type_member: "Engenheiro tecnico",notify: true},
+    {"user_id": ObjectId("5666e2033aa0ba636df3f860"),type_member: "Projetista",notify: true},
+    {"user_id": ObjectId("5666e2033aa0ba636df3f861"),type_member: "Tecnico",notify: true}
+  ],
+  goals : [{
+    name: "Projeto CAD Edificio",
+    description: "Construcao projeto cad edificio",
     date_begin: "10/12/2015",
     date_dream: "01/01/2016" ,
     date_end: "",
@@ -397,8 +400,8 @@ Air-de-Diego(mongod-3.0.7) be-mean-final> db.projects.insert({
     tags : ["planta", "planta3d", "cad"],
     activities : [{"activity_id": ObjectId("56681e8cd515fc7740146431")},{"activity_id": ObjectId("56681e8cd515fc7740146431")}]
   }]
-}
-)
+})
+
 Inserted 1 record(s) in 22ms
 WriteResult({
   "nInserted": 1
@@ -408,38 +411,39 @@ WriteResult({
 
 ###### Projeto 2:
 ```
-Air-de-Diego(mongod-3.0.7) be-mean-final> db.projects.insert({
-...   name : "PROJECT 2 - ENGENHARIA Eletrica",
-...   description: "Projeto Engenharia Eletrica",
-...   date_begin: "09/12/2015",
-...   date_dream: "01/02/2016" ,
-...   date_end: "",
-...   visible: true,
-...   realocate: false,
-...   expired: false,
-...   vizualizable_mod: false,
-...   tags: ["engenharia", "energia","iluminacao"],
-...   members: [
-...   {"user_id": ObjectId("5666df133aa0ba636df3f85e"),type_member: "Engenheiro chefe",notify: true},
-...   {"user_id": ObjectId("5666e2033aa0ba636df3f85f"),type_member: "Engenheiro tecnico",notify: true},
-...   {"user_id": ObjectId("5666e2033aa0ba636df3f860"),type_member: "Projetista",notify: true},
-...   {"user_id": ObjectId("5666e2033aa0ba636df3f861"),type_member: "Tecnico",notify: true},
-...   {"user_id": ObjectId("5666e2f83aa0ba636df3f862"),type_member: "Engenheiro Eletrico",notify: true}
-...   ],
-...   goals : [{
-...     name: "Implantacao iluminacao urbana",
-...     description: "Iluminacao rua x",
-...     date_begin: "10/12/2015",
-...     date_dream: "01/01/2016" ,
-...     date_end: "",
-...     realocate: false,
-...     expired: false,
-...     date_realocate : "",
-...     tags : ["energia", "postes", "iluminacao"],
-...     activities : []
-...   }]
-... }
-... )
+Air-de-Diego(mongod-3.0.7) be-mean-final> db.projects.insert(
+{
+  name : "PROJECT 2 - ENGENHARIA Eletrica",
+  description: "Projeto Engenharia Eletrica",
+  date_begin: "09/12/2015",
+  date_dream: "01/02/2016" ,
+  date_end: "",
+  visible: true,
+  realocate: false,
+  expired: false,
+  vizualizable_mod: false,
+  tags: ["engenharia", "energia","iluminacao"],
+  members: [
+    {"user_id": ObjectId("5666df133aa0ba636df3f85e"),type_member: "Engenheiro chefe",notify: true},
+    {"user_id": ObjectId("5666e2033aa0ba636df3f85f"),type_member: "Engenheiro tecnico",notify: true},
+    {"user_id": ObjectId("5666e2033aa0ba636df3f860"),type_member: "Projetista",notify: true},
+    {"user_id": ObjectId("5666e2033aa0ba636df3f861"),type_member: "Tecnico",notify: true},
+    {"user_id": ObjectId("5666e2f83aa0ba636df3f862"),type_member: "Engenheiro Eletrico",notify: true}
+  ],
+  goals : [{
+    name: "Implantacao iluminacao urbana",
+    description: "Iluminacao rua x",
+    date_begin: "10/12/2015",
+    date_dream: "01/01/2016" ,
+    date_end: "",
+    realocate: false,
+    expired: false,
+    date_realocate : "",
+    tags : ["energia", "postes", "iluminacao"],
+    activities : []
+  }]
+})
+
 Inserted 1 record(s) in 2ms
 WriteResult({
   "nInserted": 1
@@ -448,33 +452,34 @@ WriteResult({
 ###### Projeto 3:
 ```
 Air-de-Diego(mongod-3.0.7) be-mean-final> db.activities.insert([
-... {
-...   name: "Desmanche motor",
-...   description: "Desmonte do cabecote do motor",
-...   date_begin: "10/12/2015",
-...   date_dream: "10/12/2015",
-...   date_end: "10/12/2015",
-...   realocate: false,
-...   expired: false,
-...   date_realocate: "",
-...   members: [
-...   {"user_id": ObjectId("5666e2033aa0ba636df3f861"),type_member: "Tecnico",notify: true},
-...   {"user_id": ObjectId("5666e2033aa0ba636df3f85f"),type_member: "Engenheiro tecnico",notify: true}
-...   ],
-...   tags: ["desmanche", "motor","cabecote"],
-...   comments : [{
-...     text: "cuidado pressao interna ao desmontar",
-...     date_comment: "09/12/2015",
-...     files :[{
-...       path: "teste/projetoMotorCaminhado",
+{
+  name: "Desmanche motor",
+  description: "Desmonte do cabecote do motor",
+  date_begin: "10/12/2015",
+  date_dream: "10/12/2015",
+  date_end: "10/12/2015",
+  realocate: false,
+  expired: false,
+  date_realocate: "",
+  members: [
+    {"user_id": ObjectId("5666e2033aa0ba636df3f861"),type_member: "Tecnico",notify: true},
+    {"user_id": ObjectId("5666e2033aa0ba636df3f85f"),type_member: "Engenheiro tecnico",notify: true}
+  ],
+  tags: ["desmanche", "motor","cabecote"],
+  comments : [{
+    text: "cuidado pressao interna ao desmontar",
+    date_comment: "09/12/2015",
+    files :[{
+      path: "teste/projetoMotorCaminhado",
       weight: "22",
       name: "Motor Caminhao Fora Estrada"
     }],
     members: [
       {"user_id": ObjectId("5666e2033aa0ba636df3f85f"),type_member: "Engenheiro tecnico",notify: true}
     ]
-    }]
+  }]
 },
+
 {
   name: "Projeto Retifica Cabecote",
   description: "Realizar projeto de retifica do cabecote",
@@ -485,33 +490,11 @@ Air-de-Diego(mongod-3.0.7) be-mean-final> db.activities.insert([
   expired: false,
   date_realocate: "",
   members: [
-  {"user_id": ObjectId("5666e2033aa0ba636df3f860"),type_member: "Projetista",notify: true}
+    {"user_id": ObjectId("5666e2033aa0ba636df3f860"),type_member: "Projetista",notify: true}
   ],
   tags: ["retifica", "motor","cabecote"],
   comments : []
-}]).      weight: "22",
-...       name: "Motor Caminhao Fora Estrada"
-...     }],
-...     members: [
-...       {"user_id": ObjectId("5666e2033aa0ba636df3f85f"),type_member: "Engenheiro tecnico",notify: true}
-...     ]
-...     }]
-... },
-... {
-...   name: "Projeto Retifica Cabecote",
-...   description: "Realizar projeto de retifica do cabecote",
-...   date_begin: "10/12/2015",
-...   date_dream: "10/12/2015",
-...   date_end: "10/12/2015",
-...   realocate: false,
-...   expired: false,
-...   date_realocate: "",
-...   members: [
-...   {"user_id": ObjectId("5666e2033aa0ba636df3f860"),type_member: "Projetista",notify: true}
-...   ],
-...   tags: ["retifica", "motor","cabecote"],
-...   comments : []
-... }])
+}])     
 Inserted 1 record(s) in 12ms
 BulkWriteResult({
   "writeErrors": [ ],
@@ -524,38 +507,39 @@ BulkWriteResult({
   "upserted": [ ]
 })
 
-Air-de-Diego(mongod-3.0.7) be-mean-final> db.projects.insert({
-...   name : "PROJECT 2 - ENGENHARIA Mecanica",
-...   description: "Projeto Engenharia Mecanica",
-...   date_begin: "09/12/2015",
-...   date_dream: "01/02/2016" ,
-...   date_end: "",
-...   visible: true,
-...   realocate: false,
-...   expired: false,
-...   vizualizable_mod: false,
-...   tags: ["engenharia", "mecanica","motor"],
-...   members: [
-...   {"user_id": ObjectId("5666e2033aa0ba636df3f85f"),type_member: "Engenheiro tecnico",notify: true},
-...   {"user_id": ObjectId("5666e2033aa0ba636df3f860"),type_member: "Projetista",notify: true},
-...   {"user_id": ObjectId("5666e2033aa0ba636df3f861"),type_member: "Tecnico",notify: true},
-...   {"user_id": ObjectId("5666e2f83aa0ba636df3f862"),type_member: "Engenheiro Eletrico",notify: true},
-...   {"user_id": ObjectId("5666e2f83aa0ba636df3f863"),type_member: "Analista",notify: true}
-...   ],
-...   goals : [{
-...     name: "Retificacao",
-...     description: "Retifica motor caminhao fora de estrada",
-...     date_begin: "10/12/2015",
-...     date_dream: "01/01/2016" ,
-...     date_end: "",
-...     realocate: false,
-...     expired: false,
-...     date_realocate : "",
-...     tags : ["cabecote", "retifica", "pistao"],
-...     activities : [{"activity_id": ObjectId("5668231cd515fc7740146435")},{"activity_id": ObjectId("5668231cd515fc7740146436"),}]
-...   }]
-... }
-... )
+Air-de-Diego(mongod-3.0.7) be-mean-final> db.projects.insert(
+{
+  name : "PROJECT 2 - ENGENHARIA Mecanica",
+  description: "Projeto Engenharia Mecanica",
+  date_begin: "09/12/2015",
+  date_dream: "01/02/2016" ,
+  date_end: "",
+  visible: true,
+  realocate: false,
+  expired: false,
+  vizualizable_mod: false,
+  tags: ["engenharia", "mecanica","motor"],
+  members: [
+    {"user_id": ObjectId("5666e2033aa0ba636df3f85f"),type_member: "Engenheiro tecnico",notify: true},
+    {"user_id": ObjectId("5666e2033aa0ba636df3f860"),type_member: "Projetista",notify: true},
+    {"user_id": ObjectId("5666e2033aa0ba636df3f861"),type_member: "Tecnico",notify: true},
+    {"user_id": ObjectId("5666e2f83aa0ba636df3f862"),type_member: "Engenheiro Eletrico",notify: true},
+    {"user_id": ObjectId("5666e2f83aa0ba636df3f863"),type_member: "Analista",notify: true}
+  ],
+  goals : [{
+    name: "Retificacao",
+    description: "Retifica motor caminhao fora de estrada",
+    date_begin: "10/12/2015",
+    date_dream: "01/01/2016" ,
+    date_end: "",
+    realocate: false,
+    expired: false,
+    date_realocate : "",
+    tags : ["cabecote", "retifica", "pistao"],
+    activities : [{"activity_id": ObjectId("5668231cd515fc7740146435")},{"activity_id": ObjectId("5668231cd515fc7740146436"),}]
+  }]
+})
+
 Inserted 1 record(s) in 2ms
 WriteResult({
   "nInserted": 1
@@ -565,60 +549,61 @@ WriteResult({
 ###### Projeto 4:
 ```
 Air-de-Diego(mongod-3.0.7) be-mean-final> db.activities.insert([
-... {
-...   name: "Cadastro Inicial",
-...   description: "Cadastro inicial dados popular base dados",
-...   date_begin: "10/12/2015",
-...   date_dream: "10/12/2015",
-...   date_end: "10/12/2015",
-...   realocate: false,
-...   expired: false,
-...   date_realocate: "",
-...   members: [
-...   {"user_id": ObjectId("5666e38a3aa0ba636df3f866"),type_member: "Desenvolvedor",notify: true},
-...   {"user_id": ObjectId("5666e2f83aa0ba636df3f864"),type_member: "Programador",notify: true}
-...   ],
-...   tags: ["mongodb", "insert","update"],
-...   comments : [{
-...     text: "exercicio 1 projeto final",
-...     date_comment: "09/12/2015",
-...     files :[{
-...       path: "github/projetoFinal",
-...       weight: "234",
-...       name: "projeto final mongodb"
-...     }],
-...     members: [
-...       {"user_id": ObjectId("5666e38a3aa0ba636df3f866"),type_member: "Desenvolvedor",notify: true}
-...     ]
-...     }]
-... },
-... {
-...   name: "Upate e retrive",
-...   description: "exercicio update e retrive",
-...   date_begin: "10/12/2015",
-...   date_dream: "10/12/2015",
-...   date_end: "10/12/2015",
-...   realocate: false,
-...   expired: false,
-...   date_realocate: "",
-...   members: [
-...   {"user_id": ObjectId("5666e38a3aa0ba636df3f866"),type_member: "Desenvolvedor",notify: true},
-...   {"user_id": ObjectId("5666e2f83aa0ba636df3f864"),type_member: "Programador",notify: true}
-...   ],
-...   tags: ["mongodb", "retrieve","update"],
-...   comments : [{
-...     text: "exercicio 3 projeto final",
-...     date_comment: "09/12/2015",
-...     files :[{
-...       path: "github/projetoFinal",
-...       weight: "234",
-...       name: "projeto final mongodb"
-...     }],
-...     members: [
-...       {"user_id": ObjectId("5666e38a3aa0ba636df3f866"),type_member: "Desenvolvedor",notify: true}
-...     ]
-...     }]
-... }])
+{
+  name: "Cadastro Inicial",
+  description: "Cadastro inicial dados popular base dados",
+  date_begin: "10/12/2015",
+  date_dream: "10/12/2015",
+  date_end: "10/12/2015",
+  realocate: false,
+  expired: false,
+  date_realocate: "",
+  members: [
+    {"user_id": ObjectId("5666e38a3aa0ba636df3f866"),type_member: "Desenvolvedor",notify: true},
+    {"user_id": ObjectId("5666e2f83aa0ba636df3f864"),type_member: "Programador",notify: true}
+  ],
+  tags: ["mongodb", "insert","update"],
+  comments : [{
+    text: "exercicio 1 projeto final",
+    date_comment: "09/12/2015",
+    files :[{
+      path: "github/projetoFinal",
+      weight: "234",
+      name: "projeto final mongodb"
+    }],
+    members: [
+      {"user_id": ObjectId("5666e38a3aa0ba636df3f866"),type_member: "Desenvolvedor",notify: true}
+    ]
+  }]
+},
+{
+  name: "Upate e retrive",
+  description: "exercicio update e retrive",
+  date_begin: "10/12/2015",
+  date_dream: "10/12/2015",
+  date_end: "10/12/2015",
+  realocate: false,
+  expired: false,
+  date_realocate: "",
+  members: [
+    {"user_id": ObjectId("5666e38a3aa0ba636df3f866"),type_member: "Desenvolvedor",notify: true},
+    {"user_id": ObjectId("5666e2f83aa0ba636df3f864"),type_member: "Programador",notify: true}
+  ],
+  tags: ["mongodb", "retrieve","update"],
+  comments : [{
+    text: "exercicio 3 projeto final",
+    date_comment: "09/12/2015",
+    files :[{
+      path: "github/projetoFinal",
+      weight: "234",
+      name: "projeto final mongodb"
+    }],
+    members: [
+      {"user_id": ObjectId("5666e38a3aa0ba636df3f866"),type_member: "Desenvolvedor",notify: true}
+    ]
+  }]
+}])
+
 Inserted 1 record(s) in 8ms
 BulkWriteResult({
   "writeErrors": [ ],
@@ -630,38 +615,40 @@ BulkWriteResult({
   "nRemoved": 0,
   "upserted": [ ]
 })
-Air-de-Diego(mongod-3.0.7) be-mean-final> db.projects.insert({
-...   name : "PROJECT4 - BE-MEAN-Instagram",
-...   description: "Projeto Curso Be MEan Instagram",
-...   date_begin: "09/12/2015",
-...   date_dream: "01/02/2016" ,
-...   date_end: "",
-...   visible: true,
-...   realocate: false,
-...   expired: false,
-...   vizualizable_mod: false,
-...   tags: ["computacao", "javascript","mean"],
-...   members: [
-...   {"user_id": ObjectId("5666e2f83aa0ba636df3f863"),type_member: "Analista",notify: true},
-...   {"user_id": ObjectId("5666e2033aa0ba636df3f861"),type_member: "Tecnico",notify: true},
-...   {"user_id": ObjectId("5666e2033aa0ba636df3f860"),type_member: "Projetista",notify: true},
-...   {"user_id": ObjectId("5666e38a3aa0ba636df3f866"),type_member: "Desenvolvedor",notify: true},
-...   {"user_id": ObjectId("5666e2f83aa0ba636df3f864"),type_member: "Programador",notify: true}
-...   ],
-...   goals : [{
-...     name: "Projeto Final",
-...     description: "Projeto Final mongoDB",
-...     date_begin: "10/12/2015",
-...     date_dream: "01/01/2016" ,
-...     date_end: "",
-...     realocate: false,
-...     expired: false,
-...     date_realocate : "",
-...     tags : ["mongodb", "retrive", "sharding"],
-...     activities : [{"activity_id": ObjectId("566829d7d515fc7740146439")},{"activity_id": ObjectId("566829d7d515fc7740146438")}]
-...   }]
-... }
-... )
+
+Air-de-Diego(mongod-3.0.7) be-mean-final> db.projects.insert(
+{
+  name : "PROJECT4 - BE-MEAN-Instagram",
+  description: "Projeto Curso Be MEan Instagram",
+  date_begin: "09/12/2015",
+  date_dream: "01/02/2016" ,
+  date_end: "",
+  visible: true,
+  realocate: false,
+  expired: false,
+  vizualizable_mod: false,
+  tags: ["computacao", "javascript","mean"],
+  members: [
+    {"user_id": ObjectId("5666e2f83aa0ba636df3f863"),type_member: "Analista",notify: true},
+    {"user_id": ObjectId("5666e2033aa0ba636df3f861"),type_member: "Tecnico",notify: true},
+    {"user_id": ObjectId("5666e2033aa0ba636df3f860"),type_member: "Projetista",notify: true},
+    {"user_id": ObjectId("5666e38a3aa0ba636df3f866"),type_member: "Desenvolvedor",notify: true},
+    {"user_id": ObjectId("5666e2f83aa0ba636df3f864"),type_member: "Programador",notify: true}
+  ],
+  goals : [{
+    name: "Projeto Final",
+    description: "Projeto Final mongoDB",
+    date_begin: "10/12/2015",
+    date_dream: "01/01/2016" ,
+    date_end: "",
+    realocate: false,
+    expired: false,
+    date_realocate : "",
+    tags : ["mongodb", "retrive", "sharding"],
+    activities : [{"activity_id": ObjectId("566829d7d515fc7740146439")},{"activity_id": ObjectId("566829d7d515fc7740146438")}]
+  }]
+})
+
 Inserted 1 record(s) in 12ms
 WriteResult({
   "nInserted": 1
@@ -671,47 +658,48 @@ WriteResult({
 ###### Projeto 5:
 ```
 Air-de-Diego(mongod-3.0.7) be-mean-final> db.activities.insert([
-... {
-...   name: "TDD",
-...   description: "Projeto TDD",
-...   date_begin: "10/12/2015",
-...   date_dream: "10/12/2015",
-...   date_end: "10/12/2015",
-...   realocate: false,
-...   expired: false,
-...   date_realocate: "",
-...   members: [
-...   {"user_id": ObjectId("5666e2f83aa0ba636df3f863"),type_member: "Analista",notify: true}
-...   ],
-...   tags: ["ruby", "rails","tdd"],
-...   comments : [{
-...     text: "Documentacao",
-...     date_comment: "09/12/2015",
-...     files :[{
-...       path: "github/projetorails",
-...       weight: "234",
-...       name: "projeto Documentacao TDD"
-...     }],
-...     members: [
-...         {"user_id": ObjectId("5666e2f83aa0ba636df3f863"),type_member: "Analista",notify: true}
-...     ]
-...     }]
-... },
-... {
-...   name: "Design",
-...   description: "realizar design",
-...   date_begin: "10/12/2015",
-...   date_dream: "10/12/2015",
-...   date_end: "10/12/2015",
-...   realocate: false,
-...   expired: false,
-...   date_realocate: "",
-...   members: [
-...   {"user_id": ObjectId("5666e38a3aa0ba636df3f866"),type_member: "Desenvolvedor",notify: true}
-...   ],
-...   tags: ["design", "rails","template"],
-...   comments : []
-... }])
+{
+  name: "TDD",
+  description: "Projeto TDD",
+  date_begin: "10/12/2015",
+  date_dream: "10/12/2015",
+  date_end: "10/12/2015",
+  realocate: false,
+  expired: false,
+  date_realocate: "",
+  members: [
+    {"user_id": ObjectId("5666e2f83aa0ba636df3f863"),type_member: "Analista",notify: true}
+  ],
+  tags: ["ruby", "rails","tdd"],
+  comments : [{
+    text: "Documentacao",
+    date_comment: "09/12/2015",
+    files :[{
+      path: "github/projetorails",
+      weight: "234",
+      name: "projeto Documentacao TDD"
+    }],
+    members: [
+      {"user_id": ObjectId("5666e2f83aa0ba636df3f863"),type_member: "Analista",notify: true}
+    ]
+  }]
+},
+{
+  name: "Design",
+  description: "realizar design",
+  date_begin: "10/12/2015",
+  date_dream: "10/12/2015",
+  date_end: "10/12/2015",
+  realocate: false,
+  expired: false,
+  date_realocate: "",
+  members: [
+    {"user_id": ObjectId("5666e38a3aa0ba636df3f866"),type_member: "Desenvolvedor",notify: true}
+  ],
+  tags: ["design", "rails","template"],
+  comments : []
+}])
+
 Inserted 1 record(s) in 2ms
 BulkWriteResult({
   "writeErrors": [ ],
@@ -723,24 +711,26 @@ BulkWriteResult({
   "nRemoved": 0,
   "upserted": [ ]
 })
-Air-de-Diego(mongod-3.0.7) be-mean-final> db.projects.insert({
-...   name : "PROJECT 5 - RUBY ON RAILS",
-...   description: "Projeto Ruby on Rails",
-...   date_begin: "09/12/2015",
-...   date_dream: "01/02/2016" ,
-...   date_end: "",
-...   visible: true,
-...   realocate: false,
-...   expired: false,
-...   vizualizable_mod: false,
-...   tags: ["computacao", "ruby","rubyonrails"],
-...   members: [
-...   {"user_id": ObjectId("5666e2f83aa0ba636df3f863"),type_member: "Analista",notify: true},
-...   {"user_id": ObjectId("5666e2033aa0ba636df3f861"),type_member: "Tecnico",notify: true},
-...   {"user_id": ObjectId("5666e38a3aa0ba636df3f866"),type_member: "Desenvolvedor",notify: true},
-...   {"user_id": ObjectId("5666e2f83aa0ba636df3f864"),type_member: "Programador",notify: true},
-...   {"user_id": ObjectId("5666e38a3aa0ba636df3f865"),type_member: "Estagiario",notify: true}
-...   ],
+
+Air-de-Diego(mongod-3.0.7) be-mean-final> db.projects.insert(
+{
+  name : "PROJECT 5 - RUBY ON RAILS",
+  description: "Projeto Ruby on Rails",
+  date_begin: "09/12/2015",
+  date_dream: "01/02/2016" ,
+  date_end: "",
+  visible: true,
+  realocate: false,
+  expired: false,
+  vizualizable_mod: false,
+  tags: ["computacao", "ruby","rubyonrails"],
+  members: [
+    {"user_id": ObjectId("5666e2f83aa0ba636df3f863"),type_member: "Analista",notify: true},
+    {"user_id": ObjectId("5666e2033aa0ba636df3f861"),type_member: "Tecnico",notify: true},
+    {"user_id": ObjectId("5666e38a3aa0ba636df3f866"),type_member: "Desenvolvedor",notify: true},
+    {"user_id": ObjectId("5666e2f83aa0ba636df3f864"),type_member: "Programador",notify: true},
+    {"user_id": ObjectId("5666e38a3aa0ba636df3f865"),type_member: "Estagiario",notify: true}
+  ],
   goals : [{
     name: "Projeto Rails",
     description: "Projeto ROR",
@@ -753,8 +743,8 @@ Air-de-Diego(mongod-3.0.7) be-mean-final> db.projects.insert({
     tags : ["ruby", "rails", "tdd"],
     activities : [{"activity_id": ObjectId("56682bb1d515fc774014643c")},{"activity_id": ObjectId("56682bb1d515fc774014643b")}]
   }]
-}
-)
+})
+
 Inserted 1 record(s) in 2ms
 WriteResult({
   "nInserted": 1
@@ -931,7 +921,7 @@ Air-de-Diego(mongod-3.0.7) be-mean-final> users
 
 ###### 2 - Liste todos os projetos com a tag que você escolheu para os 3 projetos em comum.
 ```
-ir-de-Diego(mongod-3.0.7) be-mean-final> var query = {tags: /engenharia/i}
+Air-de-Diego(mongod-3.0.7) be-mean-final> var query = {tags: /engenharia/i}
 Air-de-Diego(mongod-3.0.7) be-mean-final> db.projects.find(query)
 {
   "_id": ObjectId("56681fc9d515fc7740146433"),
@@ -1167,7 +1157,7 @@ Fetched 8 record(s) in 3ms
 
 ###### 4 - Liste todos os projetos que não possuam uma tag.
 ```
-MacBook-Air-Diego(mongod-3.0.7) be-mean-final> db.projects.find({ tags: { $not: { $in: ['engenharia'] } } }, { name: 1, tags: 1 })
+Air-de-Diego(mongod-3.0.7) be-mean-final> db.projects.find({ tags: { $not: { $in: ['engenharia'] } } }, { name: 1, tags: 1 })
 {
   "_id": ObjectId("56682bebd515fc774014643d"),
   "name": "PROJECT 5 - RUBY ON RAILS",
@@ -1194,8 +1184,11 @@ Fetched 2 record(s) in 1ms
 ```
 MacBook-Air-Diego(mongod-3.0.7) be-mean-final> var projeto = db.projects.findOne()
 MacBook-Air-Diego(mongod-3.0.7) be-mean-final> var membros = []
-MacBook-Air-Diego(mongod-3.0.7) be-mean-final> var getMembros = function(member){var user = db.users.findOne({ _id: member._id },{_id: 1});
-... membros.push(user._id)}
+MacBook-Air-Diego(mongod-3.0.7) be-mean-final> 
+var getMembros = function(member){
+  var user = db.users.findOne({ _id: member._id },{_id: 1});
+  membros.push(user._id)
+}
 MacBook-Air-Diego(mongod-3.0.7) be-mean-final> projeto.members.forEach(getMembros)
 MacBook-Air-Diego(mongod-3.0.7) be-mean-final> membros
 [
@@ -1335,81 +1328,85 @@ Fetched 5 record(s) in 4ms
 ```
 MacBook-Air-Diego(mongod-3.0.7) be-mean-final> var tags = ["tag1","tag2","tag3","tag4","tag5"]
 MacBook-Air-Diego(mongod-3.0.7) be-mean-final> var verify = []
-MacBook-Air-Diego(mongod-3.0.7) be-mean-final> for (var i = 0; i < 5; i++) {
-  ...    var project = db.projects.find().skip(i).limit(1).toArray();
-  ...    verify.push(project[0]._id, tags[i]);
-  ...    db.projects.update({ _id: project[0]._id }, { $push: { tags: tags[i]}});
-  ...   }
-  Updated 1 existing record(s) in 2ms
-  Updated 1 existing record(s) in 1ms
-  Updated 1 existing record(s) in 1ms
-  Updated 1 existing record(s) in 1ms
-  Updated 1 existing record(s) in 2ms
-  WriteResult({
-    "nMatched": 1,
-    "nUpserted": 0,
-    "nModified": 1
-  })
-  MacBook-Air-Diego(mongod-3.0.7) be-mean-final> verify
-  [
-    ObjectId("56681fc9d515fc7740146433"),
+MacBook-Air-Diego(mongod-3.0.7) be-mean-final> 
+for (var i = 0; i < 5; i++) {
+  var project = db.projects.find().skip(i).limit(1).toArray();
+  verify.push(project[0]._id, tags[i]);
+  db.projects.update({ _id: project[0]._id }, { $push: { tags: tags[i]}});
+}
+Updated 1 existing record(s) in 2ms
+Updated 1 existing record(s) in 1ms
+Updated 1 existing record(s) in 1ms
+Updated 1 existing record(s) in 1ms
+Updated 1 existing record(s) in 2ms
+
+WriteResult({
+  "nMatched": 1,
+  "nUpserted": 0,
+  "nModified": 1
+})
+
+MacBook-Air-Diego(mongod-3.0.7) be-mean-final> verify
+[
+  ObjectId("56681fc9d515fc7740146433"),
     "tag1",
-    ObjectId("566820e2d515fc7740146434"),
+  ObjectId("566820e2d515fc7740146434"),
     "tag2",
-    ObjectId("5668238ed515fc7740146437"),
+  ObjectId("5668238ed515fc7740146437"),
     "tag3",
-    ObjectId("56682bebd515fc774014643d"),
+  ObjectId("56682bebd515fc774014643d"),
     "tag4",
-    ObjectId("56682a31d515fc774014643a"),
+  ObjectId("56682a31d515fc774014643a"),
+    "tag5"
+]
+
+MacBook-Air-Diego(mongod-3.0.7) be-mean-final> db.projects.find({},{"_id": 1, tags: 1})
+{
+  "_id": ObjectId("56681fc9d515fc7740146433"),
+  "tags": [
+    "engenharia",
+    "civil",
+    "projetocad",
+    "tag1"
+  ]
+}
+{
+  "_id": ObjectId("566820e2d515fc7740146434"),
+  "tags": [
+    "engenharia",
+    "energia",
+    "iluminacao",
+    "tag2"
+  ]
+}
+{
+  "_id": ObjectId("5668238ed515fc7740146437"),
+  "tags": [
+    "engenharia",
+    "mecanica",
+    "motor",
+    "tag3"
+  ]
+}
+{
+  "_id": ObjectId("56682bebd515fc774014643d"),
+  "tags": [
+    "computacao",
+    "ruby",
+    "rubyonrails",
+    "tag4"
+  ]
+}
+{
+  "_id": ObjectId("56682a31d515fc774014643a"),
+  "tags": [
+    "computacao",
+    "javascript",
+    "mean",
     "tag5"
   ]
-  MacBook-Air-Diego(mongod-3.0.7) be-mean-final> db.projects.find({},{"_id": 1, tags: 1})
-  {
-    "_id": ObjectId("56681fc9d515fc7740146433"),
-    "tags": [
-      "engenharia",
-      "civil",
-      "projetocad",
-      "tag1"
-    ]
-  }
-  {
-    "_id": ObjectId("566820e2d515fc7740146434"),
-    "tags": [
-      "engenharia",
-      "energia",
-      "iluminacao",
-      "tag2"
-    ]
-  }
-  {
-    "_id": ObjectId("5668238ed515fc7740146437"),
-    "tags": [
-      "engenharia",
-      "mecanica",
-      "motor",
-      "tag3"
-    ]
-  }
-  {
-    "_id": ObjectId("56682bebd515fc774014643d"),
-    "tags": [
-      "computacao",
-      "ruby",
-      "rubyonrails",
-      "tag4"
-    ]
-  }
-  {
-    "_id": ObjectId("56682a31d515fc774014643a"),
-    "tags": [
-      "computacao",
-      "javascript",
-      "mean",
-      "tag5"
-    ]
-  }
-  Fetched 5 record(s) in 2ms
+}
+Fetched 5 record(s) in 2ms
 ```
 
 ###### Adicione 2 membros diferentes para cada projeto.
@@ -1417,28 +1414,29 @@ MacBook-Air-Diego(mongod-3.0.7) be-mean-final> for (var i = 0; i < 5; i++) {
 ```
 MacBook-Air-Diego(mongod-3.0.7) be-mean-final> var x = 5;
 MacBook-Air-Diego(mongod-3.0.7) be-mean-final> var y = 0;
-MacBook-Air-Diego(mongod-3.0.7) be-mean-final> for (var i = 0; i < 5; i++) {
-...    x --;
-...    var project = db.projects.find().skip(x).limit(1).toArray();
-...    var user1 = db.users.find().skip(y).limit(1).toArray();
-...    y++;
-...    var user2 = db.users.find().skip(y).limit(1).toArray();
-...    y++;
-...    var membro = {
-...          user_id : user1[0]._id,
-...          type_member : "adicional 1",
-...          notify : true
-...      };
-...    db.projects.update({ _id: project[0]._id }, { $push: { members: membro1 } });
-...
-...      var membro2 = {
-...            user_id : user2[0]._id,
-...            type_member : "adicional 2",
-...            notify : true
-...        };
-...
-...        db.projects.update({ _id: project[0]._id }, { $push: { members: membro2 } });
-...  }
+MacBook-Air-Diego(mongod-3.0.7) be-mean-final> 
+for (var i = 0; i < 5; i++) {
+  x --;
+  var project = db.projects.find().skip(x).limit(1).toArray();
+  var user1 = db.users.find().skip(y).limit(1).toArray();
+  y++;
+  var user2 = db.users.find().skip(y).limit(1).toArray();
+  y++;
+  var membro = {
+    user_id : user1[0]._id,
+    type_member : "adicional 1",
+    notify : true
+  };
+  db.projects.update({ _id: project[0]._id }, { $push: { members: membro1 } });
+
+  var membro2 = {
+    user_id : user2[0]._id,
+    type_member : "adicional 2",
+    notify : true
+  };
+  db.projects.update({ _id: project[0]._id }, { $push: { members: membro2 } });
+}
+
 Updated 1 existing record(s) in 49ms
 Updated 1 existing record(s) in 1ms
 Updated 1 existing record(s) in 1ms
@@ -1459,30 +1457,34 @@ WriteResult({
 ###### Adicione 1 comentário em cada atividade, deixe apenas 1 projeto sem.
 ```
 MacBook-Air-Diego(mongod-3.0.7) be-mean-final> var activities = []
-MacBook-Air-Diego(mongod-3.0.7) be-mean-final> var getActivities = function(activity){
-... ...         activities.push(activity)
-... ...     }
+MacBook-Air-Diego(mongod-3.0.7) be-mean-final> 
+var getActivities = function(activity){
+  activities.push(activity)
+}
 MacBook-Air-Diego(mongod-3.0.7) be-mean-final> db.activities.find({}).toArray().forEach(getActivities)
 MacBook-Air-Diego(mongod-3.0.7) be-mean-final> activities.length
 8
-MacBook-Air-Diego(mongod-3.0.7) be-mean-final> var comment = {
-...   "text": "adicaocomentario",
-...   "date_comment": "02/01/2016",
-...   "files": [],
-...   "members": [
-...     {
-...       "user_id": ObjectId("5666e2033aa0ba636df3f861"),
-...       "type_member": "Tecnico",
-...       "notify": true
-...     }
-...   ]
-...
-... }
-MacBook-Air-Diego(mongod-3.0.7) be-mean-final> for (var i = 0; i < activities.length; i++) {
-...   if (activities[i].comments.length > 0) {
-...     db.activities.update({_id: activities[i]._id}, {$push: comment})
-...   }
-... }
+MacBook-Air-Diego(mongod-3.0.7) be-mean-final> 
+var comment = {
+  "text": "adicaocomentario",
+  "date_comment": "02/01/2016",
+  "files": [],
+  "members": [
+    {
+      "user_id": ObjectId("5666e2033aa0ba636df3f861"),
+      "type_member": "Tecnico",
+      "notify": true
+    }
+  ]
+}
+
+MacBook-Air-Diego(mongod-3.0.7) be-mean-final> 
+for (var i = 0; i < activities.length; i++) {
+  if (activities[i].comments.length > 0) {
+    db.activities.update({_id: activities[i]._id}, {$push: comment})
+  }
+
+}
 Updated 1 existing record(s) in 4ms
 Updated 1 existing record(s) in 2ms
 Updated 1 existing record(s) in 2ms
@@ -1499,37 +1501,39 @@ WriteResult({
 ###### Adicione 1 projeto inteiro com UPSERT.
 ```
 MacBook-Air-Diego(mongod-3.0.7) be-mean-final> var query = {name: /projetoArea51/i}
-MacBook-Air-Diego(mongod-3.0.7) be-mean-final> var mod = {
-...   $set: {active : true},
-...   $setOnInsert:{
-...     name : "PROJECT AREA 51",
-...     description: "Projeto ETS",
-...     date_begin: "01/01/2016",
-...     date_dream: "01/01/2016" ,
-...     date_end: "",
-...     visible: true,
-...     realocate: false,
-...     expired: false,
-...     vizualizable_mod: false,
-...     tags: [],
-...     members: [
-...     {"user_id": ObjectId("5666df133aa0ba636df3f85e"),type_member: "Engenheiro chefe",notify: true}
-...     ],
-...     goals : [{
-...       name: "Caca ET varginha",
-...       description: "investigar capsula contencao",
-...       date_begin: "01/01/2016",
-...       date_dream: "01/01/2016" ,
-...       date_end: "",
-...       realocate: false,
-...       expired: false,
-...       date_realocate : "",
-...       tags : ["et", "varginha"],
-...       activities : []
-...     }],
-...     views : 0
-...     }
-...   }
+MacBook-Air-Diego(mongod-3.0.7) be-mean-final> var mod = 
+{
+  $set: {active : true},
+  $setOnInsert:{
+    name : "PROJECT AREA 51",
+    description: "Projeto ETS",
+    date_begin: "01/01/2016",
+    date_dream: "01/01/2016" ,
+    date_end: "",
+    visible: true,
+    realocate: false,
+    expired: false,
+    vizualizable_mod: false,
+    tags: [],
+    members: [
+      {"user_id": ObjectId("5666df133aa0ba636df3f85e"),type_member: "Engenheiro chefe",notify: true}
+    ],
+    goals : [{
+      name: "Caca ET varginha",
+      description: "investigar capsula contencao",
+      date_begin: "01/01/2016",
+      date_dream: "01/01/2016" ,
+      date_end: "",
+      realocate: false,
+      expired: false,
+      date_realocate : "",
+      tags : ["et", "varginha"],
+      activities : []
+    }],
+    views : 0
+  }
+}
+
 MacBook-Air-Diego(mongod-3.0.7) be-mean-final> var options = {upsert: true}
 MacBook-Air-Diego(mongod-3.0.7) be-mean-final> db.projects.update(query,mod,options)
 Updated 1 new record(s) in 13ms
@@ -1781,7 +1785,7 @@ WriteResult({
 
 ###### Apague todos os projetos que não possuam atividades.
 ```
-acBook-Air-Diego(mongod-3.0.7) be-mean-final> var query = {'goals.activities': {$size: 0}}
+MacBook-Air-Diego(mongod-3.0.7) be-mean-final> var query = {'goals.activities': {$size: 0}}
 MacBook-Air-Diego(mongod-3.0.7) be-mean-final> db.projects.find(query)
 {
   "_id": ObjectId("566820e2d515fc7740146434"),
@@ -1926,59 +1930,30 @@ Successfully added user: {
 ```
 ###### Adicionar o papel grantRolesToUser e revokeRole para o usuário com Escrita e Leitura.
 ```
-MacBook-Air-Diego(mongod-3.0.7) admin>  db.createRole(
-...        {
-...          role: "grantRolesToUser",
-...          privileges: [
-...            { resource: { db: "admin", collection: "" }, actions: [ "grantRole" ] }
-...          ],
-...          roles: []
-...        })
-{
-  "role": "grantRolesToUser",
-  "privileges": [
-    {
-      "resource": {
-        "db": "admin",
-        "collection": ""
-      },
-      "actions": [
-        "grantRole"
-      ]
-    }
-  ],
-  "roles": [ ]
-}
 MacBook-Air-Diego(mongod-3.0.7) admin> db.createRole(
-...        {
-...          role: "revokeRole",
-...          privileges: [
-...            { resource: { db: "admin", collection: "" }, actions: [ "grantRole" ] }
-...          ],
-...          roles: []
-...        })
 {
-  "role": "revokeRole",
-  "privileges": [
-    {
-      "resource": {
-        "db": "admin",
-        "collection": ""
-      },
-      "actions": [
-        "grantRole"
-      ]
-    }
+  role: "grantRolesToUser",
+  privileges: [
+    { resource: { db: "admin", collection: "" }, actions: [ "grantRole" ] }
   ],
-  "roles": [ ]
-}
+  roles: []
+})
+
+MacBook-Air-Diego(mongod-3.0.7) admin> db.createRole(
+{
+  role: "revokeRole",
+  privileges: [
+    { resource: { db: "admin", collection: "" }, actions: [ "grantRole" ] }
+  ],
+  roles: []
+})
 
 MacBook-Air-Diego(mongod-3.0.7) admin> db.grantRolesToUser(
-...     "userReadWrite",
-...     [
-...       "grantRolesToUser","revokeRole"
-...     ]
-... )
+"userReadWrite",
+  [
+    "grantRolesToUser","revokeRole"
+  ]
+)
 ```
 
 ###### Remover o papel grantRolesToUser para o usuário com Escrita e Leitura.
@@ -2316,15 +2291,13 @@ Mongo-Hacker 0.0.8
 Server has startup warnings:
 2016-01-11T21:50:04.598-0200 I CONTROL  [initandlisten]
 2016-01-11T21:50:04.598-0200 I CONTROL  [initandlisten] ** WARNING: soft rlimits too low. Number of files is 256, should be at least 1000
-MacBook-Air-Diego(mongod-3.0.7) test> rsconf = {
-...    _id: "replica_set",
-...    members: [
-...     {
-...      _id: 0,
-...      host: "127.0.0.1:27017"
-...     }
-...   ]
-... }
+MacBook-Air-Diego(mongod-3.0.7) test> rsconf = 
+{
+  id: "replica_set",
+  members: [
+    {_id: 0,host: "127.0.0.1:27017"}
+  ]
+}
 {
   "_id": "replica_set",
   "members": [
