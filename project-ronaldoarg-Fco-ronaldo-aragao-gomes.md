@@ -74,7 +74,7 @@ Não vejo sistema que não possa usar o mongo, desde que seja bem modelado.
 
 ## Qual a modelagem da sua coleção retirada de `projects`?
 
-Retirei a coleção `activitiers` porque, de acordo com a minha ideia do sistema, uma mesma atctivity pode estar em mais de uma `goal`. Como as `activitiers` possuim muitos campos, criei uma nova coleção para reaproveita-las.   
+Retirei a coleção `activitiers` porque, de acordo com a minha ideia do sistema, uma mesma activity pode estar em mais de uma `goal`. Como as `activitiers` possuim muitos campos, criei uma nova coleção para reaproveita-las.   
 
 ```js
 {
@@ -158,8 +158,8 @@ usuarios.forEach(function(u){
 						disabled: true,
 						hash_token: "04gf65d40g65f4d0654re0t4r5",
 				},
-				perfil: null,
-				capa: null
+				profile_image: null,
+				background_image: null
 		}
 		listaUsuarios.push(query)
 })
