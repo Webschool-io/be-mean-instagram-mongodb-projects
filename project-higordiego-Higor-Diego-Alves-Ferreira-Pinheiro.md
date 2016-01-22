@@ -10,57 +10,59 @@ Qualquer sistema que não use transaction, e que orçamento para infraestrutura 
 
 ```js
 user: {
-name: String,
-bio: String,
-date-register: Date,
-avatar-path: String,
-backgroud-path: String,
-auth:{
-username: String,
-email: String,
-password: String,
-last-access: Date,
-online: Boolean,
-disable: Boolean,
-hash-token: String
+	name: String,
+	bio: String,
+	date-register: Date,
+	avatar-path: String,
+	backgroud-path: String,
+	auth:{
+		username: String,
+		email: String,
+		password: String,
+		last-access: Date,
+		online: Boolean,
+		disable: Boolean,
+		hash-token: String
 
+	}
 }
 
-}
 ```
 
 ## Qual a modelagem da sua coleção de `projects`?
 
 ```js
 project:{
-name: String,
-description: String,
-date_begin: Date,
-date_dream: Date,
-date_end: Date,
-visible: Boolean,
-realocate: String,
-expired: Date,
-visualizable_mod: Number,
-
-members: [{
-member_id: ObjectID(),
-type: String,
-notify: Boolean,
-}],
-goal:[
-{
 	name: String,
 	description: String,
 	date_begin: Date,
 	date_dream: Date,
 	date_end: Date,
-	realocate: Number,
+	visible: Boolean,
+	realocate: String,
 	expired: Date,
-	activity:[ObjectID()],
-	tag: String
-}
-],
+	visualizable_mod: Number,
+
+	members: [{
+		member_id: ObjectID(),
+		type: String,
+		notify: Boolean,
+	}],
+	goal:[
+	{
+		name: String,
+		description: String,
+		date_begin: Date,
+		date_dream: Date,
+		date_end: Date,
+		realocate: Number,
+		expired: Date,
+		activity:[
+			act_id: ObjectID()
+		],
+		tag: String
+	}
+	],
 
 
 }
@@ -73,36 +75,36 @@ comprometendo aplicação.
 ```js
 
 activity:{
-name: String,
-description: String,
-date_begin: Date,
-date_dream: Date,
-date_relocate: Date,
-expired: Date,
-date_end: Date,
-realocate: Number,
-members: [
-{
-	type_member: String, 
-	user_id: ObjectID(''), 
-	notify: Boolean
-}
-],
-tags: [],
-comments:[
-{
-	text: String, 
-	Date_comment: Date, 
-	files:[{path: String, weight: int, name: String}],
+	name: String,
+	description: String,
+	date_begin: Date,
+	date_dream: Date,
+	date_relocate: Date,
+	expired: Date,
+	date_end: Date,
+	realocate: Number,
 	members: [
 	{
-	type_member: String, 
-	user_id: ObjectID(''), 
-	notify: Boolean
-}
-]
-}
-]
+		type_member: String, 
+		user_id: ObjectID(''), 
+		notify: Boolean
+	}
+	],
+	tags: [],
+	comments:[
+	{
+		text: String, 
+		Date_comment: Date, 
+		files:[{path: String, weight: int, name: String}],
+		members: [
+		{
+			type_member: String, 
+			user_id: ObjectID(''), 
+			notify: Boolean
+		}
+		]
+	}
+	]
 
 
 }
@@ -112,31 +114,30 @@ comments:[
 ## Create - cadastro
 
 
-
 #1)
 ```js
 var usuario = ['João', 'Maria', 'Pedro', 'Sampaio', 'Paulo', 'Francisco', 'Paulo', 'Emerson', 'Marcos', 'Roberto'];
 
 var contador = 0;
 usuario.forEach( function(usuario) {
-var user = {
-name: usuario,
-bio: contador,
-date_register: new Date(),
-avatar_path: 'Testando avatar'+contador,
-background_path: 'fundo de tela'+contador,
-auth:{
-username: usuario,
-email: usuario+'@gmail.com',
-password: usuario+'$@!'+contador,
-last_access: new Date(),
-online: false,
-disable: false,
-has_token: '90a9c6ef1ce477b68ecff635c0849a82'+contador
-}
-};
-db.user.insert(user);
-contador++;
+	var user = {
+		name: usuario,
+		bio: contador,
+		date_register: new Date(),
+		avatar_path: 'Testando avatar'+contador,
+		background_path: 'fundo de tela'+contador,
+		auth:{
+			username: usuario,
+			email: usuario+'@gmail.com',
+			password: usuario+'$@!'+contador,
+			last_access: new Date(),
+			online: false,
+			disable: false,
+			has_token: '90a9c6ef1ce477b68ecff635c0849a82'+contador
+		}
+	};
+	db.user.insert(user);
+	contador++;
 });
 
 ```
@@ -148,21 +149,21 @@ Cadastrando activity.
 var ativo = ['Teste 1','teste 2'];
 var contador =0;
 ativo.forEach( function(index) {
-var activo = {
-name: index,
-description: 'Be-mean',
-date_begin: new Date(),
-date_dream: new Date(),
-date_relocate: new Date(),
-expired: new Date(),
-date_end: new Date(),
-realocate: contador,
-member:[],
-tags:[],
-comments:[]
-}
-db.activity.insert(activo);
-contador++;
+	var activo = {
+		name: index,
+		description: 'Be-mean',
+		date_begin: new Date(),
+		date_dream: new Date(),
+		date_relocate: new Date(),
+		expired: new Date(),
+		date_end: new Date(),
+		realocate: contador,
+		member:[],
+		tags:[],
+		comments:[]
+	}
+	db.activity.insert(activo);
+	contador++;
 });
 ```
 Cadastrando o projeto.
@@ -175,53 +176,53 @@ var user = db.user.find({},{id:1}).limit(4).toArray();
 var ativo = db.activity.find({},{id:1}).limit(2).toArray();
 name.forEach(function(name) {
 
-var projeto = {
-name: name,
-description: 'Descrição'+contador,
-date_betin: new Date(),
-date_dream: new Date(),
-date_end: new Date(),
-visible: false,
-realocate: contador,
-expired: new Date(),
-visualizable_mod: contador,
-members: [{
-usuario_id: user[0]._id,
-type: 'padrao',
-notify: false
-},{
-usuario_id: user[1]._id,
-type: 'padrao',
-notify: true
-},{
-usuario_id: user[2]._id,
-type: 'admin',
-notify: false
-},{
-usuario_id: user[3]._id,
-type: 'admin',
-notify: true
-}],
+	var projeto = {
+		name: name,
+		description: 'Descrição'+contador,
+		date_betin: new Date(),
+		date_dream: new Date(),
+		date_end: new Date(),
+		visible: false,
+		realocate: contador,
+		expired: new Date(),
+		visualizable_mod: contador,
+		members: [{
+			usuario_id: user[0]._id,
+			type: 'padrao',
+			notify: false
+		},{
+			usuario_id: user[1]._id,
+			type: 'padrao',
+			notify: true
+		},{
+			usuario_id: user[2]._id,
+			type: 'admin',
+			notify: false
+		},{
+			usuario_id: user[3]._id,
+			type: 'admin',
+			notify: true
+		}],
 
-tag : ['Be-mean','mongo'+contador,'nodejs'+contador],
-goal: [{
-name: 'Be-mean',
-description: 'Curso Online',
-date_begin: new Date(),
-date_dream: new Date(),
-date_end: new Date(),
-realocate: contador,
-expired: new Date(),	
-tag : ['Contar Plin','Contar Plin'+contador,'Contar Plu'+contador],
-activities: [{
-act_id: ativo[0]._id
-}, {
-act_id_id: ativo[1]._id
-}]
-}]
-}
-contador++;
-db.projeto.insert(projeto);
+		tag : ['Be-mean','mongo'+contador,'nodejs'+contador],
+		goal: [{
+			name: 'Be-mean',
+			description: 'Curso Online',
+			date_begin: new Date(),
+			date_dream: new Date(),
+			date_end: new Date(),
+			realocate: contador,
+			expired: new Date(),	
+			tag : ['Contar Plin','Contar Plin'+contador,'Contar Plu'+contador],
+			activities: [{
+				act_id: ativo[0]._id
+			}, {
+				act_id_id: ativo[1]._id
+			}]
+		}]
+	}
+	contador++;
+	db.projeto.insert(projeto);
 });
 ```
 1 tag em 3 projetos
@@ -234,52 +235,52 @@ var user;
 var name = ['Projeto 03','Projeto 04']
 name.forEach(function(name) {
 
-var projeto = {
-name: name,
-description: 'Descrição'+contador,
-date_betin: new Date(),
-date_dream: new Date(),
-date_end: new Date(),
-visible: false,
-realocate: contador,
-expired: new Date(),
-visualizable_mod: contador,
-members: [{
-usuario_id: user[0]._id,
-type: 'padrao',
-notify: false
-},{
-usuario_id: user[1]._id,
-type: 'padrao',
-notify: true
-},{
-usuario_id: user[2]._id,
-type: 'admin',
-notify: false
-},{
-usuario_id: user[3]._id,
-type: 'admin',
-notify: true
-}],
-tag : ['teste','mongo','pegar'+contador],
-goal: [{
-name: 'Be-mean',
-description: 'Curso Online',
-date_begin: new Date(),
-date_dream: new Date(),
-date_end: new Date(),
-realocate: contador,
-expired: new Date(),	
-tag : ['Contar Plu','Contar Plug'+contador,'Contar Pla'+contador],
-activities: [{
-act_id: ativo[0]._id
-}, {
-act_id_id: ativo[1]._id
-}]
-}]
-}
-contador++;
-db.projeto.insert(projeto);
+	var projeto = {
+		name: name,
+		description: 'Descrição'+contador,
+		date_betin: new Date(),
+		date_dream: new Date(),
+		date_end: new Date(),
+		visible: false,
+		realocate: contador,
+		expired: new Date(),
+		visualizable_mod: contador,
+		members: [{
+			usuario_id: user[0]._id,
+			type: 'padrao',
+			notify: false
+		},{
+			usuario_id: user[1]._id,
+			type: 'padrao',
+			notify: true
+		},{
+			usuario_id: user[2]._id,
+			type: 'admin',
+			notify: false
+		},{
+			usuario_id: user[3]._id,
+			type: 'admin',
+			notify: true
+		}],
+		tag : ['teste','mongo','pegar'+contador],
+		goal: [{
+			name: 'Be-mean',
+			description: 'Curso Online',
+			date_begin: new Date(),
+			date_dream: new Date(),
+			date_end: new Date(),
+			realocate: contador,
+			expired: new Date(),	
+			tag : ['Contar Plu','Contar Plug'+contador,'Contar Pla'+contador],
+			activities: [{
+				act_id: ativo[0]._id
+			}, {
+				act_id_id: ativo[1]._id
+			}]
+		}]
+	}
+	contador++;
+	db.projeto.insert(projeto);
 });
 
 ```
@@ -293,48 +294,48 @@ var user = db.user.find({},{id:1}).limit(4).toArray();
 var ativo = db.activity.find({},{id:1}).limit(2).toArray();
 name.forEach(function(name) {
 
-var projeto = {
-name: name,
-description: 'Descrição'+contador,
-date_betin: new Date(),
-date_dream: new Date(),
-date_end: new Date(),
-visible: false,
-realocate: contador,
-expired: new Date(),
-visualizable_mod: contador,
-members: [{
-usuario_id: user[0]._id,
-type: 'padrao',
-notify: false
-},{
-usuario_id: user[1]._id,
-type: 'padrao',
-notify: true
-},{
-usuario_id: user[2]._id,
-type: 'admin',
-notify: false
-},{
-usuario_id: user[3]._id,
-type: 'admin',
-notify: true
-}],
-tag : ['teste','mongo','pegar'+contador],
-goal: [{
-name: 'Be-mean',
-description: 'Curso Online',
-date_begin: new Date(),
-date_dream: new Date(),
-date_end: new Date(),
-realocate: contador,
-expired: new Date(),	
-tag : ['Contar Plu','Contar Plug'+contador,'Contar Pla'+contador],
-activity:[]
-}]
-}
-contador++;
-db.projeto.insert(projeto);
+	var projeto = {
+		name: name,
+		description: 'Descrição'+contador,
+		date_betin: new Date(),
+		date_dream: new Date(),
+		date_end: new Date(),
+		visible: false,
+		realocate: contador,
+		expired: new Date(),
+		visualizable_mod: contador,
+		members: [{
+			usuario_id: user[0]._id,
+			type: 'padrao',
+			notify: false
+		},{
+			usuario_id: user[1]._id,
+			type: 'padrao',
+			notify: true
+		},{
+			usuario_id: user[2]._id,
+			type: 'admin',
+			notify: false
+		},{
+			usuario_id: user[3]._id,
+			type: 'admin',
+			notify: true
+		}],
+		tag : ['teste','mongo','pegar'+contador],
+		goal: [{
+			name: 'Be-mean',
+			description: 'Curso Online',
+			date_begin: new Date(),
+			date_dream: new Date(),
+			date_end: new Date(),
+			realocate: contador,
+			expired: new Date(),	
+			tag : ['Contar Plu','Contar Plug'+contador,'Contar Pla'+contador],
+			activity:[]
+		}]
+	}
+	contador++;
+	db.projeto.insert(projeto);
 });
 
 ```
@@ -346,7 +347,7 @@ db.projeto.insert(projeto);
 ```js
 var usuarios = []
 var getUsuario = function(usuario){ 
-usuarios.push(db.user.findOne({_id: usuario.usuario_id})) 
+	usuarios.push(db.user.findOne({_id: usuario.usuario_id})) 
 }
 var lista = db.projeto.findOne(query,find);
 lista.members.forEach(getUsuario)
@@ -354,26 +355,26 @@ lista
 {
 	"members": [
 	{
-	"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce3"),
-	"type": "padrao",
-	"notify": false
-},
-{
-	"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce4"),
-	"type": "padrao",
-	"notify": true
-},
-{
-	"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce5"),
-	"type": "admin",
-	"notify": false
-},
-{
-	"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce6"),
-	"type": "admin",
-	"notify": true
-}
-]
+		"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce3"),
+		"type": "padrao",
+		"notify": false
+	},
+	{
+		"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce4"),
+		"type": "padrao",
+		"notify": true
+	},
+	{
+		"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce5"),
+		"type": "admin",
+		"notify": false
+	},
+	{
+		"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce6"),
+		"type": "admin",
+		"notify": true
+	}
+	]
 }
 
 ```
@@ -395,51 +396,51 @@ db.projeto.find(query);
 	"visualizable_mod": 0,
 	"members": [
 	{
-	"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce3"),
-	"type": "padrao",
-	"notify": false
-},
-{
-	"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce4"),
-	"type": "padrao",
-	"notify": true
-},
-{
-	"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce5"),
-	"type": "admin",
-	"notify": false
-},
-{
-	"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce6"),
-	"type": "admin",
-	"notify": true
-}
-],
-"tag": [
-"teste",
-"mongo",
-"pegar0"
-],
-"goal": [
-{
-	"name": "Be-mean",
-	"description": "Curso Online",
-	"date_begin": ISODate("2016-01-20T22:29:22.448Z"),
-	"date_dream": ISODate("2016-01-20T22:29:22.448Z"),
-	"date_end": ISODate("2016-01-20T22:29:22.448Z"),
-	"realocate": 0,
-	"expired": ISODate("2016-01-20T22:29:22.448Z"),
-	"tag": [
-	"Contar Plu",
-	"Contar Plug0",
-	"Contar Pla0"
+		"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce3"),
+		"type": "padrao",
+		"notify": false
+	},
+	{
+		"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce4"),
+		"type": "padrao",
+		"notify": true
+	},
+	{
+		"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce5"),
+		"type": "admin",
+		"notify": false
+	},
+	{
+		"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce6"),
+		"type": "admin",
+		"notify": true
+	}
 	],
-	"activity": [
-	ObjectId("569fc14a0125aaf90daab141"),
-	ObjectId("569fc14a0125aaf90daab142")
+	"tag": [
+	"teste",
+	"mongo",
+	"pegar0"
+	],
+	"goal": [
+	{
+		"name": "Be-mean",
+		"description": "Curso Online",
+		"date_begin": ISODate("2016-01-20T22:29:22.448Z"),
+		"date_dream": ISODate("2016-01-20T22:29:22.448Z"),
+		"date_end": ISODate("2016-01-20T22:29:22.448Z"),
+		"realocate": 0,
+		"expired": ISODate("2016-01-20T22:29:22.448Z"),
+		"tag": [
+		"Contar Plu",
+		"Contar Plug0",
+		"Contar Pla0"
+		],
+		"activity": [
+		ObjectId("569fc14a0125aaf90daab141"),
+		ObjectId("569fc14a0125aaf90daab142")
+		]
+	}
 	]
-}
-]
 }
 {
 	"_id": ObjectId("56a00a42f399030fbe8effb0"),
@@ -454,51 +455,51 @@ db.projeto.find(query);
 	"visualizable_mod": 1,
 	"members": [
 	{
-	"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce3"),
-	"type": "padrao",
-	"notify": false
-},
-{
-	"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce4"),
-	"type": "padrao",
-	"notify": true
-},
-{
-	"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce5"),
-	"type": "admin",
-	"notify": false
-},
-{
-	"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce6"),
-	"type": "admin",
-	"notify": true
-}
-],
-"tag": [
-"teste",
-"mongo",
-"pegar1"
-],
-"goal": [
-{
-	"name": "Be-mean",
-	"description": "Curso Online",
-	"date_begin": ISODate("2016-01-20T22:29:22.699Z"),
-	"date_dream": ISODate("2016-01-20T22:29:22.699Z"),
-	"date_end": ISODate("2016-01-20T22:29:22.699Z"),
-	"realocate": 1,
-	"expired": ISODate("2016-01-20T22:29:22.699Z"),
-	"tag": [
-	"Contar Plu",
-	"Contar Plug1",
-	"Contar Pla1"
+		"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce3"),
+		"type": "padrao",
+		"notify": false
+	},
+	{
+		"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce4"),
+		"type": "padrao",
+		"notify": true
+	},
+	{
+		"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce5"),
+		"type": "admin",
+		"notify": false
+	},
+	{
+		"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce6"),
+		"type": "admin",
+		"notify": true
+	}
 	],
-	"activity": [
-	ObjectId("569fc14a0125aaf90daab141"),
-	ObjectId("569fc14a0125aaf90daab142")
+	"tag": [
+	"teste",
+	"mongo",
+	"pegar1"
+	],
+	"goal": [
+	{
+		"name": "Be-mean",
+		"description": "Curso Online",
+		"date_begin": ISODate("2016-01-20T22:29:22.699Z"),
+		"date_dream": ISODate("2016-01-20T22:29:22.699Z"),
+		"date_end": ISODate("2016-01-20T22:29:22.699Z"),
+		"realocate": 1,
+		"expired": ISODate("2016-01-20T22:29:22.699Z"),
+		"tag": [
+		"Contar Plu",
+		"Contar Plug1",
+		"Contar Pla1"
+		],
+		"activity": [
+		ObjectId("569fc14a0125aaf90daab141"),
+		ObjectId("569fc14a0125aaf90daab142")
+		]
+	}
 	]
-}
-]
 }
 {
 	"_id": ObjectId("56a00a48f399030fbe8effb1"),
@@ -513,59 +514,60 @@ db.projeto.find(query);
 	"visualizable_mod": 0,
 	"members": [
 	{
-	"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce3"),
-	"type": "padrao",
-	"notify": false
-},
-{
-	"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce4"),
-	"type": "padrao",
-	"notify": true
-},
-{
-	"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce5"),
-	"type": "admin",
-	"notify": false
-},
-{
-	"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce6"),
-	"type": "admin",
-	"notify": true
-}
-],
-"tag": [
-"teste",
-"mongo",
-"pegar0"
-],
-"goal": [
-{
-	"name": "Be-mean",
-	"description": "Curso Online",
-	"date_begin": ISODate("2016-01-20T22:29:28.739Z"),
-	"date_dream": ISODate("2016-01-20T22:29:28.739Z"),
-	"date_end": ISODate("2016-01-20T22:29:28.739Z"),
-	"realocate": 0,
-	"expired": ISODate("2016-01-20T22:29:28.739Z"),
-	"tag": [
-	"Contar Plu",
-	"Contar Plug0",
-	"Contar Pla0"
+		"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce3"),
+		"type": "padrao",
+		"notify": false
+	},
+	{
+		"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce4"),
+		"type": "padrao",
+		"notify": true
+	},
+	{
+		"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce5"),
+		"type": "admin",
+		"notify": false
+	},
+	{
+		"usuario_id": ObjectId("569ec0ad52f2b0caa0a42ce6"),
+		"type": "admin",
+		"notify": true
+	}
 	],
-	"activity": [ ]
+	"tag": [
+	"teste",
+	"mongo",
+	"pegar0"
+	],
+	"goal": [
+	{
+		"name": "Be-mean",
+		"description": "Curso Online",
+		"date_begin": ISODate("2016-01-20T22:29:28.739Z"),
+		"date_dream": ISODate("2016-01-20T22:29:28.739Z"),
+		"date_end": ISODate("2016-01-20T22:29:28.739Z"),
+		"realocate": 0,
+		"expired": ISODate("2016-01-20T22:29:28.739Z"),
+		"tag": [
+		"Contar Plu",
+		"Contar Plug0",
+		"Contar Pla0"
+		],
+		"activity": [ ]
+	}
+	]
 }
-]
-}
+
 
 ```
 
 #3)
 ```js
 var query  = { 
-$and : [
-{ "goal.activities": { $exists : true         } },
-{ "goal.activities": { $not    : { $eq : [] } } }
-]
+	$and : [
+	{ "goal.activities": { $exists : true         } },
+	{ "goal.activities": { $not    : { $eq : [] } } }
+	]
 };
 var find = {"goal.activities.name":1};
 db.projeto.find(query, find);
@@ -574,61 +576,61 @@ db.projeto.find(query, find);
 	"_id": ObjectId("56a01962f399030fbe8effc0"),
 	"goal": [
 	{
-	"activities": [
-	{
+		"activities": [
+		{
 
-},
-{
+		},
+		{
 
-}
-]
-}
-]
+		}
+		]
+	}
+	]
 }
 {
 	"_id": ObjectId("56a01962f399030fbe8effc1"),
 	"goal": [
 	{
-	"activities": [
-	{
+		"activities": [
+		{
 
-},
-{
+		},
+		{
 
-}
-]
-}
-]
+		}
+		]
+	}
+	]
 }
 {
 	"_id": ObjectId("56a01969f399030fbe8effc2"),
 	"goal": [
 	{
-	"activities": [
-	{
+		"activities": [
+		{
 
-},
-{
+		},
+		{
 
-}
-]
-}
-]
+		}
+		]
+	}
+	]
 }
 {
 	"_id": ObjectId("56a01969f399030fbe8effc3"),
 	"goal": [
 	{
-	"activities": [
-	{
+		"activities": [
+		{
 
-},
-{
+		},
+		{
 
-}
-]
-}
-]
+		}
+		]
+	}
+	]
 }
 
 
@@ -693,9 +695,9 @@ db.projeto.update(query,find,opc)
 
 Updated 5 existing record(s) in 4ms
 WriteResult({
-"nMatched": 5,
-"nUpserted": 0,
-"nModified": 5
+	"nMatched": 5,
+	"nUpserted": 0,
+	"nModified": 5
 })
 
 ```
@@ -705,10 +707,10 @@ WriteResult({
 var recebe = db.projeto.find({},{_id:1}).toArray();
 var contador = 0;
 recebe.forEach( function(recebe) {
-var find   = {$push : {tag : "testando"+contador}};
-var query  = {_id: recebe._id};
-db.projeto.update(query,find);   
-contador++;
+	var find   = {$push : {tag : "testando"+contador}};
+	var query  = {_id: recebe._id};
+	db.projeto.update(query,find);   
+	contador++;
 });
 
 ```
@@ -717,7 +719,7 @@ contador++;
 ```js
 var members = [];
 function getId(member) {
-members.push(member.usuario_id);
+	members.push(member.usuario_id);
 };
 var query = {name: /projeto 01/i};
 var projeto = db.projeto.findOne(query).members.forEach(getId);
@@ -725,22 +727,21 @@ var user = db.user.find({_id: {$not: {$in: members}}},{_id:1}).sort({_id:1}).toA
 var recebe = db.projeto.find({},{_id:1}).toArray();
 
 for (var i = 0; i < 6; i++) {
-if(i ==2){
-var query = {_id: recebe[1]._id};
-var find  = {$push: {members: user[i]._id}};
-db.projeto.update(query,find);    
-}else if(i ==4){
-var query = {_id: recebe[2]._id};
-var find  = {$push: {members: user[i]._id}};
-db.projeto.update(query,find);    
-}else{
-var query = {_id: recebe[3]._id};
-var find  = {$push: {members: user[i]._id}};
-db.projeto.update(query,find);    
-} 
+	if(i ==2){
+		var query = {_id: recebe[1]._id};
+		var find  = {$push: {members: user[i]._id}};
+		db.projeto.update(query,find);    
+	}else if(i ==4){
+		var query = {_id: recebe[2]._id};
+		var find  = {$push: {members: user[i]._id}};
+		db.projeto.update(query,find);    
+	}else{
+		var query = {_id: recebe[3]._id};
+		var find  = {$push: {members: user[i]._id}};
+		db.projeto.update(query,find);    
+	} 
 
 }
-
 ```
 
 #4)
@@ -749,9 +750,9 @@ var comment = {comments: 'Comentario 01' };
 db.activity.update({},{$set: {comment: comment}});
 Updated 1 existing record(s) in 4ms
 WriteResult({
-"nMatched": 1,
-"nUpserted": 0,
-"nModified": 1
+	"nMatched": 1,
+	"nUpserted": 0,
+	"nModified": 1
 })
 ```
 #5)
@@ -762,48 +763,48 @@ var user = db.user.find({},{_id:1}).toArray();
 
 var query = {name: /projeto01/i};
 var inserir = {
-$set: {active: true},
-$setOnInsert: {
-name: 'Testando',
-description: 'Descrição',
-date_betin: new Date(),
-date_dream: new Date(),
-date_end: new Date(),
-visible: false,
-realocate: contador,
-expired: new Date(),
-visualizable_mod: contador,
-members: [{
-usuario_id: user[0]._id,
-type: 'padrao',
-notify: false
-},{
-usuario_id: user[1]._id,
-type: 'padrao',
-notify: true
-},{
-usuario_id: user[2]._id,
-type: 'admin',
-notify: false
-},{
-usuario_id: user[3]._id,
-type: 'admin',
-notify: true
-}],
-tags: ["mongo", "Nodejs", "Angularjs"],
-goal: [{
-name: 'Be-mean',
-description: 'Curso Online',
-date_begin: new Date(),
-date_dream: new Date(),
-date_end: new Date(),
-realocate: contador,
-expired: new Date(),    
-tag : ['Contar Plin','Contar Plin','Contar Plu'],
-activities: []
-}]
+	$set: {active: true},
+	$setOnInsert: {
+		name: 'Testando',
+		description: 'Descrição',
+		date_betin: new Date(),
+		date_dream: new Date(),
+		date_end: new Date(),
+		visible: false,
+		realocate: contador,
+		expired: new Date(),
+		visualizable_mod: contador,
+		members: [{
+			usuario_id: user[0]._id,
+			type: 'padrao',
+			notify: false
+		},{
+			usuario_id: user[1]._id,
+			type: 'padrao',
+			notify: true
+		},{
+			usuario_id: user[2]._id,
+			type: 'admin',
+			notify: false
+		},{
+			usuario_id: user[3]._id,
+			type: 'admin',
+			notify: true
+		}],
+		tags: ["mongo", "Nodejs", "Angularjs"],
+		goal: [{
+			name: 'Be-mean',
+			description: 'Curso Online',
+			date_begin: new Date(),
+			date_dream: new Date(),
+			date_end: new Date(),
+			realocate: contador,
+			expired: new Date(),    
+			tag : ['Contar Plin','Contar Plin','Contar Plu'],
+			activities: []
+		}]
 
-}
+	}
 }
 var opcao = {upsert: true};
 
@@ -978,3 +979,79 @@ rs.add("127.0.0.1:27020");
 
 
 ```
+
+#Detalhando o activity/Projeto
+
+# Activity
+activity:{
+	name: String,
+	description: String,
+	date_begin: Date,
+	date_dream: Date,
+	date_relocate: Date,
+	expired: Date,
+	date_end: Date,
+	realocate: Number,
+	members: [
+	{
+		type_member: String, 
+		user_id: ObjectID(''), 
+		notify: Boolean
+	}
+	],
+	tags: [],
+	comments:[
+	{
+		text: String, 
+		Date_comment: Date, 
+		files:[{path: String, weight: int, name: String}],
+		members: [
+		{
+			type_member: String, 
+			user_id: ObjectID(''), 
+			notify: Boolean
+		}
+		]
+	}
+	]
+
+
+}
+
+#Projeto
+
+project:{
+	name: String,
+	description: String,
+	date_begin: Date,
+	date_dream: Date,
+	date_end: Date,
+	visible: Boolean,
+	realocate: String,
+	expired: Date,
+	visualizable_mod: Number,
+
+	members: [{
+		member_id: ObjectID(),
+		type: String,
+		notify: Boolean,
+	}],
+	goal:[
+	{
+		name: String,
+		description: String,
+		date_begin: Date,
+		date_dream: Date,
+		date_end: Date,
+		realocate: Number,
+		expired: Date,
+		//Activity aqui o id dele está nomeado como act_id
+		activity:[
+			act_id: ObjectID()
+		],
+		tag: String
+	}
+	],
+
+
+}
