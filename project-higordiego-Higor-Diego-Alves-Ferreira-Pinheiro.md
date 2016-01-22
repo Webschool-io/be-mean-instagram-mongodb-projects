@@ -982,6 +982,7 @@ rs.add("127.0.0.1:27020");
 
 ##Detalhando o activity/Projeto
 
+```js
 activity:{
 	name: String,
 	description: String,
@@ -1017,8 +1018,10 @@ activity:{
 
 }
 
+```
 ##Projeto
 
+```js
 project:{
 	name: String,
 	description: String,
@@ -1054,3 +1057,5 @@ project:{
 
 
 }
+
+```
