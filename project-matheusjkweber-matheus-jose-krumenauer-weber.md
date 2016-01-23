@@ -137,16 +137,13 @@ BulkWriteResult({
 })
 ```
 2 - Passos:
-	```
-	1 - Pego todos os usuarios e salvo em users, para usar o _id.
+```
+- Pego todos os usuarios e salvo em users, para usar o _id.
 	
-	var users = db.user.find()
-	```
+var users = db.user.find()
 
-	2 - Crio todas as activities e insiro no banco.
-
-	```
-	var activities = [{'name' : 'Primeira Atividade', 'description' : 'Fazer o commit inicial.', 'date_begin' : new Date(2016,0,9), 'date_dream' : new Date(2016,0,9), 'realocate' : false, 'expired' : false, 'tags' : ['github','projeto','commit'], 'date_realocate' : {}, 'members' : [{'user_id' : users[0]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[0].name}], comments : [{'text' : 'Nada a comenta, só commitar', date_comment : new Date(2016,0,9), files : []}]}, 
+- Crio todas as activities e insiro no banco.
+var activities = [{'name' : 'Primeira Atividade', 'description' : 'Fazer o commit inicial.', 'date_begin' : new Date(2016,0,9), 'date_dream' : new Date(2016,0,9), 'realocate' : false, 'expired' : false, 'tags' : ['github','projeto','commit'], 'date_realocate' : {}, 'members' : [{'user_id' : users[0]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[0].name}], comments : [{'text' : 'Nada a comenta, só commitar', date_comment : new Date(2016,0,9), files : []}]}, 
 
 {'name' : 'Segunda Atividade', 'description' : 'Layout das Paginas.', 'date_begin' : new Date(2016,0,10), 'date_dream' : new Date(2016,0,25), 'realocate' : false, 'expired' : false, 'tags' : ['layout','projeto','design','designer'], 'date_realocate' : {}, 'members' : [{'user_id' : users[0]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[0].name}], comments : [{'text' : 'Fazer paginas bonitas', date_comment : new Date(2016,0,9), files : []}]},
 
@@ -173,14 +170,14 @@ BulkWriteResult({
 		"nRemoved" : 0,
 		"upserted" : [ ]
 	})
-```
-	3 - Pego as activites do db e salvo numa variavel
-	```
-	var act = db.activity.find()
-```
-	4 - Crio os projetos e insiro no banco.
-```
-	var projects = [{'name' : 'Desenvolvimento do Layout', 'description' : 'Desenvolvimento de todas as paginas dos aplicativos.', 'date_begin' : new Date(2016,0,9), 'date_dream' : new Date(2016,0,25), 'realocate' : false, 'expired' : false, 'goals' : [{'name' : 'Finalizar o layout', 'description' : 'Finalizar esse layout.', 'date_begin' : new Date(2016,0,9), 'date_end' : new Date(2016,0,25), 'realocate' : false, 'date_realocate' : [], 'tags' : ['layout','design','aplicativo'], 'activities' : [{'activity_id' : act[0]._id, 'name' : act[0].name},{'activity_id' : act[1]._id, 'name' : act[1].name}]}], 'tags' : ['layout','design','eh rei'], members : [{'user_id' : users[0]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[0].name},{'user_id' : users[1]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[1].name},{'user_id' : users[2]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[2].name},{'user_id' : users[3]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[3].name},{'user_id' : users[4]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[4].name}]},
+
+- Pego as activites do db e salvo numa variavel
+
+var act = db.activity.find()
+
+- Crio os projetos e insiro no banco.
+
+var projects = [{'name' : 'Desenvolvimento do Layout', 'description' : 'Desenvolvimento de todas as paginas dos aplicativos.', 'date_begin' : new Date(2016,0,9), 'date_dream' : new Date(2016,0,25), 'realocate' : false, 'expired' : false, 'goals' : [{'name' : 'Finalizar o layout', 'description' : 'Finalizar esse layout.', 'date_begin' : new Date(2016,0,9), 'date_end' : new Date(2016,0,25), 'realocate' : false, 'date_realocate' : [], 'tags' : ['layout','design','aplicativo'], 'activities' : [{'activity_id' : act[0]._id, 'name' : act[0].name},{'activity_id' : act[1]._id, 'name' : act[1].name}]}], 'tags' : ['layout','design','eh rei'], members : [{'user_id' : users[0]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[0].name},{'user_id' : users[1]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[1].name},{'user_id' : users[2]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[2].name},{'user_id' : users[3]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[3].name},{'user_id' : users[4]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[4].name}]},
 
 {'name' : 'Desenvolvimento do Aplicativo para Android', 'description' : 'Desenvolvimento de toda programação para Android.', 'date_begin' : new Date(2016,0,15), 'date_dream' : new Date(2016,1,25), 'realocate' : false, 'expired' : false, 'goals' : [{'name' : 'Fazer um aplicativo', 'description' : 'Fazer funcionar.', 'date_begin' : new Date(2016,0,15), 'date_end' : new Date(2016,1,25), 'realocate' : false, 'date_realocate' : [], 'tags' : ['java','android','aplicativo'], 'activities' : [{'activity_id' : act[2]._id, 'name' : act[2].name},{'activity_id' : act[3]._id, 'name' : act[3].name}]}], 'tags' : ['java','aplicativo','android'], members : [{'user_id' : users[9]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[9].name},{'user_id' : users[5]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[5].name},{'user_id' : users[6]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[6].name},{'user_id' : users[7]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[7].name},{'user_id' : users[8]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[8].name}]},
 
