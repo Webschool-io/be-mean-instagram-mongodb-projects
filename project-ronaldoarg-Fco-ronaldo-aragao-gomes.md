@@ -556,7 +556,7 @@ WriteResult({
 
 ## Retrieve - busca
 
-1. Liste as informações dos membros de 1 projeto específico que deve ser buscado pelo seu nome de forma a não ligar para maiúsculas e minúsculas.
+####1. Liste as informações dos membros de 1 projeto específico que deve ser buscado pelo seu nome de forma a não ligar para maiúsculas e minúsculas.
 
 ```js
 
@@ -572,7 +572,7 @@ informacoes
 
 ```
 
-2. Liste todos os projetos com a tag que você escolheu para os 3 projetos em comum.
+####2. Liste todos os projetos com a tag que você escolheu para os 3 projetos em comum.
 ```js
 
 db.projects.find({tags: {$in: [/tag01/i]}}, {name: 1, description: 1})
@@ -595,20 +595,20 @@ db.projects.find({tags: {$in: [/tag01/i]}}, {name: 1, description: 1})
 
 
 ```
-3. Liste apenas os nomes de todas as atividades para todos os projetos.
+####3. Liste apenas os nomes de todas as atividades para todos os projetos.
 ```js
 
 db.projects.find({},{_id: 0,name: 1, 'goals.activities.name':1})
 
 ```
-4. Liste todos os projetos que não possuam uma tag.
+####4. Liste todos os projetos que não possuam uma tag.
 
 ```js
 
 db.projects.find({tags:{$not:{$in:[/tag01/i]}}})
 
 ```
-5. Liste todos os usuários que não fazem parte do primeiro projeto cadastrado.
+####5. Liste todos os usuários que não fazem parte do primeiro projeto cadastrado.
 ```js
 
 var usuarios = []
@@ -625,7 +625,7 @@ db.users.find({_id: {$not: {$in: usuarios}}}, {name: 1})
 
 ## Update - alteração
 
-1. Adicione para todos os projetos o campo `views: 0`.
+####1. Adicione para todos os projetos o campo `views: 0`.
 ```js
  trabalho-final-mongodb> db.projects.update({},{$set:{views: 0}}, {multi:true})
 Updated 5 existing record(s) in 34ms
@@ -636,7 +636,7 @@ WriteResult({
 })
 ```
 
-2. Adicione 1 tag diferente para cada projeto.
+####2. Adicione 1 tag diferente para cada projeto.
 ```js
 
 db.projects.update({name:/projeto 01/i},{$push:{tags:"Nova tag pjt1"}})
@@ -681,7 +681,7 @@ WriteResult({
 
 
 ```
-3. Adicione 2 membros diferentes para cada projeto.
+####3. Adicione 2 membros diferentes para cada projeto.
 ```js
 
 var usuarios = db.users.find({},{_id:1}).toArray()
@@ -702,12 +702,12 @@ db.projects.update({name:/projeto 05/i},{$push:{members:{user_id:usuarios[5]._id
 db.projects.update({name:/projeto 05/i},{$push:{members:{user_id:usuarios[1]._id, type: "Basic", notify: true}}})
 
 ```
-4. Adicione 1 comentário em cada atividade, deixe apenas 1 projeto sem.
+####4. Adicione 1 comentário em cada atividade, deixe apenas 1 projeto sem.
 ```js
 db.activities.update({name:/atividade 01/i},{$push:{comments:{text:"Novo COmentario", date_comment: new Date(), member:usuarios[5]._id}}})
 db.activities.update({name:/atividade 02/i},{$push:{comments:{text:"Novo COmentario", date_comment: new Date(), member:usuarios[6]._id}}})
 ```
-5. Adicione 1 projeto inteiro com **UPSERT**.
+####5. Adicione 1 projeto inteiro com **UPSERT**.
 ```js
 
 var query = {name: "Projeto 06"}
@@ -774,7 +774,7 @@ var mod = {
 ```
 ## Delete - remoção
 
-1. Apague todos os projetos que não possuam *tags*.
+####1. Apague todos os projetos que não possuam *tags*.
 ```js
  db.projects.remove({tags: {$size: 0}})
  Removed 0 record(s) in 20ms
@@ -784,11 +784,11 @@ WriteResult({
 
  
 ```
-2. Apague todos os projetos que não possuam comentários nas atividades.
+####2. Apague todos os projetos que não possuam comentários nas atividades.
 
 Não entendi :(
 
-3. Apague todos os projetos que não possuam atividades.
+####3. Apague todos os projetos que não possuam atividades.
 ```js
 
 db.projects.remove({'goals.activities':{$size: 0}}, {multi:1})
@@ -799,7 +799,7 @@ WriteResult({
 
 ```
 
-4. Escolha 2 usuário e apague todos os projetos em que os 2 fazem parte.
+####4. Escolha 2 usuário e apague todos os projetos em que os 2 fazem parte.
 ```js
 
 db.projects.remove({ "members.user_id": { $in: [ usuarios[0]._id, usuarios[5]._id ]}}, { multi: 1 })
@@ -810,7 +810,7 @@ WriteResult({
 
 
 ```
-5. Apague todos os projetos que possuam uma determinada *tag* em *goal*.
+####5. Apague todos os projetos que possuam uma determinada *tag* em *goal*.
 
 ```js
 
@@ -824,7 +824,7 @@ WriteResult({
 
 ##Gerenciamento de usuários
 
-1.Crie um usuário com permissões APENAS de Leitura.
+####1.Crie um usuário com permissões APENAS de Leitura.
 
 ```js
 use admin
@@ -838,7 +838,7 @@ Successfully added user: {
 }
 
 ```
-2.Crie um usuário com permissões de Escrita e Leitura.
+####2.Crie um usuário com permissões de Escrita e Leitura.
 ```
 db.createUser({user: "ronaldolerescrever",pwd: "lerescrever",roles: ["readWrite"]})
 Successfully added user: {
@@ -849,7 +849,7 @@ Successfully added user: {
 }
 
 ```
-3.Adicionar o papel grantRolesToUser e revokeRole para o usuário com Escrita e Leitura.
+####3.Adicionar o papel grantRolesToUser e revokeRole para o usuário com Escrita e Leitura.
 ```js
 
 //criar roles
@@ -890,7 +890,7 @@ db.grantRolesToUser(
 
 
 ```
-4.Remover o papel grantRolesToUser para o usuário com Escrita e Leitura.
+####4.Remover o papel grantRolesToUser para o usuário com Escrita e Leitura.
 ```js
 db.revokeRolesFromUser(
     "ronaldolerescrever",
@@ -899,9 +899,7 @@ db.revokeRolesFromUser(
     ]
 )
 ```
-
-
-5.Listar todos os usuários com seus papéis e ações.
+####5.Listar todos os usuários com seus papéis e ações.
 ```js
  admin> db.runCommand({usersInfo: 1})
 {
