@@ -206,13 +206,13 @@ membersByProject.forEach(function(obj, x){
 // - cada um com pelo menos 3 tags diferentes;
 // - escolha 1 *tag* onde deva ficar em 2 projetos;
 // - escolha 1 *tag* onde deva ficar em 3 projetos;
-var tags = [ "framework", "css", "less", "sass", "stylus", "js", "angular", "react", "mvc", "jquery" ];
+var tags = [ "framework", "css", "less", "sass", "stylus", "js", "angular", "react", "mvc", "jquery", "backbone", "ember" ];
 var tagsList = [
-    [ "framework", tags[3], tags[2] ],
-    [ "framework", tags[3], tags[4] ],
-    [ "css", tags[6], tags[7] ],
-    [ "css", tags[9], tags[0] ],
-    [ "css", tags[2], tags[3] ]
+    [ "framework", "less", "sass" ],
+    [ "framework", "stylus", "js" ],
+    [ "css", "angular", "react" ],
+    [ "css", "mvc", "jquery" ],
+    [ "css", "backbone", "ember" ]
 ];
 
 // - cada projeto com pelo menos 1 *goal*;
