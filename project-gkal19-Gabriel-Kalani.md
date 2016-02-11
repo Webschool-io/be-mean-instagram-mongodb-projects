@@ -2,9 +2,6 @@
 **Autor:** Gabriel Kalani
 **Data:** 1454113488
 
-OBS: Não sei converter a data para timestamp
-Mas enviei este arquivo no dia 30.01.2016 ás 00:27
-
 ## Para qual sistema você usaria o MongoDB (diferente desse)?
 Como estou começando agora minha jornada na stack do MEAN, eu usaria em:
  Rede Social, Chat Real Time e entre outros
@@ -302,13 +299,13 @@ gkal19-aula-bemean-2468380(mongod-2.6.11) db> project
         ]
 }
         
-        gkal19-aula-bemean-2468380(mongod-2.6.11) db> var members_project = [];
-        gkal19-aula-bemean-2468380(mongod-2.6.11) db> project.members.forEach(function(member){
+        > var members_project = [];
+        > project.members.forEach(function(member){
         members_project.push(db.users.findOne({"_id":ObjectId(member.user_id)}));
 	});
 
 	
-	gkal19-aula-bemean-2468380(mongod-2.6.11) db> members_project
+	> members_project
 
 [
         {
@@ -404,7 +401,7 @@ gkal19-aula-bemean-2468380(mongod-2.6.11) db> project
 
 ```js
 
-gkal19-aula-bemean-2468380(mongod-2.6.11) be-mean-final> db.projects.find({tags:{$in:['curso']}}).pretty()
+> db.projects.find({tags:{$in:['curso']}}).pretty()
 {
         "_id" : ObjectId("56abf9f0a4807d7fb6f5c16f"),
         "name" : "Estante Virtual",
