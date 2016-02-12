@@ -103,6 +103,8 @@ Alguns exemplos de projetos que eu utilizaria o MongoDB:
 
 ## Create - cadastro
 
+#### 1. Cadastre 10 usuários diferentes.
+
 ```
 var users = [{'name':'Matheus', 'bio' : 'Sou o primeiro usuario.', 'date-register' : new Date(2000,1,1), 'avatar-path' : 'image/matheus.jpg', auth : {username : 'matheus@gmail.com', 'password' : '12345', 'last_access' : new Date(), 'online' : true, 'disabled' : false, 'hash_token' : '8cb2237d0679ca88db6464eac60da96345513964'}},
 
@@ -136,13 +138,21 @@ BulkWriteResult({
 	"upserted" : [ ]
 })
 ```
-2 - Passos:
+
+#### 2. Cadastre 5 projetos diferentes.
+- cada um com 5 membros, sempre diferentes dentro dos projetos;
+- cada um com pelo menos 3 tags diferentes;
+    - escolha 1 *tag* onde deva ficar em 2 projetos;
+    - escolha 1 *tag* onde deva ficar em 3 projetos;
+- cada projeto com pelo menos 1 *goal*;
+    - cada *goal* com pelo menos 3 *tags*;
+    - cada *goal* com pelo menos 2 atividades, deixe 1 projeto sem.
 ```
-- Pego todos os usuarios e salvo em users, para usar o _id.
+//Pego todos os usuarios e salvo em users, para usar o _id.
 	
 var users = db.user.find()
 
-- Crio todas as activities e insiro no banco.
+//Crio todas as activities e insiro no banco.
 var activities = [{'name' : 'Primeira Atividade', 'description' : 'Fazer o commit inicial.', 'date_begin' : new Date(2016,0,9), 'date_dream' : new Date(2016,0,9), 'realocate' : false, 'expired' : false, 'tags' : ['github','projeto','commit'], 'date_realocate' : {}, 'members' : [{'user_id' : users[0]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[0].name}], comments : [{'text' : 'Nada a comenta, só commitar', date_comment : new Date(2016,0,9), files : []}]}, 
 
 {'name' : 'Segunda Atividade', 'description' : 'Layout das Paginas.', 'date_begin' : new Date(2016,0,10), 'date_dream' : new Date(2016,0,25), 'realocate' : false, 'expired' : false, 'tags' : ['layout','projeto','design','designer'], 'date_realocate' : {}, 'members' : [{'user_id' : users[0]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[0].name}], comments : [{'text' : 'Fazer paginas bonitas', date_comment : new Date(2016,0,9), files : []}]},
@@ -171,11 +181,11 @@ var activities = [{'name' : 'Primeira Atividade', 'description' : 'Fazer o commi
 		"upserted" : [ ]
 	})
 
-- Pego as activites do db e salvo numa variavel
+//Pego as activites do db e salvo numa variavel
 
 var act = db.activity.find()
 
-- Crio os projetos e insiro no banco.
+//Crio os projetos e insiro no banco.
 
 var projects = [{'name' : 'Desenvolvimento do Layout', 'description' : 'Desenvolvimento de todas as paginas dos aplicativos.', 'date_begin' : new Date(2016,0,9), 'date_dream' : new Date(2016,0,25), 'realocate' : false, 'expired' : false, 'goals' : [{'name' : 'Finalizar o layout', 'description' : 'Finalizar esse layout.', 'date_begin' : new Date(2016,0,9), 'date_end' : new Date(2016,0,25), 'realocate' : false, 'date_realocate' : [], 'tags' : ['layout','design','aplicativo'], 'activities' : [{'activity_id' : act[0]._id, 'name' : act[0].name},{'activity_id' : act[1]._id, 'name' : act[1].name}]}], 'tags' : ['layout','design','eh rei'], members : [{'user_id' : users[0]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[0].name},{'user_id' : users[1]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[1].name},{'user_id' : users[2]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[2].name},{'user_id' : users[3]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[3].name},{'user_id' : users[4]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[4].name}]},
 
@@ -187,7 +197,7 @@ var projects = [{'name' : 'Desenvolvimento do Layout', 'description' : 'Desenvol
 
 {'name' : 'Entrega dos Aplicativos', 'description' : 'Entregar os Aplicativos.', 'date_begin' : new Date(2016,1,25), 'date_dream' : new Date(2016,1,30), 'realocate' : false, 'expired' : false, 'goals' : [{'name' : 'Entregar os Aplicativos', 'description' : 'Torcer que o cliente aceite.', 'date_begin' : new Date(2016,1,25), 'date_end' : new Date(2016,1,30), 'realocate' : false, 'date_realocate' : [], 'tags' : ['ios','swift','aplicativo','entrega','java','android'], 'activities' : []}], 'tags' : ['ios','swift','aplicativo','teste','java','android'], members : [{'user_id' : users[1]._id, 'type_name' : 'Testador', 'notify' : '', 'name' : users[1].name},{'user_id' : users[3]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[3].name},{'user_id' : users[6]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[6].name},{'user_id' : users[4]._id, 'type_name' : 'Testador', 'notify' : '', 'name' : users[4].name},{'user_id' : users[9]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[9].name}]}]
 
-	> db.project.insert(projects)
+	db.project.insert(projects)
 BulkWriteResult({
 	"writeErrors" : [ ],
 	"writeConcernErrors" : [ ],
@@ -198,12 +208,11 @@ BulkWriteResult({
 	"nRemoved" : 0,
 	"upserted" : [ ]
 })
-
-
-
 ```
+
 ## Retrieve - busca
-1 - Liste as informações dos membros de 1 projeto específico que deve ser buscado pelo seu nome de forma a não ligar para maiúsculas e minúsculas.
+
+#### 1. Liste as informações dos membros de 1 projeto específico que deve ser buscado pelo seu nome de forma a não ligar para maiúsculas e minúsculas.
 ```
 	db.project.findOne({name : /teste dos aplicativos/i}).members
 
@@ -241,8 +250,8 @@ BulkWriteResult({
 ]
 
 ```
-2 - Liste todos os projetos com a tag que você escolheu para os 3 projetos em comum.
 
+#### 2. Liste todos os projetos com a tag que você escolheu para os 3 projetos em comum.
 ```
 
  db.project.find({tags : 'java'}).pretty()
@@ -465,8 +474,7 @@ BulkWriteResult({
 
 ```
 
-3 - Liste apenas os nomes de todas as atividades para todos os projetos.
-
+#### 3. Liste apenas os nomes de todas as atividades para todos os projetos.
 ```
 
 db.project.find({"goals.activities" : {$ne : [], $exists : true}},{"goals.activities.name":1}).pretty()
@@ -533,13 +541,12 @@ db.project.find({"goals.activities" : {$ne : [], $exists : true}},{"goals.activi
 
 ```
 
-4 - Liste todos os projetos que não possuam uma tag.
+#### 4. Liste todos os projetos que não possuam uma tag.
 
 ```
 db.project.find({"tags" : {$size : 0}})
 ```
-
-5 - Liste todos os usuários que não fazem parte do primeiro projeto cadastrado.
+#### 5. Liste todos os usuários que não fazem parte do primeiro projeto cadastrado.
 
 ```
 db.project.find({}, {'members.name' : 1}).skip(1).pretty()
@@ -624,17 +631,17 @@ db.project.find({}, {'members.name' : 1}).skip(1).pretty()
 	]
 }
 ```
-
 ## Update - alteração
 
-1 - Adicione para todos os projetos o campo views: 0.
+#### 1. Adicione para todos os projetos o campo `views: 0`.
 
 ```
 var mod = {$set : {"views" : 0}}
 db.project.update({},mod,{multi: true})
 WriteResult({ "nMatched" : 5, "nUpserted" : 0, "nModified" : 5 })
 ```
-2 - Adicione 1 tag diferente para cada projeto.
+#### 2. Adicione 1 tag diferente para cada projeto.
+
 ```
 var projects = db.project.find()
 
@@ -663,7 +670,8 @@ var query = {"_id" : projects[4]._id}
 db.project.update(query,mod)
 WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
 ```
-3 - Adicione 2 membros diferentes para cada projeto.
+#### 3. Adicione 2 membros diferentes para cada projeto.
+
 ```
 var members = db.user.find()
 var mod = {$push : {"members" : [{"user_id" : members[0]._id, "type_name" : "Novo Membro", "notify" : "", "name" : members[0].name}, {"user_id" : members[1]._id, "type_name" : "Novo Membro", "notify" : "", "name" : members[1].name}]}}
@@ -691,7 +699,8 @@ var mod = {$push : {"members" : [{"user_id" : members[9]._id, "type_name" : "Nov
 db.project.update(query,mod)
 WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
 ```
-4 - Adicione 1 comentário em cada atividade, deixe apenas 1 projeto sem.
+#### 4. Adicione 1 comentário em cada atividade, deixe apenas 1 projeto sem.
+
 ```
 var act = db.activity.find()
 
@@ -720,7 +729,8 @@ var mod = {$push : {"comments" : {'text' : 'Novo comentario', date_comment : new
 db.activity.update(query,mod)
 WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
 ```
-5 - Adicione 1 projeto inteiro com UPSERT
+#### 5. Adicione 1 projeto inteiro com **UPSERT**.
+
 ```
 var novo_projeto = {'name' : 'Novo Desenvolvimento do Layout', 'description' : 'Desenvolvimento de todas as paginas dos aplicativos.', 'date_begin' : new Date(2016,0,9), 'date_dream' : new Date(2016,0,25), 'realocate' : false, 'expired' : false, 'goals' : [{'name' : 'Finalizar o layout', 'description' : 'Finalizar esse layout.', 'date_begin' : new Date(2016,0,9), 'date_end' : new Date(2016,0,25), 'realocate' : false, 'date_realocate' : [], 'tags' : ['layout','design','aplicativo'], 'activities' : [{'activity_id' : act[0]._id, 'name' : act[0].name},{'activity_id' : act[1]._id, 'name' : act[1].name}]}], 'tags' : ['layout','design','eh rei'], members : [{'user_id' : users[0]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[0].name},{'user_id' : users[1]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[1].name},{'user_id' : users[2]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[2].name},{'user_id' : users[3]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[3].name},{'user_id' : users[4]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[4].name}]}
 var query = {"name" : novo_projeto.name}
@@ -735,12 +745,14 @@ WriteResult({
 })
 ```
 ## Delete - remoção
-1 - Apague todos os projetos que não possuam tags.
+#### 1. Apague todos os projetos que não possuam *tags*.
+
 ```
 db.project.remove({"tags" : {$size : 0}})
 WriteResult({ "nRemoved" : 0 })
 ```
-2 - Apague todos os projetos que não possuam comentários nas atividades.
+#### 2. Apague todos os projetos que não possuam comentários nas atividades.
+
 ```
 a) Acho as activities sem comentarios
 
@@ -766,35 +778,41 @@ for(i=0;i<act.count();i++){
 	}
 }
 ```
-3 - Apague todos os projetos que não possuam atividades.
+#### 3. Apague todos os projetos que não possuam atividades.
+
 ```
 db.project.remove({"goals.activities" : {$size : 0}})
 WriteResult({ "nRemoved" : 2 })
 ```
-4 - Escolha 2 usuário e apague todos os projetos em que os 2 fazem parte.
+#### 4. Escolha 2 usuário e apague todos os projetos em que os 2 fazem parte.
+
 ```
 var users = db.user.find()
 db.project.remove({$and : [{"members.user_id" : users[5]._id},{"members.user_id" : users[4]._id}]})
 WriteResult({ "nRemoved" : 2 })
 ```
-5 - Apague todos os projetos que possuam uma determinada tag em goal.
+#### 5. Apague todos os projetos que possuam uma determinada *tag* em *goal*.
+
 ```
 db.project.remove({"goals.tags" : {$eq : "java"}})
 WriteResult({ "nRemoved" : 4 })
 ```
 
 ## Gerenciamento de usuários
-1 - Crie um usuário com permissões APENAS de Leitura.
+#### 1. Crie um usuário com permissões **APENAS** de Leitura.
+
 ```
 db.createUser({user : "matheus", pwd: "12345", roles : ["read"]})
 Successfully added user: { "user" : "matheus", "roles" : [ "read" ] }
 ```
-2 - Crie um usuário com permissões de Escrita e Leitura.
+#### 2. Crie um usuário com permissões de Escrita e Leitura.
+
 ```
 db.createUser({user : "matheus1", pwd : "12345", roles : ["readWrite"]})
 Successfully added user: { "user" : "matheus1", "roles" : [ "readWrite" ] }
 ```
-3 - Adicionar o papel grantRolesToUser e revokeRole para o usuário com Escrita e Leitura.
+#### 3. Adicionar o papel `grantRolesToUser` e `revokeRole` para o usuário com Escrita e Leitura.
+
 ```
 db.runCommand({ createRole: "grantRolesToUser",
   privileges: [
@@ -823,7 +841,8 @@ db.runCommand({ createRole: "revokeRole",
 
 db.grantRolesToUser("matheus",[ "grantRolesToUser" , "revokeRole" ])
 ```
-4 - Remover o papel grantRolesToUser para o usuário com Escrita e Leitura.
+#### 4. Remover o papel `grantRolesToUser` para o usuário com Escrita e Leitura.
+
 ```
 db.runCommand( { revokeRolesFromUser: "matheus1",
                  roles: [
@@ -834,7 +853,8 @@ db.runCommand( { revokeRolesFromUser: "matheus1",
              } )
 { "ok" : 1 }
 ```
-5 - Listar todos os usuários com seus papéis e ações.
+#### 5. Listar todos os usuários com seus papéis e ações.
+
 ```
 db.runCommand({usersInfo: 1})
 {
@@ -871,7 +891,8 @@ db.runCommand({usersInfo: 1})
 
 ```
 ## Sharding
-1 - 3 Replica
+### 1 Config Server
+##### Criação do ***Config Server*** setando a porta `27030`
 ```
 
 - Crio e inicio as replicas.
@@ -1043,7 +1064,7 @@ replica_set:PRIMARY> rs.status()
 
 ```
 
-2 - 1 Config Server
+### 1 Config Server
 ```
 matheus@Math:/data$ sudo mkdir configdb
 matheus@Math:/data$ mongod --configsvr --port 27010
@@ -1079,7 +1100,8 @@ matheus@Math:/data$ sudo mongod --configsvr --port 27010
 2016-01-23T16:54:33.738-0200 I NETWORK  [initandlisten] waiting for connections on port 27010
 ```
 
-3 - 1 Router
+### 1 Router
+
 ```
 matheus@Math:/data$ mongos --configdb localhost:27010 --port 27011
 2016-01-23T16:56:09.272-0200 W SHARDING running with 1 config server should be done only for testing purposes and is not recommended for production
@@ -1107,12 +1129,18 @@ matheus@Math:/data$ mongos --configdb localhost:27010 --port 27011
 2016-01-23T16:56:10.001-0200 I SHARDING [Balancer] distributed lock 'balancer/Math:27011:1453575369:1804289383' unlocked. 
 ```
 
-4 - 3 Shardings
+### 3 Shardings
+##### Crio as pastas onde dos ***Shards***
+
 ```
 matheus@Math:/data$ mkdir shard1
 matheus@Math:/data$ mkdir shard2
 matheus@Math:/data$ mkdir shard3
+```
 
+##### Levanto cada `Shard`, especificando a porta de cada
+
+```
 matheus@Math:/data$ mongod --port 27023 --dbpath shard1
 2016-01-23T17:01:05.039-0200 I JOURNAL  [initandlisten] journal dir=shard1/journal
 2016-01-23T17:01:05.039-0200 I JOURNAL  [initandlisten] recover : no journal files present, no recovery needed
@@ -1136,7 +1164,8 @@ matheus@Math:/data$ mongod --port 27023 --dbpath shard1
 2016-01-23T17:01:05.846-0200 I STORAGE  [FileAllocator] creating directory shard1/_tmp
 2016-01-23T17:01:05.851-0200 I STORAGE  [FileAllocator] done allocating datafile shard1/local.0, size: 64MB,  took 0.002 secs
 2016-01-23T17:01:05.858-0200 I NETWORK  [initandlisten] waiting for connections on port 27023
-
+```
+```
 matheus@Math:/data$ mongod --port 27024 --dbpath shard2
 2016-01-23T17:01:37.551-0200 I JOURNAL  [initandlisten] journal dir=shard2/journal
 2016-01-23T17:01:37.551-0200 I JOURNAL  [initandlisten] recover : no journal files present, no recovery needed
@@ -1160,7 +1189,8 @@ matheus@Math:/data$ mongod --port 27024 --dbpath shard2
 2016-01-23T17:01:38.210-0200 I STORAGE  [FileAllocator] creating directory shard2/_tmp
 2016-01-23T17:01:38.215-0200 I STORAGE  [FileAllocator] done allocating datafile shard2/local.0, size: 64MB,  took 0.002 secs
 2016-01-23T17:01:38.221-0200 I NETWORK  [initandlisten] waiting for connections on port 27024
-
+```
+```
 matheus@Math:/data$ mongod --port 27025 --dbpath shard3
 2016-01-23T17:02:01.686-0200 I JOURNAL  [initandlisten] journal dir=shard3/journal
 2016-01-23T17:02:01.686-0200 I JOURNAL  [initandlisten] recover : no journal files present, no recovery needed
@@ -1184,7 +1214,11 @@ matheus@Math:/data$ mongod --port 27025 --dbpath shard3
 2016-01-23T17:02:02.339-0200 I STORAGE  [FileAllocator] creating directory shard3/_tmp
 2016-01-23T17:02:02.344-0200 I STORAGE  [FileAllocator] done allocating datafile shard3/local.0, size: 64MB,  took 0.002 secs
 2016-01-23T17:02:02.355-0200 I NETWORK  [initandlisten] waiting for connections on port 27025
+```
 
+##### Conecto no ***Router*** e registro os ***Shards***
+
+```
 matheus@Math:~$ mongo --port 27011 --host localhost
 MongoDB shell version: 3.0.7
 connecting to: localhost:27011/test
