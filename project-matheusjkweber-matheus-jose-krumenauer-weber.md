@@ -754,11 +754,11 @@ WriteResult({ "nRemoved" : 0 })
 #### 2. Apague todos os projetos que não possuam comentários nas atividades.
 
 ```
-a) Acho as activities sem comentarios
+//Acho as activities sem comentarios
 
 var act = db.activity.find({"comments" : {$size : 0}})
 
-b) Percorro todas as activities sem comentarios entrando nos projetos delas, apos isso eu testo se tem outras activities nesse projeto com comentarios, se tiver eu seto a flag de deletar para 0 e paro o loop, se nao tiver ele termina o for e deleta o projeto.
+//Percorro todas as activities sem comentarios entrando nos projetos delas, apos isso eu testo se tem outras activities nesse projeto com comentarios, se tiver eu seto a flag de deletar para 0 e paro o loop, se nao tiver ele termina o for e deleta o projeto.
 
 for(i=0;i<act.count();i++){
 	var projects = db.project.find({"goals.activities.activity_id" : act[i]._id});
@@ -891,15 +891,16 @@ db.runCommand({usersInfo: 1})
 
 ```
 ## Sharding
-### 1 Config Server
-##### Criação do ***Config Server*** setando a porta `27030`
+### 3 Replicas
+##### Criação o diretorio das replicas
 ```
-
-- Crio e inicio as replicas.
-
 matheus@Math:/data$ mkdir r1
 matheus@Math:/data$ mkdir r2
 matheus@Math:/data$ mkdir r3
+```
+
+##### Crio as replicas
+```
 matheus@Math:/data$ sudo mongod --replSet replica_set --port 27030 --dbpath r1
 2016-01-23T17:23:21.985-0200 I JOURNAL  [initandlisten] journal dir=r1/journal
 2016-01-23T17:23:21.985-0200 I JOURNAL  [initandlisten] recover : no journal files present, no recovery needed
@@ -926,7 +927,8 @@ matheus@Math:/data$ sudo mongod --replSet replica_set --port 27030 --dbpath r1
 2016-01-23T17:23:22.781-0200 I STORAGE  [FileAllocator] done allocating datafile r1/local.0, size: 64MB,  took 0.002 secs
 2016-01-23T17:23:22.792-0200 I REPL     [initandlisten] Did not find local replica set configuration document at startup;  NoMatchingDocument Did not find replica set configuration document in local.system.replset
 2016-01-23T17:23:22.792-0200 I NETWORK  [initandlisten] waiting for connections on port 27030
-
+```
+```
 matheus@Math:/data$ sudo mongod --replSet replica_set --port 27031 --dbpath r2[sudo] password for matheus: 
 2016-01-23T17:24:49.587-0200 I JOURNAL  [initandlisten] journal dir=r2/journal
 2016-01-23T17:24:49.587-0200 I JOURNAL  [initandlisten] recover : no journal files present, no recovery needed
@@ -953,7 +955,8 @@ matheus@Math:/data$ sudo mongod --replSet replica_set --port 27031 --dbpath r2[s
 2016-01-23T17:24:50.495-0200 I STORAGE  [FileAllocator] done allocating datafile r2/local.0, size: 64MB,  took 0.009 secs
 2016-01-23T17:24:50.505-0200 I REPL     [initandlisten] Did not find local replica set configuration document at startup;  NoMatchingDocument Did not find replica set configuration document in local.system.replset
 2016-01-23T17:24:50.506-0200 I NETWORK  [initandlisten] waiting for connections on port 27031
-
+```
+```
 matheus@Math:/data$ sudo mongod --replSet replica_set --port 27032 --dbpath r3
 [sudo] password for matheus: 
 2016-01-23T17:25:18.934-0200 I JOURNAL  [initandlisten] journal dir=r3/journal
@@ -981,9 +984,9 @@ matheus@Math:/data$ sudo mongod --replSet replica_set --port 27032 --dbpath r3
 2016-01-23T17:25:19.672-0200 I STORAGE  [FileAllocator] done allocating datafile r3/local.0, size: 64MB,  took 0.016 secs
 2016-01-23T17:25:19.684-0200 I REPL     [initandlisten] Did not find local replica set configuration document at startup;  NoMatchingDocument Did not find replica set configuration document in local.system.replset
 2016-01-23T17:25:19.685-0200 I NETWORK  [initandlisten] waiting for connections on port 27032
-
--- Configuro e inicio a replica set
-
+```
+##### Configuro e inicio a replica set
+```
 > rsconf = {    _id: "replica_set",    members: [     {      _id: 0,      host: "127.0.0.1:27030"     }   ] }
 {
 	"_id" : "replica_set",
@@ -996,17 +999,17 @@ matheus@Math:/data$ sudo mongod --replSet replica_set --port 27032 --dbpath r3
 }
 > rs.initiate(rsconf)
 { "ok" : 1 }
-
--- Adiciona as outras replicas
-
+```
+##### Adiciona as outras replicas
+```
 replica_set:OTHER> rs.add("127.0.0.1:27031")
 { "ok" : 1 }
 replica_set:PRIMARY> rs.add("127.0.0.1:27032")
 { "ok" : 1 }
+```
 
-
--- Status
-
+##### Status
+```
 replica_set:PRIMARY> rs.status()
 {
 	"set" : "replica_set",
@@ -1058,10 +1061,6 @@ replica_set:PRIMARY> rs.status()
 	],
 	"ok" : 1
 }
-
-
-
-
 ```
 
 ### 1 Config Server
