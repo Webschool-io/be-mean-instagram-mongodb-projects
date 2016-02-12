@@ -318,6 +318,107 @@ projects.forEach(function (value, index) {
 ```JS
 db.project.find({ "members.name": /dIego siLva/i }, { "members.name": 1 })
 
+// {
+//   "_id": ObjectId("56bd2fbd0db8f24d71358736"),
+//   "members": [
+//     {
+//       "name": "Renato Galvao"
+//     },
+//     {
+//       "name": "Rosangela Maria"
+//     },
+//     {
+//       "name": "Mario Quintana"
+//     },
+//     {
+//       "name": "Jose Saramago"
+//     },
+//     {
+//       "name": "Diego Silva"
+//     }
+//   ]
+// }
+// {
+//   "_id": ObjectId("56bd2fbd0db8f24d71358737"),
+//   "members": [
+//     {
+//       "name": "Rosangela Maria"
+//     },
+//     {
+//       "name": "Mario Quintana"
+//     },
+//     {
+//       "name": "Jose Saramago"
+//     },
+//     {
+//       "name": "Diego Silva"
+//     },
+//     {
+//       "name": "Eduardo Pires"
+//     }
+//   ]
+// }
+// {
+//   "_id": ObjectId("56bd2fbd0db8f24d71358738"),
+//   "members": [
+//     {
+//       "name": "Mario Quintana"
+//     },
+//     {
+//       "name": "Jose Saramago"
+//     },
+//     {
+//       "name": "Diego Silva"
+//     },
+//     {
+//       "name": "Eduardo Pires"
+//     },
+//     {
+//       "name": "Valeska Popozuda"
+//     }
+//   ]
+// }
+// {
+//   "_id": ObjectId("56bd2fbd0db8f24d71358739"),
+//   "members": [
+//     {
+//       "name": "Jose Saramago"
+//     },
+//     {
+//       "name": "Diego Silva"
+//     },
+//     {
+//       "name": "Eduardo Pires"
+//     },
+//     {
+//       "name": "Valeska Popozuda"
+//     },
+//     {
+//       "name": "Mirtes Aragao"
+//     }
+//   ]
+// }
+// {
+//   "_id": ObjectId("56bd2fbd0db8f24d7135873a"),
+//   "members": [
+//     {
+//       "name": "Diego Silva"
+//     },
+//     {
+//       "name": "Eduardo Pires"
+//     },
+//     {
+//       "name": "Valeska Popozuda"
+//     },
+//     {
+//       "name": "Mirtes Aragao"
+//     },
+//     {
+//       "name": "Flavio Amantes"
+//     }
+//   ]
+// }
+
 // Fetched 5 record(s) in 2ms
 ```
 
@@ -325,6 +426,30 @@ db.project.find({ "members.name": /dIego siLva/i }, { "members.name": 1 })
 ```JS
 db.project.find({ "tag": /css/i }, { tag: 1 })
 
+// {
+//   "_id": ObjectId("56bd2fbd0db8f24d71358738"),
+//   "tag": [
+//     "css",
+//     "angular",
+//     "react"
+//   ]
+// }
+// {
+//   "_id": ObjectId("56bd2fbd0db8f24d71358739"),
+//   "tag": [
+//     "css",
+//     "mvc",
+//     "jquery"
+//   ]
+// }
+// {
+//   "_id": ObjectId("56bd2fbd0db8f24d7135873a"),
+//   "tag": [
+//     "css",
+//     "backbone",
+//     "ember"
+//   ]
+// }
 // Fetched 3 record(s) in 1ms
 ```
 
@@ -332,6 +457,23 @@ db.project.find({ "tag": /css/i }, { tag: 1 })
 
 ```JS
 db.activity.find({}, { name: 1, _id: 0 })
+
+// {
+//   "name": "activity-1"
+// }
+// {
+//   "name": "activity-2"
+// }
+// {
+//   "name": "activity-3"
+// }
+// {
+//   "name": "activity-4"
+// }
+// {
+//   "name": "activity-5"
+// }
+
 // Fetched 5 record(s) in 2ms
 ```
 
@@ -354,6 +496,91 @@ var project = db.project.findOne({ name : /bootstrap/i }).members.forEach(getId)
 
 db.users.find({ _id : { $not : { $in : members }}});
 
+// {
+//   "_id": ObjectId("56bd2f7b0db8f24d71358727"),
+//   "name": "Eduardo Pires",
+//   "bio": "Lorem Ipsum Dolor",
+//   "date-register": ISODate("2016-02-12T01:03:55.647Z"),
+//   "avatar-path": "http://lorempixel.com/400/200/people/",
+//   "background-path": "http://lorempixel.com/400/200/people/",
+//   "auth": {
+//     "username": "eduardopires",
+//     "email": "eduardopires@email.com",
+//     "password": 4843,
+//     "last-access": ISODate("2016-02-12T01:03:55.647Z"),
+//     "online": true,
+//     "disabled": false,
+//     "hash-token": "ff2e7d2c723b917742597eb8d9b68653"
+//   }
+// }
+// {
+//   "_id": ObjectId("56bd2f7b0db8f24d71358728"),
+//   "name": "Valeska Popozuda",
+//   "bio": "Lorem Ipsum Dolor",
+//   "date-register": ISODate("2016-02-12T01:03:55.648Z"),
+//   "avatar-path": "http://lorempixel.com/400/200/people/",
+//   "background-path": "http://lorempixel.com/400/200/people/",
+//   "auth": {
+//     "username": "valeskapopozuda",
+//     "email": "valeskapopozuda@email.com",
+//     "password": 6924,
+//     "last-access": ISODate("2016-02-12T01:03:55.648Z"),
+//     "online": true,
+//     "disabled": false,
+//     "hash-token": "ff2e7d2c723b917742597eb8d9b68653"
+//   }
+// }
+// {
+//   "_id": ObjectId("56bd2f7b0db8f24d71358729"),
+//   "name": "Mirtes Aragao",
+//   "bio": "Lorem Ipsum Dolor",
+//   "date-register": ISODate("2016-02-12T01:03:55.648Z"),
+//   "avatar-path": "http://lorempixel.com/400/200/people/",
+//   "background-path": "http://lorempixel.com/400/200/people/",
+//   "auth": {
+//     "username": "mirtesaragao",
+//     "email": "mirtesaragao@email.com",
+//     "password": 2168,
+//     "last-access": ISODate("2016-02-12T01:03:55.648Z"),
+//     "online": true,
+//     "disabled": false,
+//     "hash-token": "ff2e7d2c723b917742597eb8d9b68653"
+//   }
+// }
+// {
+//   "_id": ObjectId("56bd2f7b0db8f24d7135872a"),
+//   "name": "Flavio Amantes",
+//   "bio": "Lorem Ipsum Dolor",
+//   "date-register": ISODate("2016-02-12T01:03:55.649Z"),
+//   "avatar-path": "http://lorempixel.com/400/200/people/",
+//   "background-path": "http://lorempixel.com/400/200/people/",
+//   "auth": {
+//     "username": "flavioamantes",
+//     "email": "flavioamantes@email.com",
+//     "password": 3127,
+//     "last-access": ISODate("2016-02-12T01:03:55.649Z"),
+//     "online": true,
+//     "disabled": false,
+//     "hash-token": "ff2e7d2c723b917742597eb8d9b68653"
+//   }
+// }
+// {
+//   "_id": ObjectId("56bd2f7b0db8f24d7135872b"),
+//   "name": "Maria Jose",
+//   "bio": "Lorem Ipsum Dolor",
+//   "date-register": ISODate("2016-02-12T01:03:55.649Z"),
+//   "avatar-path": "http://lorempixel.com/400/200/people/",
+//   "background-path": "http://lorempixel.com/400/200/people/",
+//   "auth": {
+//     "username": "mariajose",
+//     "email": "mariajose@email.com",
+//     "password": 9628,
+//     "last-access": ISODate("2016-02-12T01:03:55.649Z"),
+//     "online": true,
+//     "disabled": false,
+//     "hash-token": "ff2e7d2c723b917742597eb8d9b68653"
+//   }
+// }
 // Fetched 5 record(s) in 3ms
 ```
 
