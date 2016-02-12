@@ -108,6 +108,56 @@ Primeiramente criei uma variável `names` com o valor dos 10 nomes dos usuários
 
 #### Cadastre 10 usuários diferentes.
 ```js
+//Rand
+var rand = {
+        number: function(number){
+            var number = number || 1000;
+            var randNumber = (Math.random()*number);
+            return Math.round(randNumber);
+        },
+        date: function (timestamp){
+            var timestamp = timestamp || Date.now();
+            var date = new Date(this.number(timestamp));
+            return date;
+        },
+        letter: function(number, alphabet){
+            var alphabet = alphabet || 'abcdefghijklmnopqrstuvwxyz';
+            var number = number || 1;
+            var random_letters = '';
+            alphabet = alphabet.split('');
+            for(i=0; i<number; i++){
+             random_letters += alphabet[this.number(alphabet.length-1)];
+            }
+            return random_letters;
+        },
+        array: function (array) {
+            var lastKey = array.length - 1;
+            for (var i = lastKey; i > 0; i--) {
+                var randomKey = Math.floor(Math.random() * (i + 1));
+                var temp = array[i];
+                array[i] = array[randomKey];
+                array[randomKey] = temp;
+            }
+            return array;
+        }
+    };
+    
+//generateMembers
+function generateMembers(numberOfMembers, type_member){
+      var notifies = [true, false];
+      var numberOfMembers = numberOfMembers || 5;
+      var skip = db.users.count()-numberOfMembers;
+      var users = db.users.find({},{"_id":1}).limit(numberOfMembers).skip(rand.number(skip)).toArray();
+      users.forEach(function(user){
+          var notify = notifies[rand.number(1)];
+          user.user_id = user._id.valueOf();
+          delete user._id;
+          user.type_member = type_member;
+          user.notify = notify;
+      });
+            return rand.array(users);
+  }
+  
 	//  Cadastro de 10 usuários
         var names = ['Jean', 'Gabriel', 'Douglas', 'Ednilson', 'Jô Soares', 'Suissa', 'Mateus', 'Emerson', 'Marcos', 'Roberto'];
 
@@ -202,7 +252,7 @@ Primeiramente criei uma variável `names` com o valor dos 10 nomes dos usuários
 		{
 		name: 'Patreon',
 		description: 'Sistema igual ao Patreon porém apenas os professores da Webschool.io poderão usar.',
-		tags: ['teacher', 'patreon', 'help', 'webschool'],
+		tags: ['teacher', 'patreon', 'help', 'MEAN'],
 		goals:[
 				{
 				name: 'Para que serve?',
@@ -215,7 +265,7 @@ Primeiramente criei uma variável `names` com o valor dos 10 nomes dos usuários
 	{
 		name: 'Estante Virtual',
 		description: 'Quem sabe começar com os alunos de faculdade que desejam vender, trocar ou doar seus livros que ele não precisará mais, porém os calouros precisam.',
-		tags: ['leia', 'webschool', 'virtual', 'curso'],
+		tags: ['leia', 'webschool', 'virtual', 'MEAN'],
 		goals:[
 				{
 				name: 'Parceria com as editoras',
@@ -228,7 +278,7 @@ Primeiramente criei uma variável `names` com o valor dos 10 nomes dos usuários
 	{
 		name: 'Gerenciador de Doações',
 		description: 'O sistema servirá para qualquer tipo de doações, utilizando o nosso meio de pagamento.',
-		tags: ['payment', 'donation', 'basic', 'help', 'curso'],
+		tags: ['payment', 'donation', 'basic', 'help', 'MEAN'],
 		goals:[
 			{
 			name: 'Pagamentos',
@@ -269,34 +319,35 @@ Primeiramente criei uma variável `names` com o valor dos 10 nomes dos usuários
 gkal19-aula-bemean-2468380(mongod-2.6.11) db> var project = db.projects.findOne({name:/crie seu instagram com a mean/i},{members:1});
 gkal19-aula-bemean-2468380(mongod-2.6.11) db> project
 {
-        "_id" : ObjectId("56abf9f0a4807d7fb6f5c16c"),
+        "_id" : ObjectId("56be2fa060cb875a8b84c572"),
         "members" : [
                 {
-                        "user_id" : "56abf9aaa4807d7fb6f5c15d",
+                        "user_id" : "56be2f2660cb875a8b84c566",
                         "type_member" : "aluno",
                         "notify" : false
                 },
                 {
-                        "user_id" : "56abf9aaa4807d7fb6f5c15f",
+                        "user_id" : "56be2f2660cb875a8b84c564",
                         "type_member" : "aluno",
                         "notify" : false
                 },
                 {
-                        "user_id" : "56abf9aaa4807d7fb6f5c15b",
+                        "user_id" : "56be2f2660cb875a8b84c565",
+                        "type_member" : "aluno",
+                        "notify" : false
+                },
+                {
+                        "user_id" : "56be2f2660cb875a8b84c563",
                         "type_member" : "aluno",
                         "notify" : true
                 },
                 {
-                        "user_id" : "56abf9aaa4807d7fb6f5c15c",
+                        "user_id" : "56be2f2660cb875a8b84c567",
                         "type_member" : "aluno",
                         "notify" : false
-                },
-                {
-                        "user_id" : "56abf9aaa4807d7fb6f5c15e",
-                        "type_member" : "aluno",
-                        "notify" : true
                 }
         ]
+}
 }
         
         > var members_project = [];
@@ -309,88 +360,88 @@ gkal19-aula-bemean-2468380(mongod-2.6.11) db> project
 
 [
         {
-                "_id" : ObjectId("56abf9aaa4807d7fb6f5c15d"),
-                "name" : "Jô Soares",
+                "_id" : ObjectId("56be2f2660cb875a8b84c566"),
+                "name" : "Emerson",
                 "bio" : "Projeto Final - MongoDB",
-                "avatar_path" : "imgs/avatares/zuctnq377.jpg",
-                "background_path" : "imgs/bgs/kswwe705.gif",
-                "date_register" : ISODate("1999-12-14T14:29:15.563Z"),
+                "avatar_path" : "imgs/avatares/wahkdv672.jpg",
+                "background_path" : "imgs/bgs/ydpag603.gif",
+                "date_register" : ISODate("2009-06-20T07:58:05.804Z"),
                 "auth" : {
-                        "username" : "ihgef",
-                        "email" : "Jô Soares@be-mean.com",
-                        "password" : 2899000504985,
-                        "hash_token" : "qyimn637waure157",
+                        "username" : "unggv",
+                        "email" : "Emerson@be-mean.com",
+                        "password" : 4306491276929,
+                        "hash_token" : "gdqmn571brpxf626",
                         "online" : true,
                         "disabled" : false,
-                        "last_access" : ISODate("1999-12-14T17:12:22.525Z")
+                        "last_access" : ISODate("2009-06-20T08:28:31.068Z")
                 }
         },
         {
-                "_id" : ObjectId("56abf9aaa4807d7fb6f5c15f"),
-                "name" : "Mateus",
-                "bio" : "Projeto Final - MongoDB",
-                "avatar_path" : "imgs/avatares/eksxaz106.jpg",
-                "background_path" : "imgs/bgs/qjvzu706.gif",
-                "date_register" : ISODate("1991-02-13T09:39:10.220Z"),
-                "auth" : {
-                        "username" : "cjupl",
-                        "email" : "Mateus@be-mean.com",
-                        "password" : 9314096535089,
-                        "hash_token" : "ypvgu647yjvit95",
-                        "online" : true,
-                        "disabled" : false,
-                        "last_access" : ISODate("1991-02-13T11:18:12.595Z")
-                }
-        },
-        {
-                "_id" : ObjectId("56abf9aaa4807d7fb6f5c15b"),
-                "name" : "Douglas",
-                "bio" : "Projeto Final - MongoDB",
-                "avatar_path" : "imgs/avatares/cpxipz248.jpg",
-                "background_path" : "imgs/bgs/ynpjr565.gif",
-                "date_register" : ISODate("2004-07-29T05:42:16.578Z"),
-                "auth" : {
-                        "username" : "wtsty",
-                        "email" : "Douglas@be-mean.com",
-                        "password" : 7699388584587,
-                        "hash_token" : "zxchi620wqrfx647",
-                        "online" : true,
-                        "disabled" : false,
-                        "last_access" : ISODate("2004-07-29T08:26:01.019Z")
-                }
-        },
-        {
-                "_id" : ObjectId("56abf9aaa4807d7fb6f5c15c"),
-                "name" : "Ednilson",
-                "bio" : "Projeto Final - MongoDB",
-                "avatar_path" : "imgs/avatares/kfhqhw447.jpg",
-                "background_path" : "imgs/bgs/okrkl487.gif",
-                "date_register" : ISODate("1981-02-18T05:10:10.318Z"),
-                "auth" : {
-                        "username" : "hcrua",
-                        "email" : "Ednilson@be-mean.com",
-                        "password" : 7664658057037,
-                        "hash_token" : "amffy238gvdeq119",
-                        "online" : true,
-                        "disabled" : false,
-                        "last_access" : ISODate("1981-02-18T06:16:44.652Z")
-                }
-        },
-        {
-                "_id" : ObjectId("56abf9aaa4807d7fb6f5c15e"),
+                "_id" : ObjectId("56be2f2660cb875a8b84c564"),
                 "name" : "Suissa",
                 "bio" : "Projeto Final - MongoDB",
-                "avatar_path" : "imgs/avatares/fvdpjf111.jpg",
-                "background_path" : "imgs/bgs/puyxo734.gif",
-                "date_register" : ISODate("2001-02-24T21:36:49.714Z"),
+                "avatar_path" : "imgs/avatares/bodwnj901.jpg",
+                "background_path" : "imgs/bgs/vpxpy929.gif",
+                "date_register" : ISODate("2002-01-29T11:40:27.032Z"),
                 "auth" : {
-                        "username" : "hdpjg",
+                        "username" : "gbeht",
                         "email" : "Suissa@be-mean.com",
-                        "password" : 5682312264107,
-                        "hash_token" : "husvd251ftpxl552",
+                        "password" : 1864608742386,
+                        "hash_token" : "phmwq117mygba844",
                         "online" : true,
                         "disabled" : false,
-                        "last_access" : ISODate("2001-02-24T22:58:14.019Z")
+                        "last_access" : ISODate("2002-01-29T13:21:13.617Z")
+                }
+        },
+        {
+                "_id" : ObjectId("56be2f2660cb875a8b84c565"),
+                "name" : "Mateus",
+                "bio" : "Projeto Final - MongoDB",
+                "avatar_path" : "imgs/avatares/lhkcyq830.jpg",
+                "background_path" : "imgs/bgs/tbbmt230.gif",
+                "date_register" : ISODate("1988-05-15T19:43:04.193Z"),
+                "auth" : {
+                        "username" : "lmirk",
+                        "email" : "Mateus@be-mean.com",
+                        "password" : 331180106183,
+                        "hash_token" : "irvrj828mojdo298",
+                        "online" : true,
+                        "disabled" : false,
+                        "last_access" : ISODate("1988-05-15T19:45:51.136Z")
+                }
+        },
+        {
+                "_id" : ObjectId("56be2f2660cb875a8b84c563"),
+                "name" : "Jô Soares",
+                "bio" : "Projeto Final - MongoDB",
+                "avatar_path" : "imgs/avatares/bmleuv683.jpg",
+                "background_path" : "imgs/bgs/vndpw571.gif",
+                "date_register" : ISODate("2001-11-08T12:03:26.852Z"),
+                "auth" : {
+                        "username" : "hjryz",
+                        "email" : "Jô Soares@be-mean.com",
+                        "password" : 6658752968367,
+                        "hash_token" : "sjmjj268hmusv275",
+                        "online" : true,
+                        "disabled" : false,
+                        "last_access" : ISODate("2001-11-08T14:28:38.985Z")
+                }
+        },
+        {
+                "_id" : ObjectId("56be2f2660cb875a8b84c567"),
+                "name" : "Marcos",
+                "bio" : "Projeto Final - MongoDB",
+                "avatar_path" : "imgs/avatares/rkspan633.jpg",
+                "background_path" : "imgs/bgs/miaor511.gif",
+                "date_register" : ISODate("1972-03-03T19:19:17.353Z"),
+                "auth" : {
+                        "username" : "cvvsj",
+                        "email" : "Marcos@be-mean.com",
+                        "password" : 8349764264190,
+                        "hash_token" : "ylpeb708ujsbs512",
+                        "online" : true,
+                        "disabled" : false,
+                        "last_access" : ISODate("1972-03-03T21:36:14.134Z")
                 }
         }
 ]
@@ -401,21 +452,157 @@ gkal19-aula-bemean-2468380(mongod-2.6.11) db> project
 
 ```js
 
-> db.projects.find({tags:{$in:['curso']}}).pretty()
+> db.projects.find({tags:{$in:['MEAN']}}).pretty()
+
 {
-        "_id" : ObjectId("56abf9f0a4807d7fb6f5c16f"),
+        "_id" : ObjectId("56be2fa060cb875a8b84c572"),
+        "name" : "Crie seu instagram com a MEAN",
+        "tags" : [
+                "js",
+                "instagram",
+                "MEAN",
+                "angular",
+                "mongoDB"
+        ],
+        "description" : "Curso voltado a ensinar o stack conhecido como MEAN(MongoDb, Express, Angular e Node.js) para c
+riarmos um sistema igual do Instagram.",
+        "goals" : [
+                {
+                        "name" : "Projeto Final MongoDb [PRONTO]",
+                        "description" : "Vamos juntos chegar ao projeto final do MongoDb",
+                        "tags" : [
+                                "mongoDB",
+                                "angular",
+                                "express",
+                                "nodeJS"
+                        ],
+                        "activities" : [
+                                "56898c30d8c06e00b91437ba",
+                                "56898c30d8c06e00b91437bb",
+                                "56898c30d8c06e00b91437bc"
+                        ],
+                        "date_begin" : ISODate("1973-03-21T05:59:14.746Z"),
+                        "date_dream" : ISODate("2011-04-07T16:59:10.573Z"),
+                        "date_end" : ISODate("2006-02-08T17:35:41.059Z"),
+                        "date_relocate" : ISODate("1991-06-22T13:29:16.948Z"),
+                        "expired" : ISODate("2006-04-29T00:28:50.330Z"),
+                        "realocate" : false
+                }
+        ],
+        "date_begin" : ISODate("1981-08-04T14:16:21.694Z"),
+        "date_dream" : ISODate("1982-04-01T21:47:47.656Z"),
+        "date_end" : ISODate("1996-09-12T11:44:25.241Z"),
+        "expired" : ISODate("1973-02-02T19:34:23.102Z"),
+        "visible" : true,
+        "members" : [
+                {
+                        "user_id" : "56be2f2660cb875a8b84c566",
+                        "type_member" : "aluno",
+                        "notify" : false
+                },
+                {
+                        "user_id" : "56be2f2660cb875a8b84c564",
+                        "type_member" : "aluno",
+                        "notify" : false
+                },
+                {
+                        "user_id" : "56be2f2660cb875a8b84c565",
+                        "type_member" : "aluno",
+                        "notify" : false
+                },
+                {
+                        "user_id" : "56be2f2660cb875a8b84c563",
+                        "type_member" : "aluno",
+                        "notify" : true
+                },
+                {
+                        "user_id" : "56be2f2660cb875a8b84c567",
+                        "type_member" : "aluno",
+                        "notify" : false
+                }
+        ],
+        "realocate" : false,
+        "visualizable_mod" : "all"
+}
+{
+        "_id" : ObjectId("56be2fa060cb875a8b84c574"),
+        "name" : "Patreon",
+        "description" : "Sistema igual ao Patreon porém apenas os professores da Webschool.io poderão usar.",
+        "tags" : [
+                "teacher",
+                "patreon",
+                "help",
+                "MEAN"
+        ],
+        "goals" : [
+                {
+                        "name" : "Para que serve?",
+                        "description" : "Esse sistema serve para que seus fãs possam lhe ajudar com um valor pequeno, ex
+emplo R$10, por mês.",
+                        "tags" : [
+                                "money",
+                                "suissa"
+                        ],
+                        "activities" : [ ],
+                        "date_begin" : ISODate("2001-12-29T06:06:23.521Z"),
+                        "date_dream" : ISODate("1996-08-14T16:00:26.979Z"),
+                        "date_end" : ISODate("1978-10-19T07:13:20.708Z"),
+                        "date_relocate" : ISODate("1994-04-23T11:02:25.478Z"),
+                        "expired" : ISODate("1990-05-02T15:51:51.962Z"),
+                        "realocate" : false
+                }
+        ],
+        "date_begin" : ISODate("2002-08-12T21:43:06.164Z"),
+        "date_dream" : ISODate("2002-01-06T14:08:52.186Z"),
+        "date_end" : ISODate("1982-12-19T08:16:24.575Z"),
+        "expired" : ISODate("1976-02-03T23:04:28.414Z"),
+        "visible" : true,
+        "members" : [
+                {
+                        "user_id" : "56be2f2660cb875a8b84c562",
+                        "type_member" : "aluno",
+                        "notify" : true
+                },
+                {
+                        "user_id" : "56be2f2660cb875a8b84c560",
+                        "type_member" : "aluno",
+                        "notify" : false
+                },
+                {
+                        "user_id" : "56be2f2660cb875a8b84c563",
+                        "type_member" : "aluno",
+                        "notify" : true
+                },
+                {
+                        "user_id" : "56be2f2660cb875a8b84c564",
+                        "type_member" : "aluno",
+                        "notify" : true
+                },
+                {
+                        "user_id" : "56be2f2660cb875a8b84c561",
+                        "type_member" : "aluno",
+                        "notify" : true
+                }
+        ],
+        "realocate" : false,
+        "visualizable_mod" : "all"
+}
+{
+        "_id" : ObjectId("56be2fa060cb875a8b84c575"),
         "name" : "Estante Virtual",
-        "description" : "Quem sabe começar com os alunos de faculdade que desejam vender, trocar ou doar seus livros que ele não precisará mais, porém os calouros precisam.",
+        "description" : "Quem sabe começar com os alunos de faculdade que desejam vender, trocar ou doar seus livros que
+ ele não precisará mais, porém os calouros precisam.",
         "tags" : [
                 "leia",
                 "webschool",
                 "virtual",
-                "curso"
+                "MEAN"
         ],
         "goals" : [
                 {
                         "name" : "Parceria com as editoras",
-                        "description" : "Fazer parceria com editoras para sortearmos 1 livro por mês, o mais procurado.",
+                        "description" : "Fazer parceria com editoras para sortearmos 1 livro por mês, o mais procurado."
+,
                         "tags" : [
                                 "parceria",
                                 "book",
@@ -425,42 +612,42 @@ gkal19-aula-bemean-2468380(mongod-2.6.11) db> project
                                 "56898c30d8c06e00b91437bf",
                                 "56898c30d8c06e00b91437c0"
                         ],
-                        "date_begin" : ISODate("2003-01-19T00:17:16.346Z"),
-                        "date_dream" : ISODate("2012-05-24T18:26:40.906Z"),
-                        "date_end" : ISODate("2002-12-28T22:39:33.513Z"),
-                        "date_relocate" : ISODate("1998-04-18T07:33:46.189Z"),
-                        "expired" : ISODate("2005-12-20T07:05:53.044Z"),
+                        "date_begin" : ISODate("1987-02-24T12:53:01.433Z"),
+                        "date_dream" : ISODate("1997-05-20T14:58:27.479Z"),
+                        "date_end" : ISODate("2005-08-12T17:26:50.970Z"),
+                        "date_relocate" : ISODate("1993-12-12T06:12:13.960Z"),
+                        "expired" : ISODate("1994-09-20T04:44:32.577Z"),
                         "realocate" : false
                 }
         ],
-        "date_begin" : ISODate("1972-11-22T01:21:26.703Z"),
-        "date_dream" : ISODate("1990-01-14T20:49:27.721Z"),
-        "date_end" : ISODate("1974-12-22T09:15:53.926Z"),
-        "expired" : ISODate("1982-04-13T14:39:13.415Z"),
+        "date_begin" : ISODate("1997-08-02T11:24:09.655Z"),
+        "date_dream" : ISODate("2001-07-11T06:41:28.808Z"),
+        "date_end" : ISODate("1977-10-24T21:17:13.387Z"),
+        "expired" : ISODate("1990-01-22T18:12:59.013Z"),
         "visible" : true,
         "members" : [
                 {
-                        "user_id" : "56abf9aaa4807d7fb6f5c15a",
-                        "type_member" : "aluno",
-                        "notify" : true
-                },
-                {
-                        "user_id" : "56abf9aaa4807d7fb6f5c159",
-                        "type_member" : "aluno",
-                        "notify" : true
-                },
-                {
-                        "user_id" : "56abf9aaa4807d7fb6f5c15d",
+                        "user_id" : "56be2f2660cb875a8b84c566",
                         "type_member" : "aluno",
                         "notify" : false
                 },
                 {
-                        "user_id" : "56abf9aaa4807d7fb6f5c15c",
+                        "user_id" : "56be2f2660cb875a8b84c568",
                         "type_member" : "aluno",
-                        "notify" : false
+                        "notify" : true
                 },
                 {
-                        "user_id" : "56abf9aaa4807d7fb6f5c15b",
+                        "user_id" : "56be2f2660cb875a8b84c565",
+                        "type_member" : "aluno",
+                        "notify" : true
+                },
+                {
+                        "user_id" : "56be2f2660cb875a8b84c567",
+                        "type_member" : "aluno",
+                        "notify" : true
+                },
+                {
+                        "user_id" : "56be2f2660cb875a8b84c564",
                         "type_member" : "aluno",
                         "notify" : true
                 }
@@ -469,7 +656,7 @@ gkal19-aula-bemean-2468380(mongod-2.6.11) db> project
         "visualizable_mod" : "all"
 }
 {
-        "_id" : ObjectId("56abf9f0a4807d7fb6f5c170"),
+        "_id" : ObjectId("56be2fa060cb875a8b84c576"),
         "name" : "Gerenciador de Doações",
         "description" : "O sistema servirá para qualquer tipo de doações, utilizando o nosso meio de pagamento.",
         "tags" : [
@@ -477,12 +664,13 @@ gkal19-aula-bemean-2468380(mongod-2.6.11) db> project
                 "donation",
                 "basic",
                 "help",
-                "curso"
+                "MEAN"
         ],
         "goals" : [
                 {
                         "name" : "Pagamentos",
-                        "description" : "Para uma ONG ou projeto social poder receber doações ele deverá colocar seu orçamento do mês no sistema, o qual ficará transparente.",
+                        "description" : "Para uma ONG ou projeto social poder receber doações ele deverá colocar seu orç
+amento do mês no sistema, o qual ficará transparente.",
                         "tags" : [
                                 "paymento",
                                 "webschool",
@@ -493,42 +681,42 @@ gkal19-aula-bemean-2468380(mongod-2.6.11) db> project
                                 "56898c30d8c06e00b91437bd",
                                 "56898c30d8c06e00b91437be"
                         ],
-                        "date_begin" : ISODate("2005-12-01T18:08:48.578Z"),
-                        "date_dream" : ISODate("2011-05-09T23:40:43.591Z"),
-                        "date_end" : ISODate("1979-11-01T09:50:10.216Z"),
-                        "date_relocate" : ISODate("1981-09-03T01:56:17.906Z"),
-                        "expired" : ISODate("2009-12-17T09:33:34.910Z"),
+                        "date_begin" : ISODate("1995-06-20T09:52:55.407Z"),
+                        "date_dream" : ISODate("1973-08-08T16:13:30.422Z"),
+                        "date_end" : ISODate("2008-02-16T09:23:12.601Z"),
+                        "date_relocate" : ISODate("2008-08-15T00:15:01.035Z"),
+                        "expired" : ISODate("1976-11-23T18:28:07.355Z"),
                         "realocate" : false
                 }
         ],
-        "date_begin" : ISODate("1990-07-26T07:12:39.946Z"),
-        "date_dream" : ISODate("1987-07-12T04:43:08.882Z"),
-        "date_end" : ISODate("1989-05-02T08:28:40.585Z"),
-        "expired" : ISODate("1972-03-22T06:08:05.535Z"),
+        "date_begin" : ISODate("1985-03-31T07:03:47.427Z"),
+        "date_dream" : ISODate("2013-10-28T09:16:46.287Z"),
+        "date_end" : ISODate("1982-09-09T03:43:18.647Z"),
+        "expired" : ISODate("1985-08-15T06:37:49.840Z"),
         "visible" : true,
         "members" : [
                 {
-                        "user_id" : "56abf9aaa4807d7fb6f5c15a",
-                        "type_member" : "aluno",
-                        "notify" : false
-                },
-                {
-                        "user_id" : "56abf9aaa4807d7fb6f5c15b",
+                        "user_id" : "56be2f2660cb875a8b84c55f",
                         "type_member" : "aluno",
                         "notify" : true
                 },
                 {
-                        "user_id" : "56abf9aaa4807d7fb6f5c15d",
+                        "user_id" : "56be2f2660cb875a8b84c563",
                         "type_member" : "aluno",
                         "notify" : true
                 },
                 {
-                        "user_id" : "56abf9aaa4807d7fb6f5c159",
+                        "user_id" : "56be2f2660cb875a8b84c561",
                         "type_member" : "aluno",
                         "notify" : true
                 },
                 {
-                        "user_id" : "56abf9aaa4807d7fb6f5c15c",
+                        "user_id" : "56be2f2660cb875a8b84c560",
+                        "type_member" : "aluno",
+                        "notify" : true
+                },
+                {
+                        "user_id" : "56be2f2660cb875a8b84c562",
                         "type_member" : "aluno",
                         "notify" : true
                 }
@@ -565,9 +753,9 @@ Não sei porquê a variável apareceu nula
 #### Liste todos os projetos que não possuam uma tag.
 ```js
 
-gkal19-aula-bemean-2468380(mongod-2.6.11) db> db.projects.find({'tags':{$nin:['curso']}}).pretty()
+	> db.projects.find({'tags':{$nin:['curso']}}).pretty()
 {
-        "_id" : ObjectId("56abf9f0a4807d7fb6f5c16c"),
+        "_id" : ObjectId("56be2fa060cb875a8b84c572"),
         "name" : "Crie seu instagram com a MEAN",
         "tags" : [
                 "js",
@@ -576,7 +764,8 @@ gkal19-aula-bemean-2468380(mongod-2.6.11) db> db.projects.find({'tags':{$nin:['c
                 "angular",
                 "mongoDB"
         ],
-        "description" : "Curso voltado a ensinar o stack conhecido como MEAN(MongoDb, Express, Angular e Node.js) para criarmos um sistema igual do Instagram.",
+        "description" : "Curso voltado a ensinar o stack conhecido como MEAN(MongoDb, Express, Angular e Node.js) para c
+riarmos um sistema igual do Instagram.",
         "goals" : [
                 {
                         "name" : "Projeto Final MongoDb [PRONTO]",
@@ -592,51 +781,51 @@ gkal19-aula-bemean-2468380(mongod-2.6.11) db> db.projects.find({'tags':{$nin:['c
                                 "56898c30d8c06e00b91437bb",
                                 "56898c30d8c06e00b91437bc"
                         ],
-                        "date_begin" : ISODate("1991-11-18T03:48:59.193Z"),
-                        "date_dream" : ISODate("1985-05-13T10:18:04.327Z"),
-                        "date_end" : ISODate("1995-08-19T20:53:04.142Z"),
-                        "date_relocate" : ISODate("1970-01-22T01:08:23.328Z"),
-                        "expired" : ISODate("2014-11-02T17:53:37.157Z"),
+                        "date_begin" : ISODate("1973-03-21T05:59:14.746Z"),
+                        "date_dream" : ISODate("2011-04-07T16:59:10.573Z"),
+                        "date_end" : ISODate("2006-02-08T17:35:41.059Z"),
+                        "date_relocate" : ISODate("1991-06-22T13:29:16.948Z"),
+                        "expired" : ISODate("2006-04-29T00:28:50.330Z"),
                         "realocate" : false
                 }
         ],
-        "date_begin" : ISODate("1975-03-03T14:03:38.775Z"),
-        "date_dream" : ISODate("2000-11-25T08:29:44.396Z"),
-        "date_end" : ISODate("1989-06-01T05:51:54.513Z"),
-        "expired" : ISODate("2014-04-07T07:52:35.912Z"),
+        "date_begin" : ISODate("1981-08-04T14:16:21.694Z"),
+        "date_dream" : ISODate("1982-04-01T21:47:47.656Z"),
+        "date_end" : ISODate("1996-09-12T11:44:25.241Z"),
+        "expired" : ISODate("1973-02-02T19:34:23.102Z"),
         "visible" : true,
         "members" : [
                 {
-                        "user_id" : "56abf9aaa4807d7fb6f5c15d",
+                        "user_id" : "56be2f2660cb875a8b84c566",
                         "type_member" : "aluno",
                         "notify" : false
                 },
                 {
-                        "user_id" : "56abf9aaa4807d7fb6f5c15f",
+                        "user_id" : "56be2f2660cb875a8b84c564",
                         "type_member" : "aluno",
                         "notify" : false
                 },
                 {
-                        "user_id" : "56abf9aaa4807d7fb6f5c15b",
+                        "user_id" : "56be2f2660cb875a8b84c565",
+                        "type_member" : "aluno",
+                        "notify" : false
+                },
+                {
+                        "user_id" : "56be2f2660cb875a8b84c563",
                         "type_member" : "aluno",
                         "notify" : true
                 },
                 {
-                        "user_id" : "56abf9aaa4807d7fb6f5c15c",
+                        "user_id" : "56be2f2660cb875a8b84c567",
                         "type_member" : "aluno",
                         "notify" : false
-                },
-                {
-                        "user_id" : "56abf9aaa4807d7fb6f5c15e",
-                        "type_member" : "aluno",
-                        "notify" : true
                 }
         ],
         "realocate" : false,
         "visualizable_mod" : "all"
 }
 {
-        "_id" : ObjectId("56abf9f0a4807d7fb6f5c16d"),
+        "_id" : ObjectId("56be2fa060cb875a8b84c573"),
         "name" : "Jobs",
         "description" : "Um sistema que será usado apenas pelos alunos certificados da Webschool.io.",
         "tags" : [
@@ -648,7 +837,8 @@ gkal19-aula-bemean-2468380(mongod-2.6.11) db> db.projects.find({'tags':{$nin:['c
         "goals" : [
                 {
                         "name" : "Entrevista",
-                        "description" : "A entrevista, ou uma pré-entrevista, poderá ser feita via sistema utilizando WebRTC.",
+                        "description" : "A entrevista, ou uma pré-entrevista, poderá ser feita via sistema utilizando We
+bRTC.",
                         "tags" : [
                                 "entrevista",
                                 "mean",
@@ -659,42 +849,42 @@ gkal19-aula-bemean-2468380(mongod-2.6.11) db> db.projects.find({'tags':{$nin:['c
                                 "56898c30d8c06e00b91437c1",
                                 "56898c30d8c06e00b91437c2"
                         ],
-                        "date_begin" : ISODate("1987-06-05T12:14:41.564Z"),
-                        "date_dream" : ISODate("1996-02-17T10:58:06.425Z"),
-                        "date_end" : ISODate("1989-05-26T07:57:51.028Z"),
-                        "date_relocate" : ISODate("1977-11-05T12:37:00.744Z"),
-                        "expired" : ISODate("2010-10-19T14:38:56.568Z"),
+                        "date_begin" : ISODate("2002-09-24T02:02:30.867Z"),
+                        "date_dream" : ISODate("1993-12-25T04:06:09.782Z"),
+                        "date_end" : ISODate("2007-01-25T02:09:10.202Z"),
+                        "date_relocate" : ISODate("1999-05-24T09:52:09.459Z"),
+                        "expired" : ISODate("1982-08-27T03:09:37.173Z"),
                         "realocate" : false
                 }
         ],
-        "date_begin" : ISODate("2005-11-02T17:44:19.495Z"),
-        "date_dream" : ISODate("1982-04-20T17:27:05.723Z"),
-        "date_end" : ISODate("2003-11-22T01:09:19.642Z"),
-        "expired" : ISODate("1975-05-30T08:08:12.967Z"),
+        "date_begin" : ISODate("2015-01-25T00:41:02.202Z"),
+        "date_dream" : ISODate("2001-10-23T18:06:22.007Z"),
+        "date_end" : ISODate("1999-07-31T06:16:59.836Z"),
+        "expired" : ISODate("2015-02-22T13:40:55.913Z"),
         "visible" : true,
         "members" : [
                 {
-                        "user_id" : "56abf9aaa4807d7fb6f5c15c",
+                        "user_id" : "56be2f2660cb875a8b84c563",
                         "type_member" : "aluno",
                         "notify" : false
                 },
                 {
-                        "user_id" : "56abf9aaa4807d7fb6f5c15a",
+                        "user_id" : "56be2f2660cb875a8b84c562",
                         "type_member" : "aluno",
                         "notify" : false
                 },
                 {
-                        "user_id" : "56abf9aaa4807d7fb6f5c15d",
-                        "type_member" : "aluno",
-                        "notify" : false
-                },
-                {
-                        "user_id" : "56abf9aaa4807d7fb6f5c15e",
+                        "user_id" : "56be2f2660cb875a8b84c561",
                         "type_member" : "aluno",
                         "notify" : true
                 },
                 {
-                        "user_id" : "56abf9aaa4807d7fb6f5c15b",
+                        "user_id" : "56be2f2660cb875a8b84c564",
+                        "type_member" : "aluno",
+                        "notify" : false
+                },
+                {
+                        "user_id" : "56be2f2660cb875a8b84c565",
                         "type_member" : "aluno",
                         "notify" : false
                 }
@@ -703,68 +893,205 @@ gkal19-aula-bemean-2468380(mongod-2.6.11) db> db.projects.find({'tags':{$nin:['c
         "visualizable_mod" : "all"
 }
 {
-        "_id" : ObjectId("56abf9f0a4807d7fb6f5c16e"),
+        "_id" : ObjectId("56be2fa060cb875a8b84c574"),
         "name" : "Patreon",
         "description" : "Sistema igual ao Patreon porém apenas os professores da Webschool.io poderão usar.",
         "tags" : [
                 "teacher",
                 "patreon",
                 "help",
-                "webschool"
+                "MEAN"
         ],
         "goals" : [
                 {
                         "name" : "Para que serve?",
-                        "description" : "Esse sistema serve para que seus fãs possam lhe ajudar com um valor pequeno, exemplo R$10, por mês.",
+                        "description" : "Esse sistema serve para que seus fãs possam lhe ajudar com um valor pequeno, ex
+emplo R$10, por mês.",
                         "tags" : [
                                 "money",
                                 "suissa"
                         ],
                         "activities" : [ ],
-                        "date_begin" : ISODate("1974-02-02T03:07:38.274Z"),
-                        "date_dream" : ISODate("1980-02-14T08:24:51.959Z"),
-                        "date_end" : ISODate("1973-01-28T14:31:04.572Z"),
-                        "date_relocate" : ISODate("1983-04-14T21:11:21.360Z"),
-                        "expired" : ISODate("2001-05-27T10:58:37.827Z"),
+                        "date_begin" : ISODate("2001-12-29T06:06:23.521Z"),
+                        "date_dream" : ISODate("1996-08-14T16:00:26.979Z"),
+                        "date_end" : ISODate("1978-10-19T07:13:20.708Z"),
+                        "date_relocate" : ISODate("1994-04-23T11:02:25.478Z"),
+                        "expired" : ISODate("1990-05-02T15:51:51.962Z"),
                         "realocate" : false
                 }
         ],
-        "date_begin" : ISODate("1972-05-17T12:52:04.972Z"),
-        "date_dream" : ISODate("1982-10-13T17:28:51.734Z"),
-        "date_end" : ISODate("1977-02-16T03:57:21.868Z"),
-        "expired" : ISODate("2010-11-21T15:58:46.864Z"),
+        "date_begin" : ISODate("2002-08-12T21:43:06.164Z"),
+        "date_dream" : ISODate("2002-01-06T14:08:52.186Z"),
+        "date_end" : ISODate("1982-12-19T08:16:24.575Z"),
+        "expired" : ISODate("1976-02-03T23:04:28.414Z"),
         "visible" : true,
         "members" : [
                 {
-                        "user_id" : "56abf9aaa4807d7fb6f5c15d",
-                        "type_member" : "aluno",
-                        "notify" : false
-                },
-                {
-                        "user_id" : "56abf9aaa4807d7fb6f5c15b",
+                        "user_id" : "56be2f2660cb875a8b84c562",
                         "type_member" : "aluno",
                         "notify" : true
                 },
                 {
-                        "user_id" : "56abf9aaa4807d7fb6f5c15e",
+                        "user_id" : "56be2f2660cb875a8b84c560",
+                        "type_member" : "aluno",
+                        "notify" : false
+                },
+                {
+                        "user_id" : "56be2f2660cb875a8b84c563",
                         "type_member" : "aluno",
                         "notify" : true
                 },
                 {
-                        "user_id" : "56abf9aaa4807d7fb6f5c15a",
+                        "user_id" : "56be2f2660cb875a8b84c564",
                         "type_member" : "aluno",
-                        "notify" : false
+                        "notify" : true
                 },
                 {
-                        "user_id" : "56abf9aaa4807d7fb6f5c15c",
+                        "user_id" : "56be2f2660cb875a8b84c561",
                         "type_member" : "aluno",
-                        "notify" : false
+                        "notify" : true
                 }
         ],
         "realocate" : false,
         "visualizable_mod" : "all"
 }
-
+{
+        "_id" : ObjectId("56be2fa060cb875a8b84c575"),
+        "name" : "Estante Virtual",
+        "description" : "Quem sabe começar com os alunos de faculdade que desejam vender, trocar ou doar seus livros que
+ ele não precisará mais, porém os calouros precisam.",
+        "tags" : [
+                "leia",
+                "webschool",
+                "virtual",
+                "MEAN"
+        ],
+        "goals" : [
+                {
+                        "name" : "Parceria com as editoras",
+                        "description" : "Fazer parceria com editoras para sortearmos 1 livro por mês, o mais procurado."
+,
+                        "tags" : [
+                                "parceria",
+                                "book",
+                                "learn"
+                        ],
+                        "activities" : [
+                                "56898c30d8c06e00b91437bf",
+                                "56898c30d8c06e00b91437c0"
+                        ],
+                        "date_begin" : ISODate("1987-02-24T12:53:01.433Z"),
+                        "date_dream" : ISODate("1997-05-20T14:58:27.479Z"),
+                        "date_end" : ISODate("2005-08-12T17:26:50.970Z"),
+                        "date_relocate" : ISODate("1993-12-12T06:12:13.960Z"),
+                        "expired" : ISODate("1994-09-20T04:44:32.577Z"),
+                        "realocate" : false
+                }
+        ],
+        "date_begin" : ISODate("1997-08-02T11:24:09.655Z"),
+        "date_dream" : ISODate("2001-07-11T06:41:28.808Z"),
+        "date_end" : ISODate("1977-10-24T21:17:13.387Z"),
+        "expired" : ISODate("1990-01-22T18:12:59.013Z"),
+        "visible" : true,
+        "members" : [
+                {
+                        "user_id" : "56be2f2660cb875a8b84c566",
+                        "type_member" : "aluno",
+                        "notify" : false
+                },
+                {
+                        "user_id" : "56be2f2660cb875a8b84c568",
+                        "type_member" : "aluno",
+                        "notify" : true
+                },
+                {
+                        "user_id" : "56be2f2660cb875a8b84c565",
+                        "type_member" : "aluno",
+                        "notify" : true
+                },
+                {
+                        "user_id" : "56be2f2660cb875a8b84c567",
+                        "type_member" : "aluno",
+                        "notify" : true
+                },
+                {
+                        "user_id" : "56be2f2660cb875a8b84c564",
+                        "type_member" : "aluno",
+                        "notify" : true
+                }
+        ],
+        "realocate" : false,
+        "visualizable_mod" : "all"
+}
+{
+        "_id" : ObjectId("56be2fa060cb875a8b84c576"),
+        "name" : "Gerenciador de Doações",
+        "description" : "O sistema servirá para qualquer tipo de doações, utilizando o nosso meio de pagamento.",
+        "tags" : [
+                "payment",
+                "donation",
+                "basic",
+                "help",
+                "MEAN"
+        ],
+        "goals" : [
+                {
+                        "name" : "Pagamentos",
+                        "description" : "Para uma ONG ou projeto social poder receber doações ele deverá colocar seu orç
+amento do mês no sistema, o qual ficará transparente.",
+                        "tags" : [
+                                "paymento",
+                                "webschool",
+                                "windows",
+                                "js"
+                        ],
+                        "activities" : [
+                                "56898c30d8c06e00b91437bd",
+                                "56898c30d8c06e00b91437be"
+                        ],
+                        "date_begin" : ISODate("1995-06-20T09:52:55.407Z"),
+                        "date_dream" : ISODate("1973-08-08T16:13:30.422Z"),
+                        "date_end" : ISODate("2008-02-16T09:23:12.601Z"),
+                        "date_relocate" : ISODate("2008-08-15T00:15:01.035Z"),
+                        "expired" : ISODate("1976-11-23T18:28:07.355Z"),
+                        "realocate" : false
+                }
+        ],
+        "date_begin" : ISODate("1985-03-31T07:03:47.427Z"),
+        "date_dream" : ISODate("2013-10-28T09:16:46.287Z"),
+        "date_end" : ISODate("1982-09-09T03:43:18.647Z"),
+        "expired" : ISODate("1985-08-15T06:37:49.840Z"),
+        "visible" : true,
+        "members" : [
+                {
+                        "user_id" : "56be2f2660cb875a8b84c55f",
+                        "type_member" : "aluno",
+                        "notify" : true
+                },
+                {
+                        "user_id" : "56be2f2660cb875a8b84c563",
+                        "type_member" : "aluno",
+                        "notify" : true
+                },
+                {
+                        "user_id" : "56be2f2660cb875a8b84c561",
+                        "type_member" : "aluno",
+                        "notify" : true
+                },
+                {
+                        "user_id" : "56be2f2660cb875a8b84c560",
+                        "type_member" : "aluno",
+                        "notify" : true
+                },
+                {
+                        "user_id" : "56be2f2660cb875a8b84c562",
+                        "type_member" : "aluno",
+                        "notify" : true
+                }
+        ],
+        "realocate" : false,
+        "visualizable_mod" : "all"
+}
         
 ```
 
