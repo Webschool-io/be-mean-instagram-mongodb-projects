@@ -549,87 +549,93 @@ db.project.find({"tags" : {$size : 0}})
 #### 5. Liste todos os usuários que não fazem parte do primeiro projeto cadastrado.
 
 ```
-db.project.find({}, {'members.name' : 1}).skip(1).pretty()
+> var project = db.project.findOne();
+> var users = [];
+> 
+> var getMembro = function (user) {
+	var u = db.user.findOne({ _id: user.user_id });
+	users.push(u._id);
+ };
+> 
+> project.members.forEach(getMembro);
+> 
+> db.user.find({_id: { $not: { $in: users }}}).pretty()
 {
-	"_id" : ObjectId("5691781168213d5e1c422a86"),
-	"members" : [
-		{
-			"name" : "Pedro"
-		},
-		{
-			"name" : "Alex"
-		},
-		{
-			"name" : "Thais"
-		},
-		{
-			"name" : "Raphael"
-		},
-		{
-			"name" : "Fernanda"
-		}
-	]
+	"_id" : ObjectId("5691678968213d5e1c422a78"),
+	"name" : "Alex",
+	"bio" : "Sou o sexto usuario.",
+	"date-register" : ISODate("2010-12-17T02:00:00Z"),
+	"avatar-path" : "image/alex.jpg",
+	"auth" : {
+		"username" : "alex@gmail.com",
+		"password" : "12345",
+		"last_access" : ISODate("2016-01-09T20:02:27.487Z"),
+		"online" : false,
+		"disabled" : false,
+		"hash_token" : "8cb2237d0679ca88db6464eac60da96345513964"
+	}
 }
 {
-	"_id" : ObjectId("5691781168213d5e1c422a89"),
-	"members" : [
-		{
-			"name" : "Eduardo"
-		},
-		{
-			"name" : "Jamila"
-		},
-		{
-			"name" : "Thais"
-		},
-		{
-			"name" : "Guilherme"
-		},
-		{
-			"name" : "Pedro"
-		}
-	]
+	"_id" : ObjectId("5691678968213d5e1c422a79"),
+	"name" : "Thais",
+	"bio" : "Sou o setimo usuario.",
+	"date-register" : ISODate("2006-06-04T03:00:00Z"),
+	"avatar-path" : "image/thais.jpg",
+	"auth" : {
+		"username" : "thais@gmail.com",
+		"password" : "12345",
+		"last_access" : ISODate("2016-01-09T20:02:27.487Z"),
+		"online" : true,
+		"disabled" : false,
+		"hash_token" : "d0679ca88db6464e8db6464eac60da96345513964"
+	}
 }
 {
-	"_id" : ObjectId("56919849a9a04ddd3a077a88"),
-	"members" : [
-		{
-			"name" : "Eduardo"
-		},
-		{
-			"name" : "Leticia"
-		},
-		{
-			"name" : "Thais"
-		},
-		{
-			"name" : "Guilherme"
-		},
-		{
-			"name" : "Alex"
-		}
-	]
+	"_id" : ObjectId("5691678968213d5e1c422a7a"),
+	"name" : "Raphael",
+	"bio" : "Sou o oitavo usuario.",
+	"date-register" : ISODate("2007-04-05T03:00:00Z"),
+	"avatar-path" : "image/raphael.jpg",
+	"auth" : {
+		"username" : "raphael@gmail.com",
+		"password" : "12345",
+		"last_access" : ISODate("2016-01-09T20:02:27.487Z"),
+		"online" : false,
+		"disabled" : false,
+		"hash_token" : "79ca88db6464eac60da96345513964"
+	}
 }
 {
-	"_id" : ObjectId("5691781168213d5e1c422a88"),
-	"members" : [
-		{
-			"name" : "Eduardo"
-		},
-		{
-			"name" : "Raphael"
-		},
-		{
-			"name" : "Thais"
-		},
-		{
-			"name" : "Guilherme"
-		},
-		{
-			"name" : "Pedro"
-		}
-	]
+	"_id" : ObjectId("5691678968213d5e1c422a7b"),
+	"name" : "Fernanda",
+	"bio" : "Sou o nono usuario.",
+	"date-register" : ISODate("2009-03-01T03:00:00Z"),
+	"avatar-path" : "image/fernanda.jpg",
+	"auth" : {
+		"username" : "fernanda@gmail.com",
+		"password" : "12345",
+		"last_access" : ISODate("2016-01-09T20:02:27.487Z"),
+		"online" : false,
+		"disabled" : false,
+		"hash_token" : "8cb2237d0679ca88db6464eac60da96345513964"
+	}
 }
+{
+	"_id" : ObjectId("5691678968213d5e1c422a7c"),
+	"name" : "Pedro",
+	"bio" : "Sou o decimo usuario.",
+	"date-register" : ISODate("2010-11-11T02:00:00Z"),
+	"avatar-path" : "image/pedro.jpg",
+	"auth" : {
+		"username" : "pedro@gmail.com",
+		"password" : "12345",
+		"last_access" : ISODate("2016-01-09T20:02:27.487Z"),
+		"online" : true,
+		"disabled" : false,
+		"hash_token" : "9ca88db6464679ca88db6464eac60da96345513964"
+	}
+}
+
 ```
 ## Update - alteração
 
@@ -777,6 +783,10 @@ for(i=0;i<act.count();i++){
 		}
 	}
 }
+//Apago todas as activities sem comentarios, ja que estao sem projeto agora.
+db.activity.remove({"comments" : {$size : 0 } })
+WriteResult({ "nRemoved" : 2 })
+
 ```
 #### 3. Apague todos os projetos que não possuam atividades.
 
