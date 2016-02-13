@@ -1172,25 +1172,267 @@ Fetched 5 record(s) in 9ms
 4. Adicione 1 comentário em cada atividade, deixe apenas 1 projeto sem.
 
 ```js
-```
+//array de atividades
+var atividades = db.activities.find().toArray()
 
+//inicia o objeto vazio de comentário a ser inserido
+var comment = {}
+
+//para cada atividade
+atividades.forEach(function(act){
+	//array de usuários apenas para escolher um autor randomico do comentário
+	var u = db.users.find().toArray()
+
+	//popula o comentário com valores referentes a atividade (sobrscreve o conteúdo do segundo em diante)
+	comment = {
+		text: act.name + " second comment",
+		date_comment: new Date(),
+
+		files: [{
+			name: act.name + " second file",
+			weight: (_rand() * 100) + "kb",
+			path: "/home/Activity"+ (i+1) + "/"
+		}],
+
+		member: [{
+			"member_id": u[parseInt(_rand() * 10)]._id,
+			"notify": "Always"
+		}]
+	}
+
+	//insere o comentário criado na lista de comentarios coM $PUSH
+	db.activities.update({_id: act._id},{$push: {comments: comment}})
+
+})
+
+Welder-Mint(mongod-3.2.1) test> db.activities.findOne({},{comments: 1})
+{
+  "_id": ObjectId("56b91bef55a602024aa2cc0c"),
+  "comments": [
+    {
+      "text": "Activity 1 comment",
+      "date_comment": ISODate("2016-02-08T22:49:44.974Z"),
+      "files": [
+        {
+          "name": "Activity 1 file",
+          "weight": "0.04714746028184891kb",
+          "path": "/home/Activity1/"
+        }
+      ],
+      "member": [
+        {
+          "member_id": ObjectId("56b5e9421c02b37364687888"),
+          "notify": "Always"
+        }
+      ]
+    },
+    {
+      "text": "Acitivity Activity 1 second comment",
+      "date_comment": ISODate("2016-02-12T23:03:41.512Z"),
+      "files": [
+        {
+          "name": "Acitivity Activity 1 second file",
+          "weight": "94.70539512112737kb",
+          "path": "/home/Activity6/"
+        }
+      ],
+      "member": [
+        {
+          "member_id": ObjectId("56b5e9421c02b3736468788b"),
+          "notify": "Always"
+        }
+      ]
+    }
+  ]
+}
+```
 5. Adicione 1 projeto inteiro com **UPSERT**.
 
+```js
+var project  = {
+	name: "Null Project",
+	description: null,
+	date_begin: null,
+	date_dream: null,
+	date_end: null,
+	visible: null,
+	realocate: null,
+	expired: null,
+	visualizable_mod: null,
+	tags: [],
+
+	members:[{
+		type: [],
+		_id: null,
+		notify: null
+	}],
+
+	goals:{
+		name: null,
+		tags: [],
+		description: null,
+		date_begin: null,
+		date_dream: null,
+		date_end: null,
+		realocate: null,
+		expired: null,
+		historic: [],
+
+		activity:[{
+			_id: null
+		}]
+	}
+}
+
+Welder-Mint(mongod-3.2.1) test> db.projects.update({name: "Null Project"},project, {upsert: true})
+Updated 1 new record(s) in 1ms
+WriteResult({
+  "nMatched": 0,
+  "nUpserted": 1,
+  "nModified": 0,
+  "_id": ObjectId("56be6aee7fab87fbbe3bace6")
+})
+
+```
 ## Delete - remoção
 
 1. Apague todos os projetos que não possuam *tags*.
-2. Apague todos os projetos que não possuam comentários nas atividades.
-3. Apague todos os projetos que não possuam atividades.
-4. Escolha 2 usuário e apague todos os projetos em que os 2 fazem parte.
-5. Apague todos os projetos que possuam uma determinada *tag* em *goal*.
 
-## Sharding
+```js
+Welder-Mint(mongod-3.2.1) test> db.projects.remove({tags: []})
+Removed 1 record(s) in 2ms
+WriteResult({
+  "nRemoved": 1
+})
+```
+2. Apague todos os projetos que não possuam comentários nas atividades.
+```js
+//array de projetos
+var projects = db.projects.find({},{name: 1, "goals.activity": 1}).toArray()
+
+//array de atividades sem comentários
+var noComments = db.activities.find({comments: []},{name:1, comments: 1}).toArray()
+
+//array dos _ids de projetos a serem deletados
+var delete = []
+
+//para cada projeto
+projects.forEach(function(pro){
+	//para cada atividade no goal (só usei a posição 0 de goals pq só cadastrei um por projeto, do contrario usária outro forEach
+	pro.goals[0].activity.forEach(function(act) {
+		//para cada atividade que não possui comentários (não consegui fazer a função in ou indexOf funcionar)
+		noComments.forEach(function(noComment){
+			//se a atividade for igual a alguma das atividades sem comentários
+			if(act._id == noComment._id){
+				//armazena o _id do projeto pra ser deletados
+				delete.push(pro._id)
+			}
+		})
+	})
+})
+
+//para cada projeto que possui atividades sem comentários
+delete.forEach(function(del) {
+	db.projects.remove(_id: del)
+})
+```
+3. Apague todos os projetos que não possuam atividades.
+```js
+Welder-Mint(mongod-3.2.1) test> db.projects.remove({"goals.activity": []},{justOne: false})
+Removed 1 record(s) in 3ms
+WriteResult({
+  "nRemoved": 1
+})
+```
+4. Escolha 2 usuário e apague todos os projetos em que os 2 fazem parte.
+```js
+Welder-Mint(mongod-3.2.1) test> var usersRmv = db.users.find({name: {$in: ["Gama","Beta"]}},{name:1}).toArray()
+Welder-Mint(mongod-3.2.1) test>
+Welder-Mint(mongod-3.2.1) test> var projects = db.projects.find({},{name:1, members:1}).toArray()
+Welder-Mint(mongod-3.2.1) test>
+Welder-Mint(mongod-3.2.1) test> var delet = []
+Welder-Mint(mongod-3.2.1) test>
+Welder-Mint(mongod-3.2.1) test> projects.forEach(function(pro){
+... pro.members.forEach(function(member){
+... usersRmv.forEach(function(rmv){
+... if(rmv._id.equals(member._id)){
+... print(pro.name+ " deve morrer por contem " +rmv.name+ " em seu time")
+...
+... var i = 0
+...
+... delet.forEach(function(del){
+... if(del.equals(pro._id)){
+... i++
+... }
+... })
+...
+... if(i == 0){
+... delet.push(pro._id)
+... }
+... }
+... })
+... })
+... })
+Projeto 1 deve morrer por contem Gama em seu time
+Projeto 3 deve morrer por contem Beta em seu time
+Projeto 3 deve morrer por contem Beta em seu time
+Projeto 3 deve morrer por contem Gama em seu time
+Projeto 4 deve morrer por contem Gama em seu time
+Welder-Mint(mongod-3.2.1) test>
+Welder-Mint(mongod-3.2.1) test> delet.forEach(function(del){
+... db.projects.remove({_id: del})
+... })
+Removed 1 record(s) in 2ms
+Removed 1 record(s) in 2ms
+Removed 1 record(s) in 2ms
+```
+5. Apague todos os projetos que possuam uma determinada *tag* em *goal*.
+```js
+Welder-Mint(mongod-3.2.1) test> db.projects.remove({"goals.tags": "Project 2"},{justOne: false})
+Removed 1 record(s) in 2ms
+WriteResult({
+  "nRemoved": 1
+})
+```
+
+## Gerenciamento de usuários
+
+1. Crie um usuário com permissões APENAS de Leitura.
+```js
+```
+
+2. Crie um usuário com permissões de Escrita e Leitura.
+```js
+```
+
+3. Adicionar o papel grantRolesToUser e revokeRole para o usuário com Escrita e Leitura.
+```js
+```
+
+4. Remover o papel grantRolesToUser para o usuário com Escrita e Leitura.
+```js
+```
+
+5. Listar todos os usuários com seus papéis e ações.
+```js
+```
+
+## Cluster
 
 - 1 Router
-- 1 Config Server
-- 3 Shardings
+```js
+```
 
-## Replica
+- 1 Config Server
+```js
+```
+
+- 3 Shardings
+```js
+```
 
 - 3 Replicas
+```js
+```
+
 Você deverá escolher qual sua coleção deverá ser *shardeada* para poder aguentar muita carga repentinamente e deverá replicar cada Shard, pode ser feito localmente como em alguma VPS FREE.
