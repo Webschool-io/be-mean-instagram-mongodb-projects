@@ -907,7 +907,7 @@ Fetched 5 record(s) in 2ms
 
 ```js
 //array de projetos com seus _ids, nomes e membros
-var projects = db.projects.find({},{_id:1, name:1, "members._id": 1}).toArray()
+var projects = db.projects.find({},{name:1, "members._id": 1}).toArray()
 
 //array de _ids de todos os users
 var users = db.users.find({},{_id:1}).toArray()
@@ -1399,22 +1399,375 @@ WriteResult({
 
 1. Crie um usuário com permissões APENAS de Leitura.
 ```js
+Welder-Mint(mongod-3.2.1) test> db.createUser({
+... user: "leitor",
+... pwd: "leitura",
+... roles: [{role: "read", db: "test"}]
+... })
+Successfully added user: {
+  "user": "leitor",
+  "roles": [
+    {
+      "role": "read",
+      "db": "test"
+    }
+  ]
+}
 ```
 
 2. Crie um usuário com permissões de Escrita e Leitura.
 ```js
+Welder-Mint(mongod-3.2.1) test> db.createUser({
+... user: "escritor",
+... pwd: "escrita",
+... roles: [{role: "readWrite", db: "test"}]
+... })
+Successfully added user: {
+  "user": "escritor",
+  "roles": [
+    {
+      "role": "readWrite",
+      "db": "test"
+    }
+  ]
+}
 ```
 
-3. Adicionar o papel grantRolesToUser e revokeRole para o usuário com Escrita e Leitura.
+3. Adicionar o papel grantRole e revokeRole para o usuário com Escrita e Leitura.
 ```js
+Welder-Mint(mongod-3.2.1) test> db.createRole(
+...    {
+...      role: "grantRolesToUser",
+...      privileges: [
+...        { resource: { db: "test", collection: "" }, actions: [ "grantRole" ] }
+...      ],
+...      roles: []
+...    },
+...    { w: "majority" , wtimeout: 5000 }
+... )
+{
+  "role": "grantRolesToUser",
+  "privileges": [
+    {
+      "resource": {
+        "db": "test",
+        "collection": ""
+      },
+      "actions": [
+        "grantRole"
+      ]
+    }
+  ],
+  "roles": [ ]
+}
+
+Welder-Mint(mongod-3.2.1) test> db.createRole(
+...    {
+...      role: "revokeRole",
+...      privileges: [
+...        { resource: { db: "test", collection: "" }, actions: [ "revokeRole" ] }
+...      ],
+...      roles: []
+...    },
+...    { w: "majority" , wtimeout: 5000 }
+... )
+{
+  "role": "revokeRole",
+  "privileges": [
+    {
+      "resource": {
+        "db": "test",
+        "collection": ""
+      },
+      "actions": [
+        "revokeRole"
+      ]
+    }
+  ],
+  "roles": [ ]
+}
+
+Welder-Mint(mongod-3.2.1) test> db.grantRolesToUser(
+...   "escritor",
+...   [
+...     { role: "grantRolesToUser", db: "test" } ,
+...     { role: "revokeRole", db:"test" }
+...   ]
+... )
+
 ```
 
 4. Remover o papel grantRolesToUser para o usuário com Escrita e Leitura.
 ```js
+Welder-Mint(mongod-3.2.1) test> db.runCommand({
+... revokeRolesFromUser: "escritor",
+...   roles: [
+...   { role: "grantRolesToUser", db: "test" }
+...   ],
+...   writeConcern: { w: "majority" }
+... })
+{
+  "ok": 1
+}
 ```
 
 5. Listar todos os usuários com seus papéis e ações.
 ```js
+Welder-Mint(mongod-3.2.1) admin> use admin
+switched to db admin
+Welder-Mint(mongod-3.2.1) admin>
+Welder-Mint(mongod-3.2.1) admin> var urs = db.system.users.find({},{user:1}).toArray()
+Welder-Mint(mongod-3.2.1) admin>
+Welder-Mint(mongod-3.2.1) admin> var log = []
+Welder-Mint(mongod-3.2.1) admin>
+Welder-Mint(mongod-3.2.1) admin> urs.forEach(function(u){
+... log.push(db.runCommand({
+... usersInfo: {user: u.user, db: "test"},
+... showCredentials: true,
+... showPrivileges: true
+... }))
+... })
+Welder-Mint(mongod-3.2.1) admin>
+Welder-Mint(mongod-3.2.1) admin> log
+[
+  {
+    "users": [
+      {
+        "_id": "test.leitor",
+        "user": "leitor",
+        "db": "test",
+        "credentials": {
+          "SCRAM-SHA-1": {
+            "iterationCount": 10000,
+            "salt": "OSUvGzJlz/oKR0fBKLW0zw==",
+            "storedKey": "fwFqna9fCuyb3juKINoQZb+e/ts=",
+            "serverKey": "vNzqN1e9rGJf6VmkZtZsKVXf8EM="
+          }
+        },
+        "roles": [
+          {
+            "role": "read",
+            "db": "test"
+          }
+        ],
+        "inheritedRoles": [
+          {
+            "role": "read",
+            "db": "test"
+          }
+        ],
+        "inheritedPrivileges": [
+          {
+            "resource": {
+              "db": "test",
+              "collection": ""
+            },
+            "actions": [
+              "collStats",
+              "dbHash",
+              "dbStats",
+              "find",
+              "killCursors",
+              "listCollections",
+              "listIndexes",
+              "planCacheRead"
+            ]
+          },
+          {
+            "resource": {
+              "anyResource": true
+            },
+            "actions": [
+              "listCollections"
+            ]
+          },
+          {
+            "resource": {
+              "db": "test",
+              "collection": "system.indexes"
+            },
+            "actions": [
+              "collStats",
+              "dbHash",
+              "dbStats",
+              "find",
+              "killCursors",
+              "listCollections",
+              "listIndexes",
+              "planCacheRead"
+            ]
+          },
+          {
+            "resource": {
+              "db": "test",
+              "collection": "system.js"
+            },
+            "actions": [
+              "collStats",
+              "dbHash",
+              "dbStats",
+              "find",
+              "killCursors",
+              "listCollections",
+              "listIndexes",
+              "planCacheRead"
+            ]
+          },
+          {
+            "resource": {
+              "db": "test",
+              "collection": "system.namespaces"
+            },
+            "actions": [
+              "collStats",
+              "dbHash",
+              "dbStats",
+              "find",
+              "killCursors",
+              "listCollections",
+              "listIndexes",
+              "planCacheRead"
+            ]
+          }
+        ]
+      }
+    ],
+    "ok": 1
+  },
+  {
+    "users": [
+      {
+        "_id": "test.escritor",
+        "user": "escritor",
+        "db": "test",
+        "credentials": {
+          "SCRAM-SHA-1": {
+            "iterationCount": 10000,
+            "salt": "1skOyiyLozHYnObvCRHKHQ==",
+            "storedKey": "4bZAH15vJAOP3jQgcmIcjzeACiA=",
+            "serverKey": "mEl8UvDZ8zAUklk0k31DfCHx/t0="
+          }
+        },
+        "roles": [
+          {
+            "role": "revokeRole",
+            "db": "test"
+          },
+          {
+            "role": "readWrite",
+            "db": "test"
+          }
+        ],
+        "inheritedRoles": [
+          {
+            "role": "readWrite",
+            "db": "test"
+          },
+          {
+            "role": "revokeRole",
+            "db": "test"
+          }
+        ],
+        "inheritedPrivileges": [
+          {
+            "resource": {
+              "db": "test",
+              "collection": ""
+            },
+            "actions": [
+              "collStats",
+              "convertToCapped",
+              "createCollection",
+              "createIndex",
+              "dbHash",
+              "dbStats",
+              "dropCollection",
+              "dropIndex",
+              "emptycapped",
+              "find",
+              "insert",
+              "killCursors",
+              "listCollections",
+              "listIndexes",
+              "planCacheRead",
+              "remove",
+              "renameCollectionSameDB",
+              "revokeRole",
+              "update"
+            ]
+          },
+          {
+            "resource": {
+              "anyResource": true
+            },
+            "actions": [
+              "listCollections"
+            ]
+          },
+          {
+            "resource": {
+              "db": "test",
+              "collection": "system.indexes"
+            },
+            "actions": [
+              "collStats",
+              "dbHash",
+              "dbStats",
+              "find",
+              "killCursors",
+              "listCollections",
+              "listIndexes",
+              "planCacheRead"
+            ]
+          },
+          {
+            "resource": {
+              "db": "test",
+              "collection": "system.js"
+            },
+            "actions": [
+              "collStats",
+              "convertToCapped",
+              "createCollection",
+              "createIndex",
+              "dbHash",
+              "dbStats",
+              "dropCollection",
+              "dropIndex",
+              "emptycapped",
+              "find",
+              "insert",
+              "killCursors",
+              "listCollections",
+              "listIndexes",
+              "planCacheRead",
+              "remove",
+              "renameCollectionSameDB",
+              "update"
+            ]
+          },
+          {
+            "resource": {
+              "db": "test",
+              "collection": "system.namespaces"
+            },
+            "actions": [
+              "collStats",
+              "dbHash",
+              "dbStats",
+              "find",
+              "killCursors",
+              "listCollections",
+              "listIndexes",
+              "planCacheRead"
+            ]
+          }
+        ]
+      }
+    ],
+    "ok": 1
+  }
+]
 ```
 
 ## Cluster
