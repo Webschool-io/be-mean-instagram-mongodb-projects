@@ -15,105 +15,105 @@ Usuaria o noSQL em qualquer caso em que o relacional não daria conta, ou que fi
 ## Qual a modelagem da sua coleção de `users`?
 ```json
 users:{
-	id: ObjectId,
-	name: String,
-	bio: String,
-	date-register: Date,
-	avatar-path: String,
-	background-path: String,
+  id: ObjectId,
+  name: String,
+  bio: String,
+  date-register: Date,
+  avatar-path: String,
+  background-path: String,
 
-	auth:[{
-		username: String,
-		email: String,
-		password: String,
-		last-acess: Date,
-		online: boolean,
-		disabled: boolean,
-		hash-token: String
-	}]
+  auth:[{
+    username: String,
+    email: String,
+    password: String,
+    last-acess: Date,
+    online: boolean,
+    disabled: boolean,
+    hash-token: String
+  }]
 }
 ```
 ## Qual a modelagem da sua coleção de `projects`?
 
 ```json
 project:{
-	name: String,
-	description: String,
-	date_begin: Date,
-	date_dream: Date,
-	date_end: Date,
-	visible: boolean,
-	realocate: boolean,
-	expired: boolean,
-	visualizable_mod: String,
+  name: String,
+  description: String,
+  date_begin: Date,
+  date_dream: Date,
+  date_end: Date,
+  visible: boolean,
+  realocate: boolean,
+  expired: boolean,
+  visualizable_mod: String,
 
-	project_tag:[{}],
+  project_tag:[{}],
 
-	members:[{
-		type_member: [{ }],
-		user_id: ObjectId,
-		notify: boolean
-	}],
+  members:[{
+    type_member: [{ }],
+    user_id: ObjectId,
+    notify: boolean
+  }],
 
-	goals:[{
-		name: String,
-		description: String,
-		date_begin: Date,
-		date_dream: Date,
-		date_end: Date,
-		realocate: boolean,
-		expired: boolean,
-		history: [],
-		goals_tags:[],
+  goals:[{
+    name: String,
+    description: String,
+    date_begin: Date,
+    date_dream: Date,
+    date_end: Date,
+    realocate: boolean,
+    expired: boolean,
+    history: [],
+    goals_tags:[],
 
-		activity:[{
-			id_activity: ObjectId
-		}]
-	}]
+    activity:[{
+      id_activity: ObjectId
+    }]
+  }]
 }
 ```
 ## Qual a modelagem da sua coleção retirada de `projects`?
 ```json
 activity:{
-	id: ObjectId,
-	name: String,
-	description: String,
-	date_begin:Date,
-	date_dream:Date,
-	date_end:Date,
-	realocate: boolean,
-	expired: ObjectId,
+  id: ObjectId,
+  name: String,
+  description: String,
+  date_begin:Date,
+  date_dream:Date,
+  date_end:Date,
+  realocate: boolean,
+  expired: ObjectId,
 
-	tags: [{ }],
+  tags: [{ }],
 
-	members-activity:[{
-		id_user: ObjectId,
-		id_project: ObjectId,
+  members-activity:[{
+    id_user: ObjectId,
+    id_project: ObjectId,
 
-		type_member: [{ }]
-	}],
+    type_member: [{ }]
+  }],
 
-	activity-historic: [{
-		date_realocate: Date
-	}],
+  activity-historic: [{
+    date_realocate: Date
+  }],
 
-	comment:[{
-		text: String,
-		date_comment: Date,
+  comment:[{
+    text: String,
+    date_comment: Date,
 
-		file: [{
-			path: String,
-			weight: int,
-			name: String
-		}],
+    file: [{
+      path: String,
+      weight: int,
+      name: String
+    }],
 
-		members-comment:[{
-			id_user: ObjectId,
-			id_project: ObjectId,
-			notify: boolean,
-			type_member: [{}]
-		}]
-	}]
+    members-comment:[{
+      id_user: ObjectId,
+      id_project: ObjectId,
+      notify: boolean,
+      type_member: [{}]
+    }]
+  }]
 }
 ```
 ### O porquê dessa modelagem ?
@@ -127,33 +127,33 @@ Primeiro de tudo, separei o `user` em uma nova collection, assim deixando o banc
 
 ```js
 var users_values = {
-	name: ["Victor Igor", "José Carlos", "Joao Messias", "Andy Self", "Archer Gly",
-	       "Arlie Ferreira", "Angela Matos", "Andrew Josias", "Lucas Santos", "Luan Lima"],
+  name: ["Victor Igor", "José Carlos", "Joao Messias", "Andy Self", "Archer Gly",
+         "Arlie Ferreira", "Angela Matos", "Andrew Josias", "Lucas Santos", "Luan Lima"],
 
-	username:["vitus", "jose123", "juau","joaome", "andy321", "gly",
-			  "Arlie2016", "angel", "dudu","luquinha", "lulu"]
+  username:["vitus", "jose123", "juau","joaome", "andy321", "gly",
+        "Arlie2016", "angel", "dudu","luquinha", "lulu"]
 };
-	var fill_users = new Array();
-	var hash = function (){return Math.random().toString(36).substr(2)}
-	for (var i = 0; i < users_values.name.length; i++){
-		var user = {
-			name:users_values.name[i],
-			bio :"place your bio here",
-			dateregister: Date.now(),
-			avatarpath: "place your avatar here",
-			backgroundpath: "place your avatar here",
-			auth:{
-				username: users_values.username[i],
-				email:    users_values.username[i]+"@hotmail.com",
-				password: users_values.username[i]+Math.random().toString(36),
-				online:   true,
-				disabled: false,
-				hashtoken: hash()
-			}
-		}
-		fill_users.push(user);
-	}
-	db.users.insert(fill_users);
+  var fill_users = new Array();
+  var hash = function (){return Math.random().toString(36).substr(2)}
+  for (var i = 0; i < users_values.name.length; i++){
+    var user = {
+      name:users_values.name[i],
+      bio :"place your bio here",
+      dateregister: Date.now(),
+      avatarpath: "place your avatar here",
+      backgroundpath: "place your avatar here",
+      auth:{
+        username: users_values.username[i],
+        email:    users_values.username[i]+"@hotmail.com",
+        password: users_values.username[i]+Math.random().toString(36),
+        online:   true,
+        disabled: false,
+        hashtoken: hash()
+      }
+    }
+    fill_users.push(user);
+  }
+  db.users.insert(fill_users);
 ```
 
 ###Cadastre 5 projetos diferentes.
@@ -174,81 +174,81 @@ var project_values = {
 }
 /****** DATE CONFIG *********/
 function endproject(d){
-	var someDate = new Date();
-	someDate.setDate(someDate.getDate() + d);
-	return someDate.getDate() + '/'+((someDate.getMonth()+1) < 10 ? ("0"+(someDate.getMonth()+1)):
-			      ((someDate.getMonth()+1))) + '/'+someDate.getFullYear()
+  var someDate = new Date();
+  someDate.setDate(someDate.getDate() + d);
+  return someDate.getDate() + '/'+((someDate.getMonth()+1) < 10 ? ("0"+(someDate.getMonth()+1)):
+            ((someDate.getMonth()+1))) + '/'+someDate.getFullYear()
 }
 function atual_dt(){
-	var dt = new Date();
-	return dt.getDate() + '/'+((dt.getMonth()+1) < 10 ? ("0"+(dt.getMonth()+1)):
-		  ((dt.getMonth()+1))) + '/'+dt.getFullYear()
+  var dt = new Date();
+  return dt.getDate() + '/'+((dt.getMonth()+1) < 10 ? ("0"+(dt.getMonth()+1)):
+      ((dt.getMonth()+1))) + '/'+dt.getFullYear()
 }
 /*******END DATE CONFIG ******/
 
 /*******CREATE ACTIVITY*******/
 (function(){
-	var fill_activity = new Array();
-	for (var i = 0; i < 5; i++){
-		var activity = {
-			name: "activity "+(i+1),
-			description: "description "+(i+1),
-			datebegin: atual_dt(),
-			datedream: atual_dt(),
-			dateend: endproject(Math.floor(Math.random() * (30 - 7) + 7)),
-			realocate: false,
-			expired: false,
-			tags: project_values.tags[i],
-			membersActivity: [],
-			historic: [],
-			comment: []
-		}
-		fill_activity.push(activity);
-	}
-	db.activity.insert(fill_activity);
+  var fill_activity = new Array();
+  for (var i = 0; i < 5; i++){
+    var activity = {
+      name: "activity "+(i+1),
+      description: "description "+(i+1),
+      datebegin: atual_dt(),
+      datedream: atual_dt(),
+      dateend: endproject(Math.floor(Math.random() * (30 - 7) + 7)),
+      realocate: false,
+      expired: false,
+      tags: project_values.tags[i],
+      membersActivity: [],
+      historic: [],
+      comment: []
+    }
+    fill_activity.push(activity);
+  }
+  db.activity.insert(fill_activity);
 })();
 /*******END ACTIVITY*********/
 (function(){
-	var alltypes = ["admin", "developer", "designer", "analyst", "freelancer"]; /* type members*/
-	var id_users = db.users.find({},{id: 1}).toArray(); /* get id of users collection */
-	var id_activity = db.activity.find({}, {id:1}).toArray();
-	var fill_project = new Array();
-	for (var i = 0; i < project_values.description.length; i++){
-		var project = {
-			name: "project "+(i+1),
-			description: project_values.description[i],
-			datebegin: atual_dt(),
-			datedream: atual_dt(),
-			dateend: endproject(Math.floor(Math.random() * (30 - 7) + 7)),
-			visible: true,
-			realocate: false,
-			expired: false,
-			visualizablemod: null,
-			projecttag: project_values.tags[i],
-			members: {
-				type_member: alltypes[i],
-				user_id: id_users[i],
-				notify: true
-			},
-			goals: {
-				name: project_values.goalsName[i],
-				description: project_values.goalsDescription[i],
-				datebegin: atual_dt(),
-				datedream: atual_dt(),
-				dateend: endproject(Math.floor(Math.random() * (30 - 7) + 7)),
-				realocate: false,
-				expired: false,
-				history: null,
-				goalstag: project_values.goalsTags[i],
-				activity:{
-					activityID: (i < 4 ? id_activity[i]: null),
-					activityID2:(i < 4 ? id_activity[i+1]: null)
-				}
-			}
-		}
-		fill_project.push(project)
-	}
-	db.project.insert(fill_project);
+  var alltypes = ["admin", "developer", "designer", "analyst", "freelancer"]; /* type members*/
+  var id_users = db.users.find({},{id: 1}).toArray(); /* get id of users collection */
+  var id_activity = db.activity.find({}, {id:1}).toArray();
+  var fill_project = new Array();
+  for (var i = 0; i < project_values.description.length; i++){
+    var project = {
+      name: "project "+(i+1),
+      description: project_values.description[i],
+      datebegin: atual_dt(),
+      datedream: atual_dt(),
+      dateend: endproject(Math.floor(Math.random() * (30 - 7) + 7)),
+      visible: true,
+      realocate: false,
+      expired: false,
+      visualizablemod: null,
+      projecttag: project_values.tags[i],
+      members: [{
+        type_member: alltypes[i],
+        user_id: id_users[i],
+        notify: true
+      }],
+      goals: [{
+        name: project_values.goalsName[i],
+        description: project_values.goalsDescription[i],
+        datebegin: atual_dt(),
+        datedream: atual_dt(),
+        dateend: endproject(Math.floor(Math.random() * (30 - 7) + 7)),
+        realocate: false,
+        expired: false,
+        history: null,
+        goalstag: project_values.goalsTags[i],
+        activity:{
+          activityID: (i < 4 ? id_activity[i]: null),
+          activityID2:(i < 4 ? id_activity[i+1]: null)
+        }
+      }]
+    }
+    fill_project.push(project)
+  }
+  db.project.insert(fill_project);
 })();
 Inserted 1 record(s) in 4ms
 
@@ -326,191 +326,29 @@ Fetched 0 record(s) in 0ms
 ###Liste todos os usuários que não fazem parte do primeiro projeto cadastrado.
 
 ```js
-db.project.find().skip(1)
-{
-  "_id": ObjectId("569ecbf15cbee4e1d4a75116"),
-  "name": "project 2",
-  "description": "A clean and simple notification plugin (alert/growl style) for javascript, with no dependencies.",
-  "datebegin": "19/01/2016",
-  "datedream": "19/01/2016",
-  "dateend": "26/01/2016",
-  "visible": true,
-  "realocate": false,
-  "expired": false,
-  "visualizablemod": null,
-  "projecttag": [
-    "growl",
-    "plugin",
-    "grunt"
-  ],
-  "members": {
-    "type_member": "developer",
-    "user_id": {
-      "_id": ObjectId("569e90075cbee4e1d4a750f8")
-    },
-    "notify": true
-  },
-  "goals": {
-    "name": "style beautiful",
-    "description": "how to be a good js developer",
-    "datebegin": "19/01/2016",
-    "datedream": "19/01/2016",
-    "dateend": "8/02/2016",
-    "realocate": false,
-    "expired": false,
-    "history": null,
-    "goalstag": [
-      "linux",
-      "webschool",
-      "bemean"
-    ],
-    "activity": {
-      "activityID": {
-        "_id": ObjectId("569ecbf05cbee4e1d4a75111")
-      },
-      "activityID2": {
-        "_id": ObjectId("569ecbf05cbee4e1d4a75112")
-      }
-    }
-  }
-}
-{
-  "_id": ObjectId("569ecbf15cbee4e1d4a75117"),
-  "name": "project 3",
-  "description": "A calculator with nice designer-functional",
-  "datebegin": "19/01/2016",
-  "datedream": "19/01/2016",
-  "dateend": "29/01/2016",
-  "visible": true,
-  "realocate": false,
-  "expired": false,
-  "visualizablemod": null,
-  "projecttag": [
-    "calculator",
-    "functional",
-    "javascript"
-  ],
-  "members": {
-    "type_member": "designer",
-    "user_id": {
-      "_id": ObjectId("569e90075cbee4e1d4a750f9")
-    },
-    "notify": true
-  },
-  "goals": {
-    "name": "calculator in browser",
-    "description": "learn programming functional",
-    "datebegin": "19/01/2016",
-    "datedream": "19/01/2016",
-    "dateend": "5/02/2016",
-    "realocate": false,
-    "expired": false,
-    "history": null,
-    "goalstag": [
-      "calculator",
-      "mathematic",
-      "calculus"
-    ],
-    "activity": {
-      "activityID": {
-        "_id": ObjectId("569ecbf05cbee4e1d4a75112")
-      },
-      "activityID2": {
-        "_id": ObjectId("569ecbf05cbee4e1d4a75113")
-      }
-    }
-  }
-}
-{
-  "_id": ObjectId("569ecbf15cbee4e1d4a75118"),
-  "name": "project 4",
-  "description": "name, number and search in phonebook",
-  "datebegin": "19/01/2016",
-  "datedream": "19/01/2016",
-  "dateend": "3/02/2016",
-  "visible": true,
-  "realocate": false,
-  "expired": false,
-  "visualizablemod": null,
-  "projecttag": [
-    "phonebook",
-    "nodejs",
-    "mathematic"
-  ],
-  "members": {
-    "type_member": "analyst",
-    "user_id": {
-      "_id": ObjectId("569e90075cbee4e1d4a750fa")
-    },
-    "notify": true
-  },
-  "goals": {
-    "name": "study js",
-    "description": "use tree-redblack",
-    "datebegin": "19/01/2016",
-    "datedream": "19/01/2016",
-    "dateend": "31/01/2016",
-    "realocate": false,
-    "expired": false,
-    "history": null,
-    "goalstag": [
-      "search",
-      "phonebook",
-      "number"
-    ],
-    "activity": {
-      "activityID": {
-        "_id": ObjectId("569ecbf05cbee4e1d4a75113")
-      },
-      "activityID2": {
-        "_id": ObjectId("569ecbf05cbee4e1d4a75114")
-      }
-    }
-  }
-}
-{
-  "_id": ObjectId("569ecbf15cbee4e1d4a75119"),
-  "name": "project 5",
-  "description": "A node module to gen, validate and format Brazilian documents' numbers (aka CPF/CNPJ).",
-  "datebegin": "19/01/2016",
-  "datedream": "19/01/2016",
-  "dateend": "26/01/2016",
-  "visible": true,
-  "realocate": false,
-  "expired": false,
-  "visualizablemod": null,
-  "projecttag": [
-    "bradoc",
-    "grunt",
-    "javascript"
-  ],
-  "members": {
-    "type_member": "freelancer",
-    "user_id": {
-      "_id": ObjectId("569e90075cbee4e1d4a750fb")
-    },
-    "notify": true
-  },
-  "goals": {
-    "name": "study nodejs",
-    "description": "learning nodejs",
-    "datebegin": "19/01/2016",
-    "datedream": "19/01/2016",
-    "dateend": "8/02/2016",
-    "realocate": false,
-    "expired": false,
-    "history": null,
-    "goalstag": [
-      "module",
-      "brazilian",
-      "cpf"
-    ],
-    "activity": {
-      "activityID": null,
-      "activityID2": null
-    }
-  }
-}
+var firstProject = db.project.findOne();
+var members = [];
+
+firstProject.members.forEach(MembersNot);
+
+var MembersNot = function (curr) {
+    var user = db.users.findOne({ _id: curr.user_id });
+    members.push(user._id);
+};
+
+db.users.find({ _id: { $not: { $in: members } } }, { name: 1, _id: 0 }) ///<-- todos que não tem esse id
+
+{"name": "José Carlos"}
+{"name": "Joao Messias"}
+{"name": "Andy Self"}
+{"name": "Archer Gly"}
+{"name": "Arlie Ferreira"}
+{"name": "Angela Matos"}
+{"name": "Andrew Josias"}
+{"name": "Lucas Santos"}
+{"name": "Luan Lima"}
+
+
 Fetched 4 record(s) in 5ms
 
 ```
@@ -559,24 +397,21 @@ WriteResult({
 
 var id_users = db.users.find({},{id: 1}).toArray(); /* get id of users collection */
 var alltypes = ["admin", "developer", "designer", "analyst", "freelancer"];/* type members*/
-for (var i = 0; i < 5; i++){
-  var member2 = {
+for (var i = 0; i < 5; i++){ //<-- 5 project
+   var newMembers = [{  ///<--- agora é um array pra ser inserido depois
     type_member: alltypes[i],
     user_id: id_users[i],
     notify: true
-  };
-  var member3 = {
+  },
+  {
   type_member: alltypes[Math.floor(Math.random() * (4))],
   user_id: id_users[i+1],
     notify: false
-  };
+  }];
   var getId = db.project.find().skip(i).limit(1).toArray();
   var query = {_id: getId[0]._id}
-  var mod2  = {$push: {members: member2}}
-  var mod3  = {$push: {members: member3}}
-
-  db.project.update(query, mod2)
-  db.project.update(query, mod3)
+  var mod  = {$pushAll: {members: newMembers}} //<--- INSERT TWO MEMBERS
+  db.project.update(query, mod)
 }
 
 ```
