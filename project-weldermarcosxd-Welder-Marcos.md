@@ -97,6 +97,12 @@ Activity:{
 }
 ```
 
+## Justificativa
+
+Para o ambiente sugerido pela modelagem o maior número de documentos serão os referentes as atividades, pois cada projeto pode
+possuir inúmeros goals e dentro destes goals inúmeras atividades por isso está categoria de documentos merece uma coleção, ao
+meu ver essa netodologia de modelagem também se justifica pelo fato de deixar os documentos de projetos mais "leves".
+
 ## Create - cadastro
 
 1. Cadastre 10 usuários diferentes.
@@ -1772,20 +1778,321 @@ Welder-Mint(mongod-3.2.1) admin> log
 
 ## Cluster
 
-- 1 Router
+### 1 Router
 ```js
+
+//iniciando o router informando o config server a ser utilizado
+welder@Welder-Mint ~ $ mongos --configdb localhost:27010 --port 27011
+2016-02-14T11:56:15.979-0200 W SHARDING [main] Running a sharded cluster with fewer than 3 config servers should only be done for testing purposes and is not recommended for production.
+2016-02-14T11:56:16.051-0200 I SHARDING [mongosMain] MongoS version 3.2.1 starting: pid=7072 port=27011 64-bit host=Welder-Mint (--help for usage)
+2016-02-14T11:56:16.051-0200 I CONTROL  [mongosMain] db version v3.2.1
+2016-02-14T11:56:16.051-0200 I CONTROL  [mongosMain] git version: a14d55980c2cdc565d4704a7e3ad37e4e535c1b2
+2016-02-14T11:56:16.051-0200 I CONTROL  [mongosMain] OpenSSL version: OpenSSL 1.0.1f 6 Jan 2014
+2016-02-14T11:56:16.051-0200 I CONTROL  [mongosMain] allocator: tcmalloc
+2016-02-14T11:56:16.051-0200 I CONTROL  [mongosMain] modules: none
+2016-02-14T11:56:16.051-0200 I CONTROL  [mongosMain] build environment:
+2016-02-14T11:56:16.051-0200 I CONTROL  [mongosMain]     distmod: ubuntu1404
+2016-02-14T11:56:16.051-0200 I CONTROL  [mongosMain]     distarch: x86_64
+2016-02-14T11:56:16.051-0200 I CONTROL  [mongosMain]     target_arch: x86_64
+2016-02-14T11:56:16.051-0200 I CONTROL  [mongosMain] options: { net: { port: 27011 }, sharding: { configDB: "localhost:27010" } }
+2016-02-14T11:56:16.080-0200 I SHARDING [mongosMain] Updating config server connection string to: localhost:27010
+2016-02-14T11:56:16.382-0200 I SHARDING [LockPinger] creating distributed lock ping thread for localhost:27010 and process Welder-Mint:27011:1455458176:1804289383 (sleeping for 30000ms)
+2016-02-14T11:56:16.942-0200 I SHARDING [LockPinger] cluster localhost:27010 pinged successfully at 2016-02-14T11:56:16.382-0200 by distributed lock pinger 'localhost:27010/Welder-Mint:27011:1455458176:1804289383', sleeping for 30000ms
+2016-02-14T11:56:16.943-0200 I SHARDING [mongosMain] distributed lock 'configUpgrade/Welder-Mint:27011:1455458176:1804289383' acquired for 'initializing config database to new format v6', ts : 56c08780f3e11b85c6a8e5fa
+2016-02-14T11:56:16.943-0200 I SHARDING [mongosMain] initializing config server version to 6
+2016-02-14T11:56:16.943-0200 I SHARDING [mongosMain] writing initial config version at v6
+2016-02-14T11:56:17.317-0200 I SHARDING [mongosMain] initialization of config server to v6 successful
+2016-02-14T11:56:17.318-0200 I SHARDING [mongosMain] distributed lock 'configUpgrade/Welder-Mint:27011:1455458176:1804289383' unlocked.
+2016-02-14T11:56:19.652-0200 I NETWORK  [HostnameCanonicalizationWorker] Starting hostname canonicalization worker
+2016-02-14T11:56:19.652-0200 I SHARDING [Balancer] about to contact config servers and shards
+2016-02-14T11:56:19.652-0200 I SHARDING [Balancer] config servers and shards contacted successfully
+2016-02-14T11:56:19.652-0200 I SHARDING [Balancer] balancer id: Welder-Mint:27011 started
+2016-02-14T11:56:19.697-0200 I NETWORK  [mongosMain] waiting for connections on port 27011
+2016-02-14T11:56:19.890-0200 I SHARDING [Balancer] distributed lock 'balancer/Welder-Mint:27011:1455458176:1804289383' acquired for 'doing balance round', ts : 56c08783f3e11b85c6a8e5fd
+2016-02-14T11:56:20.062-0200 I SHARDING [Balancer] about to log metadata event into actionlog: { _id: "Welder-Mint-2016-02-14T11:56:20.062-0200-56c08784f3e11b85c6a8e5fe", server: "Welder-Mint", clientAddr: "", time: new Date(1455458180062), what: "balancer.round", ns: "", details: { executionTimeMillis: 238, errorOccured: false, candidateChunks: 0, chunksMoved: 0 } }
+2016-02-14T11:56:20.074-0200 I SHARDING [Balancer] distributed lock 'balancer/Welder-Mint:27011:1455458176:1804289383' unlocked.
+2016-02-14T11:56:30.109-0200 I SHARDING [Balancer] distributed lock 'balancer/Welder-Mint:27011:1455458176:1804289383' acquired for 'doing balance round', ts : 56c0878ef3e11b85c6a8e5ff
+2016-02-14T11:56:30.109-0200 I SHARDING [Balancer] about to log metadata event into actionlog: { _id: "Welder-Mint-2016-02-14T11:56:30.109-0200-56c0878ef3e11b85c6a8e600", server: "Welder-Mint", clientAddr: "", time: new Date(1455458190109), what: "balancer.round", ns: "", details: { executionTimeMillis: 2, errorOccured: false, candidateChunks: 0, chunksMoved: 0 } }
+2016-02-14T11:56:30.119-0200 I SHARDING [Balancer] distributed lock 'balancer/Welder-Mint:27011:1455458176:1804289383' unlocked.
 ```
 
-- 1 Config Server
+### 1 Config Server
 ```js
+//criando a pasta do config server
+welder@Welder-Mint ~ $ sudo mkdir /data/configdb
+
+//iniciando o servidor de configuração
+welder@Welder-Mint ~ $ sudo mongod --configsvr --port 27010
+2016-02-14T11:53:56.946-0200 I CONTROL  [initandlisten] MongoDB starting : pid=7014 port=27010 dbpath=/data/configdb master=1 64-bit host=Welder-Mint
+2016-02-14T11:53:56.946-0200 I CONTROL  [initandlisten] db version v3.2.1
+2016-02-14T11:53:56.946-0200 I CONTROL  [initandlisten] git version: a14d55980c2cdc565d4704a7e3ad37e4e535c1b2
+2016-02-14T11:53:56.946-0200 I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.0.1f 6 Jan 2014
+2016-02-14T11:53:56.946-0200 I CONTROL  [initandlisten] allocator: tcmalloc
+2016-02-14T11:53:56.946-0200 I CONTROL  [initandlisten] modules: none
+2016-02-14T11:53:56.946-0200 I CONTROL  [initandlisten] build environment:
+2016-02-14T11:53:56.946-0200 I CONTROL  [initandlisten]     distmod: ubuntu1404
+2016-02-14T11:53:56.946-0200 I CONTROL  [initandlisten]     distarch: x86_64
+2016-02-14T11:53:56.946-0200 I CONTROL  [initandlisten]     target_arch: x86_64
+2016-02-14T11:53:56.946-0200 I CONTROL  [initandlisten] options: { net: { port: 27010 }, sharding: { clusterRole: "configsvr" } }
+2016-02-14T11:53:56.970-0200 I -        [initandlisten] Detected data files in /data/configdb created by the 'wiredTiger' storage engine, so setting the active storage engine to 'wiredTiger'.
+2016-02-14T11:53:56.970-0200 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=1G,session_max=20000,eviction=(threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),checkpoint=(wait=60,log_size=2GB),statistics_log=(wait=0),
+2016-02-14T11:53:57.812-0200 I STORAGE  [initandlisten] Starting WiredTigerRecordStoreThread local.oplog.$main
+2016-02-14T11:53:57.812-0200 I STORAGE  [initandlisten] The size storer reports that the oplog contains 7 records totaling to 434 bytes
+2016-02-14T11:53:57.812-0200 I STORAGE  [initandlisten] Scanning the oplog to determine where to place markers for truncation
+2016-02-14T11:53:57.867-0200 I CONTROL  [initandlisten] ** WARNING: You are running this process as the root user, which is not recommended.
+2016-02-14T11:53:57.867-0200 I CONTROL  [initandlisten]
+2016-02-14T11:53:57.934-0200 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/data/configdb/diagnostic.data'
+2016-02-14T11:53:57.934-0200 I NETWORK  [HostnameCanonicalizationWorker] Starting hostname canonicalization worker
+2016-02-14T11:53:57.935-0200 I NETWORK  [initandlisten] waiting for connections on port 27010
+
 ```
 
-- 3 Shardings
+### 3 Shardings
 ```js
+
+//criando os diretórios de cada shard
+welder@Welder-Mint ~ $ sudo mkdir /data/shard1 && sudo mkdir /data/shard2 && sudo mkdir /data/shard3
+
+//adicionando o primeiro shard
+welder@Welder-Mint ~ $ sudo mongod --port 27012 --dbpath /data/shard1
+2016-02-14T21:41:57.448-0200 I CONTROL  [initandlisten] MongoDB starting : pid=10752 port=27012 dbpath=/data/shard1 64-bit host=Welder-Mint
+2016-02-14T21:41:57.448-0200 I CONTROL  [initandlisten] db version v3.2.1
+2016-02-14T21:41:57.448-0200 I CONTROL  [initandlisten] git version: a14d55980c2cdc565d4704a7e3ad37e4e535c1b2
+2016-02-14T21:41:57.448-0200 I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.0.1f 6 Jan 2014
+2016-02-14T21:41:57.448-0200 I CONTROL  [initandlisten] allocator: tcmalloc
+2016-02-14T21:41:57.448-0200 I CONTROL  [initandlisten] modules: none
+2016-02-14T21:41:57.448-0200 I CONTROL  [initandlisten] build environment:
+2016-02-14T21:41:57.448-0200 I CONTROL  [initandlisten]     distmod: ubuntu1404
+2016-02-14T21:41:57.448-0200 I CONTROL  [initandlisten]     distarch: x86_64
+2016-02-14T21:41:57.448-0200 I CONTROL  [initandlisten]     target_arch: x86_64
+2016-02-14T21:41:57.448-0200 I CONTROL  [initandlisten] options: { net: { port: 27012 }, storage: { dbPath: "/data/shard1" } }
+2016-02-14T21:41:57.471-0200 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=1G,session_max=20000,eviction=(threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),checkpoint=(wait=60,log_size=2GB),statistics_log=(wait=0),
+2016-02-14T21:41:58.072-0200 I CONTROL  [initandlisten] ** WARNING: You are running this process as the root user, which is not recommended.
+2016-02-14T21:41:58.072-0200 I CONTROL  [initandlisten]
+2016-02-14T21:41:58.072-0200 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/data/shard1/diagnostic.data'
+2016-02-14T21:41:58.072-0200 I NETWORK  [HostnameCanonicalizationWorker] Starting hostname canonicalization worker
+2016-02-14T21:41:58.251-0200 I NETWORK  [initandlisten] waiting for connections on port 27012
+
+
+//adicionando o segundo shard
+welder@Welder-Mint ~ $ sudo mongod --port 27013 --dbpath /data/shard2
+[sudo] password for welder:
+2016-02-14T21:42:29.597-0200 I CONTROL  [initandlisten] MongoDB starting : pid=10793 port=27013 dbpath=/data/shard2 64-bit host=Welder-Mint
+2016-02-14T21:42:29.597-0200 I CONTROL  [initandlisten] db version v3.2.1
+2016-02-14T21:42:29.597-0200 I CONTROL  [initandlisten] git version: a14d55980c2cdc565d4704a7e3ad37e4e535c1b2
+2016-02-14T21:42:29.597-0200 I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.0.1f 6 Jan 2014
+2016-02-14T21:42:29.597-0200 I CONTROL  [initandlisten] allocator: tcmalloc
+2016-02-14T21:42:29.597-0200 I CONTROL  [initandlisten] modules: none
+2016-02-14T21:42:29.597-0200 I CONTROL  [initandlisten] build environment:
+2016-02-14T21:42:29.597-0200 I CONTROL  [initandlisten]     distmod: ubuntu1404
+2016-02-14T21:42:29.597-0200 I CONTROL  [initandlisten]     distarch: x86_64
+2016-02-14T21:42:29.597-0200 I CONTROL  [initandlisten]     target_arch: x86_64
+2016-02-14T21:42:29.597-0200 I CONTROL  [initandlisten] options: { net: { port: 27013 }, storage: { dbPath: "/data/shard2" } }
+2016-02-14T21:42:29.621-0200 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=1G,session_max=20000,eviction=(threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),checkpoint=(wait=60,log_size=2GB),statistics_log=(wait=0),
+2016-02-14T21:42:30.518-0200 I CONTROL  [initandlisten] ** WARNING: You are running this process as the root user, which is not recommended.
+2016-02-14T21:42:30.518-0200 I CONTROL  [initandlisten]
+2016-02-14T21:42:30.518-0200 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/data/shard2/diagnostic.data'
+2016-02-14T21:42:30.518-0200 I NETWORK  [HostnameCanonicalizationWorker] Starting hostname canonicalization worker
+2016-02-14T21:42:30.722-0200 I NETWORK  [initandlisten] waiting for connections on port 27013
+
+
+//adicionando o terceiro shard
+welder@Welder-Mint ~ $ sudo mongod --port 27014 --dbpath /data/shard3
+[sudo] password for welder:
+2016-02-14T21:42:48.566-0200 I CONTROL  [initandlisten] MongoDB starting : pid=10812 port=27014 dbpath=/data/shard3 64-bit host=Welder-Mint
+2016-02-14T21:42:48.566-0200 I CONTROL  [initandlisten] db version v3.2.1
+2016-02-14T21:42:48.566-0200 I CONTROL  [initandlisten] git version: a14d55980c2cdc565d4704a7e3ad37e4e535c1b2
+2016-02-14T21:42:48.566-0200 I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.0.1f 6 Jan 2014
+2016-02-14T21:42:48.566-0200 I CONTROL  [initandlisten] allocator: tcmalloc
+2016-02-14T21:42:48.566-0200 I CONTROL  [initandlisten] modules: none
+2016-02-14T21:42:48.566-0200 I CONTROL  [initandlisten] build environment:
+2016-02-14T21:42:48.566-0200 I CONTROL  [initandlisten]     distmod: ubuntu1404
+2016-02-14T21:42:48.566-0200 I CONTROL  [initandlisten]     distarch: x86_64
+2016-02-14T21:42:48.566-0200 I CONTROL  [initandlisten]     target_arch: x86_64
+2016-02-14T21:42:48.566-0200 I CONTROL  [initandlisten] options: { net: { port: 27014 }, storage: { dbPath: "/data/shard3" } }
+2016-02-14T21:42:48.589-0200 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=1G,session_max=20000,eviction=(threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),checkpoint=(wait=60,log_size=2GB),statistics_log=(wait=0),
+2016-02-14T21:42:49.184-0200 I CONTROL  [initandlisten] ** WARNING: You are running this process as the root user, which is not recommended.
+2016-02-14T21:42:49.184-0200 I CONTROL  [initandlisten]
+2016-02-14T21:42:49.184-0200 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/data/shard3/diagnostic.data'
+2016-02-14T21:42:49.184-0200 I NETWORK  [HostnameCanonicalizationWorker] Starting hostname canonicalization worker
+2016-02-14T21:42:49.432-0200 I NETWORK  [initandlisten] waiting for connections on port 27014
+
+
+
+//informando os shards ao router
+Welder-Mint:27011(mongos-3.2.1)[mongos] test> sh.addShard("localhost:27012")
+{
+  "shardAdded": "shard0000",
+  "ok": 1
+}
+Welder-Mint:27011(mongos-3.2.1)[mongos] test> sh.addShard("localhost:27013")
+{
+  "shardAdded": "shard0001",
+  "ok": 1
+}
+Welder-Mint:27011(mongos-3.2.1)[mongos] test> sh.addShard("localhost:27014")
+{
+  "shardAdded": "shard0002",
+  "ok": 1
+}
+
+
+//habilitando sharding
+Welder-Mint:27011(mongos-3.2.1)[mongos] test> sh.enableSharding("test")
+{
+  "ok": 1
+}
+
+
+//A coleção shardeada será de activities pois provavelmente será a com maior número de documentos
+Welder-Mint:27011(mongos-3.2.1)[mongos] test> sh.shardCollection("test.activities", {"_id" : 1})
+{
+  "collectionsharded": "test.activities",
+  "ok": 1
+}
 ```
 
-- 3 Replicas
+### 3 Replicas
 ```js
-```
 
-Você deverá escolher qual sua coleção deverá ser *shardeada* para poder aguentar muita carga repentinamente e deverá replicar cada Shard, pode ser feito localmente como em alguma VPS FREE.
+//diretórios
+welder@Welder-Mint ~ $ sudo mkdir /data/rs1 && sudo mkdir /data/rs2 && sudo mkdir /data/rs3
+
+//réplica 1
+sudo mongod --replSet replica_set --port 27027 --dbpath /data/rs1
+2016-02-14T22:10:52.837-0200 I CONTROL  [initandlisten] MongoDB starting : pid=16546 port=27027 dbpath=/data/rs1 64-bit host=Welder-Mint
+2016-02-14T22:10:52.838-0200 I CONTROL  [initandlisten] db version v3.2.1
+2016-02-14T22:10:52.838-0200 I CONTROL  [initandlisten] git version: a14d55980c2cdc565d4704a7e3ad37e4e535c1b2
+2016-02-14T22:10:52.838-0200 I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.0.1f 6 Jan 2014
+2016-02-14T22:10:52.838-0200 I CONTROL  [initandlisten] allocator: tcmalloc
+2016-02-14T22:10:52.838-0200 I CONTROL  [initandlisten] modules: none
+2016-02-14T22:10:52.838-0200 I CONTROL  [initandlisten] build environment:
+2016-02-14T22:10:52.838-0200 I CONTROL  [initandlisten]     distmod: ubuntu1404
+2016-02-14T22:10:52.838-0200 I CONTROL  [initandlisten]     distarch: x86_64
+2016-02-14T22:10:52.838-0200 I CONTROL  [initandlisten]     target_arch: x86_64
+2016-02-14T22:10:52.838-0200 I CONTROL  [initandlisten] options: { net: { port: 27027 }, replication: { replSet: "replica_set" }, storage: { dbPath: "/data/rs1" } }
+2016-02-14T22:10:52.863-0200 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=1G,session_max=20000,eviction=(threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),checkpoint=(wait=60,log_size=2GB),statistics_log=(wait=0),
+2016-02-14T22:10:53.501-0200 I CONTROL  [initandlisten] ** WARNING: You are running this process as the root user, which is not recommended.
+2016-02-14T22:10:53.501-0200 I CONTROL  [initandlisten]
+2016-02-14T22:10:53.786-0200 I REPL     [initandlisten] Did not find local voted for document at startup;  NoMatchingDocument Did not find replica set lastVote document in local.replset.election
+2016-02-14T22:10:53.786-0200 I REPL     [initandlisten] Did not find local replica set configuration document at startup;  NoMatchingDocument Did not find replica set configuration document in local.system.replset
+2016-02-14T22:10:53.786-0200 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/data/rs1/diagnostic.data'
+2016-02-14T22:10:53.786-0200 I NETWORK  [HostnameCanonicalizationWorker] Starting hostname canonicalization worker
+2016-02-14T22:10:54.003-0200 I NETWORK  [initandlisten] waiting for connections on port 27027
+
+//réplica 2
+welder@Welder-Mint ~ $ sudo mongod --replSet replica_set --port 27028 --dbpath /data/rs2
+[sudo] password for welder:
+2016-02-14T22:12:07.144-0200 I CONTROL  [initandlisten] MongoDB starting : pid=16859 port=27028 dbpath=/data/rs2 64-bit host=Welder-Mint
+2016-02-14T22:12:07.144-0200 I CONTROL  [initandlisten] db version v3.2.1
+2016-02-14T22:12:07.144-0200 I CONTROL  [initandlisten] git version: a14d55980c2cdc565d4704a7e3ad37e4e535c1b2
+2016-02-14T22:12:07.144-0200 I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.0.1f 6 Jan 2014
+2016-02-14T22:12:07.144-0200 I CONTROL  [initandlisten] allocator: tcmalloc
+2016-02-14T22:12:07.144-0200 I CONTROL  [initandlisten] modules: none
+2016-02-14T22:12:07.144-0200 I CONTROL  [initandlisten] build environment:
+2016-02-14T22:12:07.144-0200 I CONTROL  [initandlisten]     distmod: ubuntu1404
+2016-02-14T22:12:07.144-0200 I CONTROL  [initandlisten]     distarch: x86_64
+2016-02-14T22:12:07.144-0200 I CONTROL  [initandlisten]     target_arch: x86_64
+2016-02-14T22:12:07.144-0200 I CONTROL  [initandlisten] options: { net: { port: 27028 }, replication: { replSet: "replica_set" }, storage: { dbPath: "/data/rs2" } }
+2016-02-14T22:12:07.170-0200 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=1G,session_max=20000,eviction=(threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),checkpoint=(wait=60,log_size=2GB),statistics_log=(wait=0),
+2016-02-14T22:12:07.744-0200 I CONTROL  [initandlisten] ** WARNING: You are running this process as the root user, which is not recommended.
+2016-02-14T22:12:07.744-0200 I CONTROL  [initandlisten]
+2016-02-14T22:12:07.959-0200 I REPL     [initandlisten] Did not find local voted for document at startup;  NoMatchingDocument Did not find replica set lastVote document in local.replset.election
+2016-02-14T22:12:07.959-0200 I REPL     [initandlisten] Did not find local replica set configuration document at startup;  NoMatchingDocument Did not find replica set configuration document in local.system.replset
+2016-02-14T22:12:07.959-0200 I NETWORK  [HostnameCanonicalizationWorker] Starting hostname canonicalization worker
+2016-02-14T22:12:07.959-0200 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/data/rs2/diagnostic.data'
+2016-02-14T22:12:08.171-0200 I NETWORK  [initandlisten] waiting for connections on port 27028
+
+//réplica 3
+welder@Welder-Mint ~ $ sudo mongod --replSet replica_set --port 27029 --dbpath /data/rs3
+2016-02-14T22:13:04.095-0200 I CONTROL  [initandlisten] MongoDB starting : pid=17072 port=27029 dbpath=/data/rs3 64-bit host=Welder-Mint
+2016-02-14T22:13:04.095-0200 I CONTROL  [initandlisten] db version v3.2.1
+2016-02-14T22:13:04.095-0200 I CONTROL  [initandlisten] git version: a14d55980c2cdc565d4704a7e3ad37e4e535c1b2
+2016-02-14T22:13:04.095-0200 I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.0.1f 6 Jan 2014
+2016-02-14T22:13:04.095-0200 I CONTROL  [initandlisten] allocator: tcmalloc
+2016-02-14T22:13:04.095-0200 I CONTROL  [initandlisten] modules: none
+2016-02-14T22:13:04.095-0200 I CONTROL  [initandlisten] build environment:
+2016-02-14T22:13:04.095-0200 I CONTROL  [initandlisten]     distmod: ubuntu1404
+2016-02-14T22:13:04.095-0200 I CONTROL  [initandlisten]     distarch: x86_64
+2016-02-14T22:13:04.095-0200 I CONTROL  [initandlisten]     target_arch: x86_64
+2016-02-14T22:13:04.095-0200 I CONTROL  [initandlisten] options: { net: { port: 27029 }, replication: { replSet: "replica_set" }, storage: { dbPath: "/data/rs3" } }
+2016-02-14T22:13:04.120-0200 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=1G,session_max=20000,eviction=(threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),checkpoint=(wait=60,log_size=2GB),statistics_log=(wait=0),
+2016-02-14T22:13:04.647-0200 I CONTROL  [initandlisten] ** WARNING: You are running this process as the root user, which is not recommended.
+2016-02-14T22:13:04.647-0200 I CONTROL  [initandlisten]
+2016-02-14T22:13:04.918-0200 I REPL     [initandlisten] Did not find local voted for document at startup;  NoMatchingDocument Did not find replica set lastVote document in local.replset.election
+2016-02-14T22:13:04.918-0200 I REPL     [initandlisten] Did not find local replica set configuration document at startup;  NoMatchingDocument Did not find replica set configuration document in local.system.replset
+2016-02-14T22:13:04.918-0200 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/data/rs3/diagnostic.data'
+2016-02-14T22:13:04.918-0200 I NETWORK  [HostnameCanonicalizationWorker] Starting hostname canonicalization worker
+2016-02-14T22:13:05.116-0200 I NETWORK  [initandlisten] waiting for connections on port 27029
+
+
+//iniciando replicação
+Welder-Mint:27027(mongod-3.2.1) test> rsconf = {    _id: "replica_set",    members: [     {      _id: 0,      host: "127.0.0.1:27027"     }   ] }
+{
+  "_id": "replica_set",
+  "members": [
+    {
+      "_id": 0,
+      "host": "127.0.0.1:27027"
+    }
+  ]
+}
+Welder-Mint:27027(mongod-3.2.1) test> rs.initiate(rsconf)
+{
+  "ok": 1
+}
+
+//log rs 1
+2016-02-14T22:43:53.527-0200 I REPL     [ReplicationExecutor] New replica set config in use: { _id: "replica_set", version: 1, protocolVersion: 1, members: [ { _id: 0, host: "127.0.0.1:27027", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 } ], settings: { chainingAllowed: true, heartbeatIntervalMillis: 2000, heartbeatTimeoutSecs: 10, electionTimeoutMillis: 10000, getLastErrorModes: {}, getLastErrorDefaults: { w: 1, wtimeout: 0 } } }
+2016-02-14T22:43:53.527-0200 I REPL     [ReplicationExecutor] This node is 127.0.0.1:27027 in the config
+2016-02-14T22:43:53.527-0200 I REPL     [ReplicationExecutor] transition to STARTUP2
+2016-02-14T22:43:53.527-0200 I REPL     [conn1] Starting replication applier threads
+2016-02-14T22:43:53.527-0200 I REPL     [ReplicationExecutor] transition to RECOVERING
+2016-02-14T22:43:53.528-0200 I REPL     [ReplicationExecutor] transition to SECONDARY
+2016-02-14T22:43:53.528-0200 I REPL     [ReplicationExecutor] conducting a dry run election to see if we could be elected
+2016-02-14T22:43:53.528-0200 I REPL     [ReplicationExecutor] dry election run succeeded, running for election
+2016-02-14T22:43:53.533-0200 I COMMAND  [conn1] command local.oplog.rs command: replSetInitiate { replSetInitiate: { _id: "replica_set", members: [ { _id: 0.0, host: "127.0.0.1:27027" } ] } } keyUpdates:0 writeConflicts:0 numYields:0 reslen:22 locks:{ Global: { acquireCount: { r: 5, w: 3, W: 2 }, acquireWaitCount: { W: 1 }, timeAcquiringMicros: { W: 19918 } }, Database: { acquireCount: { w: 2, W: 1 } }, Metadata: { acquireCount: { w: 1 } }, oplog: { acquireCount: { w: 2 } } } protocol:op_command 821ms
+2016-02-14T22:43:53.761-0200 I REPL     [ReplicationExecutor] election succeeded, assuming primary role in term 1
+2016-02-14T22:43:53.761-0200 I REPL     [ReplicationExecutor] transition to PRIMARY
+2016-02-14T22:43:54.541-0200 I REPL     [rsSync] transition to primary complete; database writes are now permitted
+
+
+//adicionando demais réplicas
+Welder-Mint:27027(mongod-3.2.1)[SECONDARY:replica_set] test> rs.add("127.0.0.1:27028")
+{
+  "ok": 1
+}
+Welder-Mint:27027(mongod-3.2.1)[PRIMARY:replica_set] test> rs.add("127.0.0.1:27029")
+{
+  "ok": 1
+}
+
+//rs2 log
+016-02-14T22:46:24.779-0200 I REPL     [ReplicationExecutor] New replica set config in use: { _id: "replica_set", version: 3, protocolVersion: 1, members: [ { _id: 0, host: "127.0.0.1:27027", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 1, host: "127.0.0.1:27028", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 2, host: "127.0.0.1:27029", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 } ], settings: { chainingAllowed: true, heartbeatIntervalMillis: 2000, heartbeatTimeoutSecs: 10, electionTimeoutMillis: 10000, getLastErrorModes: {}, getLastErrorDefaults: { w: 1, wtimeout: 0 } } }
+2016-02-14T22:46:24.779-0200 I REPL     [ReplicationExecutor] This node is 127.0.0.1:27028 in the config
+2016-02-14T22:46:24.779-0200 W REPL     [ReplicationExecutor] The liveness timeout does not match callback handle, so not resetting it.
+2016-02-14T22:46:24.779-0200 I NETWORK  [conn4] end connection 127.0.0.1:52739 (1 connection now open)
+2016-02-14T22:46:24.780-0200 I ASIO     [NetworkInterfaceASIO-Replication-0] Successfully connected to 127.0.0.1:27029
+2016-02-14T22:46:24.780-0200 I REPL     [ReplicationExecutor] Member 127.0.0.1:27029 is now in state STARTUP
+2016-02-14T22:46:24.780-0200 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:52741 #5 (2 connections now open)
+2016-02-14T22:46:24.885-0200 I REPL     [ReplicationExecutor] syncing from: 127.0.0.1:27027
+2016-02-14T22:46:24.886-0200 I REPL     [SyncSourceFeedback] setting syncSourceFeedback to 127.0.0.1:27027
+2016-02-14T22:46:24.887-0200 I ASIO     [NetworkInterfaceASIO-BGSync-0] Successfully connected to 127.0.0.1:27027
+2016-02-14T22:46:26.780-0200 I REPL     [ReplicationExecutor] Member 127.0.0.1:27029 is now in state STARTUP2
+2016-02-14T22:46:26.962-0200 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:52746 #6 (3 connections now open)
+2016-02-14T22:46:26.985-0200 I NETWORK  [conn6] end connection 127.0.0.1:52746 (2 connections now open)
+2016-02-14T22:46:28.780-0200 I REPL     [ReplicationExecutor] Member 127.0.0.1:27029 is now in state SECONDARY
+
+//rs3 log
+2016-02-14T22:51:20.832-0200 I REPL     [ReplicationExecutor] New replica set config in use: { _id: "replica_set", version: 3, protocolVersion: 1, members: [ { _id: 0, host: "127.0.0.1:27027", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 1, host: "127.0.0.1:27028", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 2, host: "127.0.0.1:27029", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 } ], settings: { chainingAllowed: true, heartbeatIntervalMillis: 2000, heartbeatTimeoutSecs: 10, electionTimeoutMillis: 10000, getLastErrorModes: {}, getLastErrorDefaults: { w: 1, wtimeout: 0 } } }
+2016-02-14T22:51:20.832-0200 I REPL     [ReplicationExecutor] This node is 127.0.0.1:27029 in the config
+2016-02-14T22:51:20.832-0200 I REPL     [ReplicationExecutor] transition to STARTUP2
+2016-02-14T22:51:20.832-0200 I REPL     [ReplicationExecutor] Starting replication applier threads
+2016-02-14T22:51:20.832-0200 I REPL     [ReplicationExecutor] transition to RECOVERING
+2016-02-14T22:51:20.833-0200 I ASIO     [NetworkInterfaceASIO-Replication-0] Successfully connected to 127.0.0.1:27027
+2016-02-14T22:51:20.833-0200 I ASIO     [NetworkInterfaceASIO-Replication-0] Successfully connected to 127.0.0.1:27028
+2016-02-14T22:51:20.833-0200 I REPL     [ReplicationExecutor] Member 127.0.0.1:27027 is now in state PRIMARY
+2016-02-14T22:51:20.833-0200 I REPL     [ReplicationExecutor] Member 127.0.0.1:27028 is now in state SECONDARY
+2016-02-14T22:51:20.833-0200 I REPL     [ReplicationExecutor] transition to SECONDARY
+
+```
