@@ -105,7 +105,7 @@ Alguns exemplos de projetos que eu utilizaria o MongoDB:
 
 #### 1. Cadastre 10 usuários diferentes.
 
-```
+```js
 var users = [{'name':'Matheus', 'bio' : 'Sou o primeiro usuario.', 'date-register' : new Date(2000,1,1), 'avatar-path' : 'image/matheus.jpg', auth : {username : 'matheus@gmail.com', 'password' : '12345', 'last_access' : new Date(), 'online' : true, 'disabled' : false, 'hash_token' : '8cb2237d0679ca88db6464eac60da96345513964'}},
 
 {'name':'Eduardo', 'bio' : 'Sou o segundo usuario.', 'date-register' : new Date(2002,4,1), 'avatar-path' : 'image/eduardo.jpg', auth : {username : 'eduardo@gmail.com', 'password' : '12345', 'last_access' : new Date(), 'online' : false, 'disabled' : false, 'hash_token' : '284346dc3a552cb8035949c8ba999521225b3b1a'}},
@@ -147,7 +147,7 @@ BulkWriteResult({
 - cada projeto com pelo menos 1 *goal*;
     - cada *goal* com pelo menos 3 *tags*;
     - cada *goal* com pelo menos 2 atividades, deixe 1 projeto sem.
-```
+```js
 //Pego todos os usuarios e salvo em users, para usar o _id.
 	
 var users = db.user.find()
@@ -213,7 +213,7 @@ BulkWriteResult({
 ## Retrieve - busca
 
 #### 1. Liste as informações dos membros de 1 projeto específico que deve ser buscado pelo seu nome de forma a não ligar para maiúsculas e minúsculas.
-```
+```js
 	db.project.findOne({name : /teste dos aplicativos/i}).members
 
 	[
@@ -252,7 +252,7 @@ BulkWriteResult({
 ```
 
 #### 2. Liste todos os projetos com a tag que você escolheu para os 3 projetos em comum.
-```
+```js
 
  db.project.find({tags : 'java'}).pretty()
 {
@@ -475,7 +475,7 @@ BulkWriteResult({
 ```
 
 #### 3. Liste apenas os nomes de todas as atividades para todos os projetos.
-```
+```js
 
 db.project.find({"goals.activities" : {$ne : [], $exists : true}},{"goals.activities.name":1}).pretty()
 {
@@ -543,12 +543,12 @@ db.project.find({"goals.activities" : {$ne : [], $exists : true}},{"goals.activi
 
 #### 4. Liste todos os projetos que não possuam uma tag.
 
-```
+```js
 db.project.find({"tags" : {$size : 0}})
 ```
 #### 5. Liste todos os usuários que não fazem parte do primeiro projeto cadastrado.
 
-```
+```js
 > var project = db.project.findOne();
 > var users = [];
 > 
@@ -641,14 +641,14 @@ db.project.find({"tags" : {$size : 0}})
 
 #### 1. Adicione para todos os projetos o campo `views: 0`.
 
-```
+```js
 var mod = {$set : {"views" : 0}}
 db.project.update({},mod,{multi: true})
 WriteResult({ "nMatched" : 5, "nUpserted" : 0, "nModified" : 5 })
 ```
 #### 2. Adicione 1 tag diferente para cada projeto.
 
-```
+```js
 var projects = db.project.find()
 
 var query = {"_id" : projects[0]._id}
@@ -678,7 +678,7 @@ WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
 ```
 #### 3. Adicione 2 membros diferentes para cada projeto.
 
-```
+```js
 var members = db.user.find()
 var mod = {$push : {"members" : [{"user_id" : members[0]._id, "type_name" : "Novo Membro", "notify" : "", "name" : members[0].name}, {"user_id" : members[1]._id, "type_name" : "Novo Membro", "notify" : "", "name" : members[1].name}]}}
 var query = {"_id" : projects[4]._id}
@@ -707,7 +707,7 @@ WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
 ```
 #### 4. Adicione 1 comentário em cada atividade, deixe apenas 1 projeto sem.
 
-```
+```js
 var act = db.activity.find()
 
 var query = {"_id" : act[0]._id}
@@ -737,7 +737,7 @@ WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
 ```
 #### 5. Adicione 1 projeto inteiro com **UPSERT**.
 
-```
+```js
 var novo_projeto = {'name' : 'Novo Desenvolvimento do Layout', 'description' : 'Desenvolvimento de todas as paginas dos aplicativos.', 'date_begin' : new Date(2016,0,9), 'date_dream' : new Date(2016,0,25), 'realocate' : false, 'expired' : false, 'goals' : [{'name' : 'Finalizar o layout', 'description' : 'Finalizar esse layout.', 'date_begin' : new Date(2016,0,9), 'date_end' : new Date(2016,0,25), 'realocate' : false, 'date_realocate' : [], 'tags' : ['layout','design','aplicativo'], 'activities' : [{'activity_id' : act[0]._id, 'name' : act[0].name},{'activity_id' : act[1]._id, 'name' : act[1].name}]}], 'tags' : ['layout','design','eh rei'], members : [{'user_id' : users[0]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[0].name},{'user_id' : users[1]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[1].name},{'user_id' : users[2]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[2].name},{'user_id' : users[3]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[3].name},{'user_id' : users[4]._id, 'type_name' : 'Programador', 'notify' : '', 'name' : users[4].name}]}
 var query = {"name" : novo_projeto.name}
 var opt = {upsert : true}
@@ -753,13 +753,13 @@ WriteResult({
 ## Delete - remoção
 #### 1. Apague todos os projetos que não possuam *tags*.
 
-```
+```js
 db.project.remove({"tags" : {$size : 0}})
 WriteResult({ "nRemoved" : 0 })
 ```
 #### 2. Apague todos os projetos que não possuam comentários nas atividades.
 
-```
+```js
 //Acho as activities sem comentarios
 
 var act = db.activity.find({"comments" : {$size : 0}})
@@ -790,20 +790,20 @@ WriteResult({ "nRemoved" : 2 })
 ```
 #### 3. Apague todos os projetos que não possuam atividades.
 
-```
+```js
 db.project.remove({"goals.activities" : {$size : 0}})
 WriteResult({ "nRemoved" : 2 })
 ```
 #### 4. Escolha 2 usuário e apague todos os projetos em que os 2 fazem parte.
 
-```
+```js
 var users = db.user.find()
 db.project.remove({$and : [{"members.user_id" : users[5]._id},{"members.user_id" : users[4]._id}]})
 WriteResult({ "nRemoved" : 2 })
 ```
 #### 5. Apague todos os projetos que possuam uma determinada *tag* em *goal*.
 
-```
+```js
 db.project.remove({"goals.tags" : {$eq : "java"}})
 WriteResult({ "nRemoved" : 4 })
 ```
@@ -811,19 +811,19 @@ WriteResult({ "nRemoved" : 4 })
 ## Gerenciamento de usuários
 #### 1. Crie um usuário com permissões **APENAS** de Leitura.
 
-```
+```js
 db.createUser({user : "matheus", pwd: "12345", roles : ["read"]})
 Successfully added user: { "user" : "matheus", "roles" : [ "read" ] }
 ```
 #### 2. Crie um usuário com permissões de Escrita e Leitura.
 
-```
+```js
 db.createUser({user : "matheus1", pwd : "12345", roles : ["readWrite"]})
 Successfully added user: { "user" : "matheus1", "roles" : [ "readWrite" ] }
 ```
 #### 3. Adicionar o papel `grantRolesToUser` e `revokeRole` para o usuário com Escrita e Leitura.
 
-```
+```js
 db.runCommand({ createRole: "grantRolesToUser",
   privileges: [
     { resource: { db: "admin", collection: "" }, actions: [ "readWrite" ] },
@@ -853,7 +853,7 @@ db.grantRolesToUser("matheus",[ "grantRolesToUser" , "revokeRole" ])
 ```
 #### 4. Remover o papel `grantRolesToUser` para o usuário com Escrita e Leitura.
 
-```
+```js
 db.runCommand( { revokeRolesFromUser: "matheus1",
                  roles: [
                           { role: "revokeRole", db: "admin" },
@@ -865,7 +865,7 @@ db.runCommand( { revokeRolesFromUser: "matheus1",
 ```
 #### 5. Listar todos os usuários com seus papéis e ações.
 
-```
+```js
 db.runCommand({usersInfo: 1})
 {
 	"users" : [
@@ -903,14 +903,14 @@ db.runCommand({usersInfo: 1})
 ## Sharding
 ### 3 Replicas
 ##### Criação o diretorio das replicas
-```
+```js
 matheus@Math:/data$ mkdir r1
 matheus@Math:/data$ mkdir r2
 matheus@Math:/data$ mkdir r3
 ```
 
 ##### Crio as replicas
-```
+```js
 matheus@Math:/data$ sudo mongod --replSet replica_set --port 27030 --dbpath r1
 2016-01-23T17:23:21.985-0200 I JOURNAL  [initandlisten] journal dir=r1/journal
 2016-01-23T17:23:21.985-0200 I JOURNAL  [initandlisten] recover : no journal files present, no recovery needed
@@ -938,7 +938,7 @@ matheus@Math:/data$ sudo mongod --replSet replica_set --port 27030 --dbpath r1
 2016-01-23T17:23:22.792-0200 I REPL     [initandlisten] Did not find local replica set configuration document at startup;  NoMatchingDocument Did not find replica set configuration document in local.system.replset
 2016-01-23T17:23:22.792-0200 I NETWORK  [initandlisten] waiting for connections on port 27030
 ```
-```
+```js
 matheus@Math:/data$ sudo mongod --replSet replica_set --port 27031 --dbpath r2[sudo] password for matheus: 
 2016-01-23T17:24:49.587-0200 I JOURNAL  [initandlisten] journal dir=r2/journal
 2016-01-23T17:24:49.587-0200 I JOURNAL  [initandlisten] recover : no journal files present, no recovery needed
@@ -966,7 +966,7 @@ matheus@Math:/data$ sudo mongod --replSet replica_set --port 27031 --dbpath r2[s
 2016-01-23T17:24:50.505-0200 I REPL     [initandlisten] Did not find local replica set configuration document at startup;  NoMatchingDocument Did not find replica set configuration document in local.system.replset
 2016-01-23T17:24:50.506-0200 I NETWORK  [initandlisten] waiting for connections on port 27031
 ```
-```
+```js
 matheus@Math:/data$ sudo mongod --replSet replica_set --port 27032 --dbpath r3
 [sudo] password for matheus: 
 2016-01-23T17:25:18.934-0200 I JOURNAL  [initandlisten] journal dir=r3/journal
@@ -996,7 +996,7 @@ matheus@Math:/data$ sudo mongod --replSet replica_set --port 27032 --dbpath r3
 2016-01-23T17:25:19.685-0200 I NETWORK  [initandlisten] waiting for connections on port 27032
 ```
 ##### Configuro e inicio a replica set
-```
+```js
 > rsconf = {    _id: "replica_set",    members: [     {      _id: 0,      host: "127.0.0.1:27030"     }   ] }
 {
 	"_id" : "replica_set",
@@ -1011,7 +1011,7 @@ matheus@Math:/data$ sudo mongod --replSet replica_set --port 27032 --dbpath r3
 { "ok" : 1 }
 ```
 ##### Adiciona as outras replicas
-```
+```js
 replica_set:OTHER> rs.add("127.0.0.1:27031")
 { "ok" : 1 }
 replica_set:PRIMARY> rs.add("127.0.0.1:27032")
@@ -1019,7 +1019,7 @@ replica_set:PRIMARY> rs.add("127.0.0.1:27032")
 ```
 
 ##### Status
-```
+```js
 replica_set:PRIMARY> rs.status()
 {
 	"set" : "replica_set",
@@ -1074,7 +1074,7 @@ replica_set:PRIMARY> rs.status()
 ```
 
 ### 1 Config Server
-```
+```js
 matheus@Math:/data$ sudo mkdir configdb
 matheus@Math:/data$ mongod --configsvr --port 27010
 2016-01-23T16:54:24.694-0200 I STORAGE  [initandlisten] exception in initAndListen: 98 Unable to create/open lock file: /data/configdb/mongod.lock errno:13 Permission denied Is a mongod instance already running?, terminating
@@ -1111,7 +1111,7 @@ matheus@Math:/data$ sudo mongod --configsvr --port 27010
 
 ### 1 Router
 
-```
+```js
 matheus@Math:/data$ mongos --configdb localhost:27010 --port 27011
 2016-01-23T16:56:09.272-0200 W SHARDING running with 1 config server should be done only for testing purposes and is not recommended for production
 2016-01-23T16:56:09.314-0200 I SHARDING [mongosMain] MongoS version 3.0.7 starting: pid=5551 port=27011 64-bit host=Math (--help for usage)
@@ -1141,7 +1141,7 @@ matheus@Math:/data$ mongos --configdb localhost:27010 --port 27011
 ### 3 Shardings
 ##### Crio as pastas onde dos ***Shards***
 
-```
+```js
 matheus@Math:/data$ mkdir shard1
 matheus@Math:/data$ mkdir shard2
 matheus@Math:/data$ mkdir shard3
@@ -1149,7 +1149,7 @@ matheus@Math:/data$ mkdir shard3
 
 ##### Levanto cada `Shard`, especificando a porta de cada
 
-```
+```js
 matheus@Math:/data$ mongod --port 27023 --dbpath shard1
 2016-01-23T17:01:05.039-0200 I JOURNAL  [initandlisten] journal dir=shard1/journal
 2016-01-23T17:01:05.039-0200 I JOURNAL  [initandlisten] recover : no journal files present, no recovery needed
@@ -1174,7 +1174,7 @@ matheus@Math:/data$ mongod --port 27023 --dbpath shard1
 2016-01-23T17:01:05.851-0200 I STORAGE  [FileAllocator] done allocating datafile shard1/local.0, size: 64MB,  took 0.002 secs
 2016-01-23T17:01:05.858-0200 I NETWORK  [initandlisten] waiting for connections on port 27023
 ```
-```
+```js
 matheus@Math:/data$ mongod --port 27024 --dbpath shard2
 2016-01-23T17:01:37.551-0200 I JOURNAL  [initandlisten] journal dir=shard2/journal
 2016-01-23T17:01:37.551-0200 I JOURNAL  [initandlisten] recover : no journal files present, no recovery needed
@@ -1199,7 +1199,7 @@ matheus@Math:/data$ mongod --port 27024 --dbpath shard2
 2016-01-23T17:01:38.215-0200 I STORAGE  [FileAllocator] done allocating datafile shard2/local.0, size: 64MB,  took 0.002 secs
 2016-01-23T17:01:38.221-0200 I NETWORK  [initandlisten] waiting for connections on port 27024
 ```
-```
+```js
 matheus@Math:/data$ mongod --port 27025 --dbpath shard3
 2016-01-23T17:02:01.686-0200 I JOURNAL  [initandlisten] journal dir=shard3/journal
 2016-01-23T17:02:01.686-0200 I JOURNAL  [initandlisten] recover : no journal files present, no recovery needed
@@ -1227,7 +1227,7 @@ matheus@Math:/data$ mongod --port 27025 --dbpath shard3
 
 ##### Conecto no ***Router*** e registro os ***Shards***
 
-```
+```js
 matheus@Math:~$ mongo --port 27011 --host localhost
 MongoDB shell version: 3.0.7
 connecting to: localhost:27011/test
