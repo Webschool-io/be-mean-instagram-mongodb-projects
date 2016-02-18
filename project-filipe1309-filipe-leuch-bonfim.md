@@ -1,5 +1,5 @@
 # MongoDb - Projeto Final
-**Autor:** Filipe Leuch Bonfim
+**Autor:** Filipe Leuch Bonfim  
 **Data** 1454879064765
 
 ## Para qual sistema você usaria o MogoDB (diferente desse)?
@@ -1391,55 +1391,275 @@ WriteResult({
 
 ## Sharding
 
-```javascript
-// config server
+#### Config Server
+```
 mkdir /data/configdb
-
+```
+```
 mongod --configsvr --port 27010
-
-// router
-mongos --configdb localhost:27010 --port 27011
-
-mkdir /data/shard1 && mkdir /data/shard2 && mkdir /data/shard3
-// Shard 1
-mongod --port 27012 --dbpath /data/shard1
-
-// Shard 2
-mongod --port 27013 --dbpath /data/shard2
-
-// Shard 3
-mongod --port 27014 --dbpath /data/shard3
-
-// Adicionando os shards no router
-mongo --port 27011 --host localhost
-
-sh.addShard("localhost:27012")
-sh.addShard("localhost:27013")
-sh.addShard("localhost:27014")
-
-sh.enableSharding("be-mean-modulo-mongodb-pf")
-
-sh.shardCollection("be-mean-modulo-mongodb-pf.activities", {"_id" : 1})
+2016-02-17T22:49:04.209-0200 I CONTROL  [initandlisten] MongoDB starting : pid=9355 port=27010 dbpath=/data/configdb master=1 64-bit host=neozork-pc
+2016-02-17T22:49:04.209-0200 I CONTROL  [initandlisten] db version v3.2.1
+2016-02-17T22:49:04.209-0200 I CONTROL  [initandlisten] git version: a14d55980c2cdc565d4704a7e3ad37e4e535c1b2
+2016-02-17T22:49:04.209-0200 I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.0.1e-fips 11 Feb 2013
+2016-02-17T22:49:04.209-0200 I CONTROL  [initandlisten] allocator: tcmalloc
+2016-02-17T22:49:04.209-0200 I CONTROL  [initandlisten] modules: none
+2016-02-17T22:49:04.209-0200 I CONTROL  [initandlisten] build environment:
+2016-02-17T22:49:04.209-0200 I CONTROL  [initandlisten]     distmod: rhel70
+2016-02-17T22:49:04.209-0200 I CONTROL  [initandlisten]     distarch: x86_64
+2016-02-17T22:49:04.209-0200 I CONTROL  [initandlisten]     target_arch: x86_64
+2016-02-17T22:49:04.209-0200 I CONTROL  [initandlisten] options: { net: { port: 27010 }, sharding: { clusterRole: "configsvr" } }
+2016-02-17T22:49:04.227-0200 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=8G,session_max=20000,eviction=(threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),checkpoint=(wait=60,log_size=2GB),statistics_log=(wait=0),
+2016-02-17T22:49:04.550-0200 I CONTROL  [initandlisten]
+2016-02-17T22:49:04.550-0200 I CONTROL  [initandlisten] ** WARNING: /sys/kernel/mm/transparent_hugepage/defrag is 'always'.
+2016-02-17T22:49:04.550-0200 I CONTROL  [initandlisten] **        We suggest setting it to 'never'
+2016-02-17T22:49:04.550-0200 I CONTROL  [initandlisten]
+2016-02-17T22:49:04.696-0200 I REPL     [initandlisten] ******
+2016-02-17T22:49:04.696-0200 I REPL     [initandlisten] creating replication oplog of size: 5MB...
+2016-02-17T22:49:04.729-0200 I STORAGE  [initandlisten] Starting WiredTigerRecordStoreThread local.oplog.$main
+2016-02-17T22:49:04.729-0200 I STORAGE  [initandlisten] The size storer reports that the oplog contains 0 records totaling to 0 bytes
+2016-02-17T22:49:04.729-0200 I STORAGE  [initandlisten] Scanning the oplog to determine where to place markers for truncation
+2016-02-17T22:49:05.011-0200 I REPL     [initandlisten] ******
+2016-02-17T22:49:05.012-0200 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/data/configdb/diagnostic.data'
+2016-02-17T22:49:05.012-0200 I NETWORK  [HostnameCanonicalizationWorker] Starting hostname canonicalization worker
+2016-02-17T22:49:05.161-0200 I NETWORK  [initandlisten] waiting for connections on port 27010
 ```
 
-## Replica
+#### Router
+```
+mongos --configdb localhost:27010 --port 27011
+2016-02-17T23:02:27.948-0200 W SHARDING [main] Running a sharded cluster with fewer than 3 config servers should only be done for testing purposes and is not recommended for production.
+2016-02-17T23:02:27.977-0200 I SHARDING [mongosMain] MongoS version 3.2.1 starting: pid=9721 port=27011 64-bit host=neozork-pc (--help for usage)
+2016-02-17T23:02:27.977-0200 I CONTROL  [mongosMain] db version v3.2.1
+2016-02-17T23:02:27.977-0200 I CONTROL  [mongosMain] git version: a14d55980c2cdc565d4704a7e3ad37e4e535c1b2
+2016-02-17T23:02:27.977-0200 I CONTROL  [mongosMain] OpenSSL version: OpenSSL 1.0.1e-fips 11 Feb 2013
+2016-02-17T23:02:27.977-0200 I CONTROL  [mongosMain] allocator: tcmalloc
+2016-02-17T23:02:27.977-0200 I CONTROL  [mongosMain] modules: none
+2016-02-17T23:02:27.977-0200 I CONTROL  [mongosMain] build environment:
+2016-02-17T23:02:27.977-0200 I CONTROL  [mongosMain]     distmod: rhel70
+2016-02-17T23:02:27.977-0200 I CONTROL  [mongosMain]     distarch: x86_64
+2016-02-17T23:02:27.977-0200 I CONTROL  [mongosMain]     target_arch: x86_64
+2016-02-17T23:02:27.977-0200 I CONTROL  [mongosMain] options: { net: { port: 27011 }, sharding: { configDB: "localhost:27010" } }
+2016-02-17T23:02:27.984-0200 I SHARDING [mongosMain] Updating config server connection string to: localhost:27010
+2016-02-17T23:02:28.139-0200 I SHARDING [LockPinger] creating distributed lock ping thread for localhost:27010 and process neozork-pc:27011:1455757348:1804289383 (sleeping for 30000ms)
+2016-02-17T23:02:28.344-0200 I SHARDING [LockPinger] cluster localhost:27010 pinged successfully at 2016-02-17T23:02:28.139-0200 by distributed lock pinger 'localhost:27010/neozork-pc:27011:1455757348:1804289383', sleeping for 30000ms
+2016-02-17T23:02:28.344-0200 I SHARDING [mongosMain] distributed lock 'configUpgrade/neozork-pc:27011:1455757348:1804289383' acquired for 'initializing config database to new format v6', ts : 56c518245a1e904c5f26b4f5
+2016-02-17T23:02:28.345-0200 I SHARDING [mongosMain] initializing config server version to 6
+2016-02-17T23:02:28.345-0200 I SHARDING [mongosMain] writing initial config version at v6
+2016-02-17T23:02:28.503-0200 I SHARDING [mongosMain] initialization of config server to v6 successful
+2016-02-17T23:02:28.503-0200 I SHARDING [mongosMain] distributed lock 'configUpgrade/neozork-pc:27011:1455757348:1804289383' unlocked.
+2016-02-17T23:02:29.581-0200 I NETWORK  [HostnameCanonicalizationWorker] Starting hostname canonicalization worker
+2016-02-17T23:02:29.581-0200 I SHARDING [Balancer] about to contact config servers and shards
+2016-02-17T23:02:29.582-0200 I SHARDING [Balancer] config servers and shards contacted successfully
+2016-02-17T23:02:29.582-0200 I SHARDING [Balancer] balancer id: neozork-pc:27011 started
+2016-02-17T23:02:29.600-0200 I NETWORK  [mongosMain] waiting for connections on port 27011
+2016-02-17T23:02:29.731-0200 I SHARDING [Balancer] distributed lock 'balancer/neozork-pc:27011:1455757348:1804289383' acquired for 'doing balance round', ts : 56c518255a1e904c5f26b4f8
+2016-02-17T23:02:29.830-0200 I SHARDING [Balancer] about to log metadata event into actionlog: { _id: "neozork-pc-2016-02-17T23:02:29.830-0200-56c518255a1e904c5f26b4f9", server: "neozork-pc", clientAddr: "", time: new Date(1455757349830), what: "balancer.round", ns: "", details: { executionTimeMillis: 149, errorOccured: false, candidateChunks: 0, chunksMoved: 0 } }
+2016-02-17T23:02:29.838-0200 I SHARDING [Balancer] distributed lock 'balancer/neozork-pc:27011:1455757348:1804289383' unlocked.
+```
 
-```javascript
-// Criando diretório para as répicas
+#### Criação dos Shards
+
+```
+mkdir /data/shard1 && mkdir /data/shard2 && mkdir /data/shard3
+```
+
+##### Shard 1
+```
+mongod --port 27012 --dbpath /data/shard1
+2016-02-17T23:03:59.307-0200 I CONTROL  [initandlisten] MongoDB starting : pid=9843 port=27012 dbpath=/data/shard1 64-bit host=neozork-pc
+2016-02-17T23:03:59.307-0200 I CONTROL  [initandlisten] db version v3.2.1
+2016-02-17T23:03:59.307-0200 I CONTROL  [initandlisten] git version: a14d55980c2cdc565d4704a7e3ad37e4e535c1b2
+2016-02-17T23:03:59.307-0200 I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.0.1e-fips 11 Feb 2013
+2016-02-17T23:03:59.307-0200 I CONTROL  [initandlisten] allocator: tcmalloc
+2016-02-17T23:03:59.307-0200 I CONTROL  [initandlisten] modules: none
+2016-02-17T23:03:59.307-0200 I CONTROL  [initandlisten] build environment:
+2016-02-17T23:03:59.307-0200 I CONTROL  [initandlisten]     distmod: rhel70
+2016-02-17T23:03:59.307-0200 I CONTROL  [initandlisten]     distarch: x86_64
+2016-02-17T23:03:59.307-0200 I CONTROL  [initandlisten]     target_arch: x86_64
+2016-02-17T23:03:59.307-0200 I CONTROL  [initandlisten] options: { net: { port: 27012 }, storage: { dbPath: "/data/shard1" } }
+2016-02-17T23:03:59.325-0200 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=8G,session_max=20000,eviction=(threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),checkpoint=(wait=60,log_size=2GB),statistics_log=(wait=0),
+2016-02-17T23:03:59.677-0200 I CONTROL  [initandlisten]
+2016-02-17T23:03:59.677-0200 I CONTROL  [initandlisten] ** WARNING: /sys/kernel/mm/transparent_hugepage/defrag is 'always'.
+2016-02-17T23:03:59.677-0200 I CONTROL  [initandlisten] **        We suggest setting it to 'never'
+2016-02-17T23:03:59.677-0200 I CONTROL  [initandlisten]
+2016-02-17T23:03:59.678-0200 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/data/shard1/diagnostic.data'
+2016-02-17T23:03:59.678-0200 I NETWORK  [HostnameCanonicalizationWorker] Starting hostname canonicalization worker
+2016-02-17T23:03:59.830-0200 I NETWORK  [initandlisten] waiting for connections on port 27012
+```
+
+##### Shard 2
+```
+mongod --port 27013 --dbpath /data/shard2
+2016-02-17T23:04:55.123-0200 I CONTROL  [initandlisten] MongoDB starting : pid=9931 port=27013 dbpath=/data/shard2 64-bit host=neozork-pc
+2016-02-17T23:04:55.123-0200 I CONTROL  [initandlisten] db version v3.2.1
+2016-02-17T23:04:55.123-0200 I CONTROL  [initandlisten] git version: a14d55980c2cdc565d4704a7e3ad37e4e535c1b2
+2016-02-17T23:04:55.123-0200 I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.0.1e-fips 11 Feb 2013
+2016-02-17T23:04:55.123-0200 I CONTROL  [initandlisten] allocator: tcmalloc
+2016-02-17T23:04:55.123-0200 I CONTROL  [initandlisten] modules: none
+2016-02-17T23:04:55.123-0200 I CONTROL  [initandlisten] build environment:
+2016-02-17T23:04:55.123-0200 I CONTROL  [initandlisten]     distmod: rhel70
+2016-02-17T23:04:55.123-0200 I CONTROL  [initandlisten]     distarch: x86_64
+2016-02-17T23:04:55.123-0200 I CONTROL  [initandlisten]     target_arch: x86_64
+2016-02-17T23:04:55.123-0200 I CONTROL  [initandlisten] options: { net: { port: 27013 }, storage: { dbPath: "/data/shard2" } }
+2016-02-17T23:04:55.141-0200 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=8G,session_max=20000,eviction=(threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),checkpoint=(wait=60,log_size=2GB),statistics_log=(wait=0),
+2016-02-17T23:04:55.491-0200 I CONTROL  [initandlisten]
+2016-02-17T23:04:55.491-0200 I CONTROL  [initandlisten] ** WARNING: /sys/kernel/mm/transparent_hugepage/defrag is 'always'.
+2016-02-17T23:04:55.491-0200 I CONTROL  [initandlisten] **        We suggest setting it to 'never'
+2016-02-17T23:04:55.491-0200 I CONTROL  [initandlisten]
+2016-02-17T23:04:55.491-0200 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/data/shard2/diagnostic.data'
+2016-02-17T23:04:55.491-0200 I NETWORK  [HostnameCanonicalizationWorker] Starting hostname canonicalization worker
+2016-02-17T23:04:55.646-0200 I NETWORK  [initandlisten] waiting for connections on port 27013
+```
+
+##### Shard 3
+```
+mongod --port 27014 --dbpath /data/shard3
+2016-02-17T23:05:42.027-0200 I CONTROL  [initandlisten] MongoDB starting : pid=10056 port=27014 dbpath=/data/shard3 64-bit host=neozork-pc
+2016-02-17T23:05:42.027-0200 I CONTROL  [initandlisten] db version v3.2.1
+2016-02-17T23:05:42.027-0200 I CONTROL  [initandlisten] git version: a14d55980c2cdc565d4704a7e3ad37e4e535c1b2
+2016-02-17T23:05:42.027-0200 I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.0.1e-fips 11 Feb 2013
+2016-02-17T23:05:42.027-0200 I CONTROL  [initandlisten] allocator: tcmalloc
+2016-02-17T23:05:42.027-0200 I CONTROL  [initandlisten] modules: none
+2016-02-17T23:05:42.027-0200 I CONTROL  [initandlisten] build environment:
+2016-02-17T23:05:42.027-0200 I CONTROL  [initandlisten]     distmod: rhel70
+2016-02-17T23:05:42.027-0200 I CONTROL  [initandlisten]     distarch: x86_64
+2016-02-17T23:05:42.027-0200 I CONTROL  [initandlisten]     target_arch: x86_64
+2016-02-17T23:05:42.027-0200 I CONTROL  [initandlisten] options: { net: { port: 27014 }, storage: { dbPath: "/data/shard3" } }
+2016-02-17T23:05:42.046-0200 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=8G,session_max=20000,eviction=(threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),checkpoint=(wait=60,log_size=2GB),statistics_log=(wait=0),
+2016-02-17T23:05:42.452-0200 I CONTROL  [initandlisten]
+2016-02-17T23:05:42.452-0200 I CONTROL  [initandlisten] ** WARNING: /sys/kernel/mm/transparent_hugepage/defrag is 'always'.
+2016-02-17T23:05:42.452-0200 I CONTROL  [initandlisten] **        We suggest setting it to 'never'
+2016-02-17T23:05:42.452-0200 I CONTROL  [initandlisten]
+2016-02-17T23:05:42.452-0200 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/data/shard3/diagnostic.data'
+2016-02-17T23:05:42.452-0200 I NETWORK  [HostnameCanonicalizationWorker] Starting hostname canonicalization worker
+2016-02-17T23:05:42.585-0200 I NETWORK  [initandlisten] waiting for connections on port 27014
+```
+
+#### Adicionando os shards no router
+```
+mongo --port 27011 --host localhost
+```
+```js
+sh.addShard("localhost:27012")
+{
+  "shardAdded": "shard0000",
+  "ok": 1
+}
+
+sh.addShard("localhost:27013")
+{
+  "shardAdded": "shard0001",
+  "ok": 1
+}
+
+sh.addShard("localhost:27014")
+{
+  "shardAdded": "shard0002",
+  "ok": 1
+}
+
+sh.enableSharding("be-mean-modulo-mongodb-pf")
+{
+  "ok": 1
+}
+
+sh.shardCollection("be-mean-modulo-mongodb-pf.activities", {"_id" : 1})
+{
+  "collectionsharded": "be-mean-modulo-mongodb-pf.activities",
+  "ok": 1
+}
+```
+
+## Réplica
+#### Criando diretório para as répicas
+```  
 mkdir /data/rs1 && mkdir /data/rs2 && mkdir /data/rs3
+```
 
-// Inicializando as réplicas em suas respectivas portas
-// réplica 1
+#### Inicializando as réplicas em suas respectivas portas
+##### Réplica 1  
+```
 mongod --replSet replica_set --port 27017 --dbpath /data/rs1
+2016-02-17T22:33:13.477-0200 I CONTROL  [initandlisten] MongoDB starting : pid=7914 port=27017 dbpath=/data/rs1 64-bit host=neozork-pc
+2016-02-17T22:33:13.477-0200 I CONTROL  [initandlisten] db version v3.2.1
+2016-02-17T22:33:13.477-0200 I CONTROL  [initandlisten] git version: a14d55980c2cdc565d4704a7e3ad37e4e535c1b2
+2016-02-17T22:33:13.477-0200 I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.0.1e-fips 11 Feb 2013
+2016-02-17T22:33:13.477-0200 I CONTROL  [initandlisten] allocator: tcmalloc
+2016-02-17T22:33:13.477-0200 I CONTROL  [initandlisten] modules: none
+2016-02-17T22:33:13.477-0200 I CONTROL  [initandlisten] build environment:
+2016-02-17T22:33:13.477-0200 I CONTROL  [initandlisten]     distmod: rhel70
+2016-02-17T22:33:13.477-0200 I CONTROL  [initandlisten]     distarch: x86_64
+2016-02-17T22:33:13.477-0200 I CONTROL  [initandlisten]     target_arch: x86_64
+2016-02-17T22:33:13.477-0200 I CONTROL  [initandlisten] options: { net: { port: 27017 }, replication: { replSet: "replica_set" }, storage: { dbPath: "/data/rs1" } }
+2016-02-17T22:33:13.495-0200 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=8G,session_max=20000,eviction=(threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),checkpoint=(wait=60,log_size=2GB),statistics_log=(wait=0),
+2016-02-17T22:33:13.896-0200 I CONTROL  [initandlisten]
+2016-02-17T22:33:13.897-0200 I CONTROL  [initandlisten] ** WARNING: /sys/kernel/mm/transparent_hugepage/defrag is 'always'.
+2016-02-17T22:33:13.897-0200 I CONTROL  [initandlisten] **        We suggest setting it to 'never'
+2016-02-17T22:33:13.897-0200 I CONTROL  [initandlisten]
+2016-02-17T22:33:14.046-0200 I REPL     [initandlisten] Did not find local voted for document at startup;  NoMatchingDocument Did not find replica set lastVote document in local.replset.election
+2016-02-17T22:33:14.046-0200 I REPL     [initandlisten] Did not find local replica set configuration document at startup;  NoMatchingDocument Did not find replica set configuration document in local.system.replset
+2016-02-17T22:33:14.046-0200 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/data/rs1/diagnostic.data'
+2016-02-17T22:33:14.046-0200 I NETWORK  [HostnameCanonicalizationWorker] Starting hostname canonicalization worker
+2016-02-17T22:33:14.190-0200 I NETWORK  [initandlisten] waiting for connections on port 27017
+```
 
-// réplica 2
+##### Réplica 2
+```
 mongod --replSet replica_set --port 27018 --dbpath /data/rs2
+2016-02-17T22:38:27.422-0200 I CONTROL  [initandlisten] MongoDB starting : pid=8361 port=27018 dbpath=/data/rs2 64-bit host=neozork-pc
+2016-02-17T22:38:27.422-0200 I CONTROL  [initandlisten] db version v3.2.1
+2016-02-17T22:38:27.422-0200 I CONTROL  [initandlisten] git version: a14d55980c2cdc565d4704a7e3ad37e4e535c1b2
+2016-02-17T22:38:27.422-0200 I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.0.1e-fips 11 Feb 2013
+2016-02-17T22:38:27.422-0200 I CONTROL  [initandlisten] allocator: tcmalloc
+2016-02-17T22:38:27.422-0200 I CONTROL  [initandlisten] modules: none
+2016-02-17T22:38:27.422-0200 I CONTROL  [initandlisten] build environment:
+2016-02-17T22:38:27.422-0200 I CONTROL  [initandlisten]     distmod: rhel70
+2016-02-17T22:38:27.422-0200 I CONTROL  [initandlisten]     distarch: x86_64
+2016-02-17T22:38:27.422-0200 I CONTROL  [initandlisten]     target_arch: x86_64
+2016-02-17T22:38:27.422-0200 I CONTROL  [initandlisten] options: { net: { port: 27018 }, replication: { replSet: "replica_set" }, storage: { dbPath: "/data/rs2" } }
+2016-02-17T22:38:27.440-0200 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=8G,session_max=20000,eviction=(threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),checkpoint=(wait=60,log_size=2GB),statistics_log=(wait=0),
+2016-02-17T22:38:27.815-0200 I CONTROL  [initandlisten]
+2016-02-17T22:38:27.815-0200 I CONTROL  [initandlisten] ** WARNING: /sys/kernel/mm/transparent_hugepage/defrag is 'always'.
+2016-02-17T22:38:27.815-0200 I CONTROL  [initandlisten] **        We suggest setting it to 'never'
+2016-02-17T22:38:27.815-0200 I CONTROL  [initandlisten]
+2016-02-17T22:38:27.956-0200 I REPL     [initandlisten] Did not find local voted for document at startup;  NoMatchingDocument Did not find replica set lastVote document in local.replset.election
+2016-02-17T22:38:27.956-0200 I REPL     [initandlisten] Did not find local replica set configuration document at startup;  NoMatchingDocument Did not find replica set configuration document in local.system.replset
+2016-02-17T22:38:27.956-0200 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/data/rs2/diagnostic.data'
+2016-02-17T22:38:27.956-0200 I NETWORK  [HostnameCanonicalizationWorker] Starting hostname canonicalization worker
+2016-02-17T22:38:28.111-0200 I NETWORK  [initandlisten] waiting for connections on port 27018
+```
 
-// réplica 3
+##### Réplica 3
+```
 mongod --replSet replica_set --port 27019 --dbpath /data/rs3
+2016-02-17T22:38:59.686-0200 I CONTROL  [initandlisten] MongoDB starting : pid=8449 port=27019 dbpath=/data/rs3 64-bit host=neozork-pc
+2016-02-17T22:38:59.686-0200 I CONTROL  [initandlisten] db version v3.2.1
+2016-02-17T22:38:59.686-0200 I CONTROL  [initandlisten] git version: a14d55980c2cdc565d4704a7e3ad37e4e535c1b2
+2016-02-17T22:38:59.686-0200 I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.0.1e-fips 11 Feb 2013
+2016-02-17T22:38:59.686-0200 I CONTROL  [initandlisten] allocator: tcmalloc
+2016-02-17T22:38:59.686-0200 I CONTROL  [initandlisten] modules: none
+2016-02-17T22:38:59.686-0200 I CONTROL  [initandlisten] build environment:
+2016-02-17T22:38:59.686-0200 I CONTROL  [initandlisten]     distmod: rhel70
+2016-02-17T22:38:59.686-0200 I CONTROL  [initandlisten]     distarch: x86_64
+2016-02-17T22:38:59.686-0200 I CONTROL  [initandlisten]     target_arch: x86_64
+2016-02-17T22:38:59.686-0200 I CONTROL  [initandlisten] options: { net: { port: 27019 }, replication: { replSet: "replica_set" }, storage: { dbPath: "/data/rs3" } }
+2016-02-17T22:38:59.704-0200 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=8G,session_max=20000,eviction=(threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),checkpoint=(wait=60,log_size=2GB),statistics_log=(wait=0),
+2016-02-17T22:39:00.037-0200 I CONTROL  [initandlisten]
+2016-02-17T22:39:00.037-0200 I CONTROL  [initandlisten] ** WARNING: /sys/kernel/mm/transparent_hugepage/defrag is 'always'.
+2016-02-17T22:39:00.037-0200 I CONTROL  [initandlisten] **        We suggest setting it to 'never'
+2016-02-17T22:39:00.037-0200 I CONTROL  [initandlisten]
+2016-02-17T22:39:00.166-0200 I REPL     [initandlisten] Did not find local voted for document at startup;  NoMatchingDocument Did not find replica set lastVote document in local.replset.election
+2016-02-17T22:39:00.166-0200 I REPL     [initandlisten] Did not find local replica set configuration document at startup;  NoMatchingDocument Did not find replica set configuration document in local.system.replset
+2016-02-17T22:39:00.166-0200 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/data/rs3/diagnostic.data'
+2016-02-17T22:39:00.166-0200 I NETWORK  [HostnameCanonicalizationWorker] Starting hostname canonicalization worker
+2016-02-17T22:39:00.288-0200 I NETWORK  [initandlisten] waiting for connections on port 27019
+```
 
-// Conexão na réplica primária para configurar e adicionar as outras réplicas
+#### Conexão na réplica primária para configurar e adicionar as outras réplicas
+```
 mongo --port 27017
+```
+```js
 rsconf = {
    _id: "replica_set",
    members: [
@@ -1450,14 +1670,66 @@ rsconf = {
   ]
 }
 rs.initiate(rsconf)
+{
+  "ok": 1
+}
 
 rs.add("127.0.0.1:27018")
+{
+  "ok": 1
+}
+
 rs.add("127.0.0.1:27019")
+{
+  "ok": 1
+}
+```
 
-// Adicionando o árbitro na réplica primária
+##### Adicionando o árbitro na réplica primária
+```js
 rs.addArb("127.0.0.1:30000")
+{
+  "ok": 1
+}
+```
 
-// Adicionando um árbitro
-sudo mkdir /data/arb
+#### Adicionando um árbitro
+```
+mkdir /data/arb
+```
+```
 mongod --port 30000 --dbpath /data/arb --replSet replica_set
+2016-02-17T22:47:28.562-0200 I CONTROL  [initandlisten] MongoDB starting : pid=9264 port=30000 dbpath=/data/arb 64-bit host=neozork-pc
+2016-02-17T22:47:28.562-0200 I CONTROL  [initandlisten] db version v3.2.1
+2016-02-17T22:47:28.562-0200 I CONTROL  [initandlisten] git version: a14d55980c2cdc565d4704a7e3ad37e4e535c1b2
+2016-02-17T22:47:28.562-0200 I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.0.1e-fips 11 Feb 2013
+2016-02-17T22:47:28.562-0200 I CONTROL  [initandlisten] allocator: tcmalloc
+2016-02-17T22:47:28.562-0200 I CONTROL  [initandlisten] modules: none
+2016-02-17T22:47:28.562-0200 I CONTROL  [initandlisten] build environment:
+2016-02-17T22:47:28.562-0200 I CONTROL  [initandlisten]     distmod: rhel70
+2016-02-17T22:47:28.562-0200 I CONTROL  [initandlisten]     distarch: x86_64
+2016-02-17T22:47:28.562-0200 I CONTROL  [initandlisten]     target_arch: x86_64
+2016-02-17T22:47:28.562-0200 I CONTROL  [initandlisten] options: { net: { port: 30000 }, replication: { replSet: "replica_set" }, storage: { dbPath: "/data/arb" } }
+2016-02-17T22:47:28.581-0200 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=8G,session_max=20000,eviction=(threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),checkpoint=(wait=60,log_size=2GB),statistics_log=(wait=0),
+2016-02-17T22:47:29.263-0200 I CONTROL  [initandlisten]
+2016-02-17T22:47:29.263-0200 I CONTROL  [initandlisten] ** WARNING: /sys/kernel/mm/transparent_hugepage/defrag is 'always'.
+2016-02-17T22:47:29.263-0200 I CONTROL  [initandlisten] **        We suggest setting it to 'never'
+2016-02-17T22:47:29.263-0200 I CONTROL  [initandlisten]
+2016-02-17T22:47:29.387-0200 I REPL     [initandlisten] Did not find local voted for document at startup;  NoMatchingDocument Did not find replica set lastVote document in local.replset.election
+2016-02-17T22:47:29.387-0200 I REPL     [initandlisten] Did not find local replica set configuration document at startup;  NoMatchingDocument Did not find replica set configuration document in local.system.replset
+2016-02-17T22:47:29.387-0200 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/data/arb/diagnostic.data'
+2016-02-17T22:47:29.387-0200 I NETWORK  [HostnameCanonicalizationWorker] Starting hostname canonicalization worker
+2016-02-17T22:47:29.515-0200 I NETWORK  [initandlisten] waiting for connections on port 30000
+2016-02-17T22:47:29.709-0200 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:36262 #1 (1 connection now open)
+2016-02-17T22:47:29.710-0200 I ASIO     [NetworkInterfaceASIO-Replication-0] Successfully connected to 127.0.0.1:27017
+2016-02-17T22:47:29.719-0200 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:36272 #2 (2 connections now open)
+2016-02-17T22:47:29.720-0200 I ASIO     [NetworkInterfaceASIO-Replication-0] Successfully connected to 127.0.0.1:27018
+2016-02-17T22:47:29.896-0200 I REPL     [ReplicationExecutor] New replica set config in use: { _id: "replica_set", version: 4, protocolVersion: 1, members: [ { _id: 0, host: "127.0.0.1:27017", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 1, host: "127.0.0.1:27018", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 2, host: "127.0.0.1:27019", arbiterOnly: false, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 }, { _id: 3, host: "127.0.0.1:30000", arbiterOnly: true, buildIndexes: true, hidden: false, priority: 1.0, tags: {}, slaveDelay: 0, votes: 1 } ], settings: { chainingAllowed: true, heartbeatIntervalMillis: 2000, heartbeatTimeoutSecs: 10, electionTimeoutMillis: 10000, getLastErrorModes: {}, getLastErrorDefaults: { w: 1, wtimeout: 0 } } }
+2016-02-17T22:47:29.896-0200 I REPL     [ReplicationExecutor] This node is 127.0.0.1:30000 in the config
+2016-02-17T22:47:29.896-0200 I REPL     [ReplicationExecutor] transition to ARBITER
+2016-02-17T22:47:29.896-0200 I REPL     [ReplicationExecutor] Member 127.0.0.1:27017 is now in state PRIMARY
+2016-02-17T22:47:29.896-0200 I REPL     [ReplicationExecutor] Member 127.0.0.1:27018 is now in state SECONDARY
+2016-02-17T22:47:29.896-0200 I ASIO     [NetworkInterfaceASIO-Replication-0] Successfully connected to 127.0.0.1:27019
+2016-02-17T22:47:29.897-0200 I REPL     [ReplicationExecutor] Member 127.0.0.1:27019 is now in state SECONDARY
+2016-02-17T22:47:30.719-0200 I NETWORK  [initandlisten] connection accepted from 127.0.0.1:36278 #3 (3 connections now open)
 ```
