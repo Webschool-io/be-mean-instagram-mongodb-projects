@@ -1,6 +1,6 @@
 # MongoDb - Projeto Final
 **Autor:** Felipe José Lopes Rita
-**Data** Date.now() //em timestamp
+**Data** 1455850109228
 
 ##1. Para qual sistema você usaria o MongoDB (diferente desse)?
 Antigamente não cogitava a utilização de bancos NoSQL, por não conhecer e julgar que a curva de aprendizado seria lenta e não produtiva. Agora que conheço, posso dizer que fiquei fascinado com a simplicidade e praticidade que o banco proporciona. Sendo assim, eu usaria MongoDB em quase todas as minhas aplicações web, devido as suas vantagens que apontei antes. Obviamente, talvez fossem necessários outros bancos para casos mais específicos (grafos e tudo mais), mas então eu poderia utilizá-los em conjunto com o mongo, tendo uma aplicação com múltiplos bancos de dados, como o Suissa comentou que existiam, na primeira aula de mongo.
