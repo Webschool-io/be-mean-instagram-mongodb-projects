@@ -2,14 +2,15 @@
 **Autor:** Mateus Cerezini Gomes
 **Data** 1456110734
 
-## Para qual sistema você usaria o MogoDB (diferente desse)?
+## Para qual sistema você usaria o MongoDB (diferente desse)?
 - Jogos
 - E-commerce
 - Chat
 - Grandes sistemas comerciais
 - Qualquer sistema robusto que demanda alta escalabilidade e alta disponibilidade.
 
-## Qual a modelagem da sua coleção de `users`?
+##Modelagem
+###Qual a modelagem da sua coleção de `users`?
 ```js
 user = {
 	_id: <ObjectId>,
@@ -28,7 +29,7 @@ user = {
 }
 ```
 
-## Qual a modelagem da sua coleção de `projects`?
+###Qual a modelagem da sua coleção de `projects`?
 ```js
 project = {
 	_id: <ObjectId>,
@@ -68,7 +69,7 @@ project = {
 }
 ```
 
-## Qual a modelagem da sua coleção retirada de `projects`?
+###Qual a modelagem da sua coleção retirada de `projects`?
 ```js
 activities = {
 	_id: <ObjectId>,
@@ -1216,10 +1217,10 @@ db.runCommand({usersInfo: [{user: 'user1', db: 'admin'}, {user: 'user2', db: 'ad
 ## Cluster
 
 O cluster será feito localmente contendo:
-- 1 `Config Server`
-- 1 `Router`
-- 3 `Shards`
-- 3 `Réplicas` = cada `Shard` possuirá uma 1 `Réplica Secundária`
+- 1 Config Server
+- 1 Router
+- 3 Shards
+- 3 Réplicas = cada Shard possuirá uma 1 Réplica Secundária
 
 Foi criada uma pasta específica para armazenar todos os servers.
 ```js
