@@ -968,21 +968,81 @@ db.createUser({
 ```JS
 db.createRole({
     role: "grantRolesToUser",
-    privileges: [{
-        resource: { db: "projects", collection: "project" }, actions: [ "find" ] },
-        { resource : { db: "admin", collection: "" }, actions : ["grantRole"] }
+    privileges: [
+        { resource: { db: "projects", collection: "project" }, actions: [ "find" ] },
+        { resource: { db: "projects", collection: "project" }, actions: ["grantRole"] }
     ],
     roles: [{ role: "readWrite", db: "projects" }]
 });
 
+// {
+//   "role": "grantRolesToUser",
+//   "privileges": [
+//     {
+//       "resource": {
+//         "db": "projects",
+//         "collection": "project"
+//       },
+//      "actions": [
+//        "find"
+//      ]
+//    },
+//   {
+//     "resource": {
+//       "db": "projects",
+//        "collection": "project"
+//      },
+//      "actions": [
+//        "grantRole"
+//      ]
+//    }
+//  ],
+//  "roles": [
+//    {
+//      "role": "readWrite",
+//      "db": "projects"
+//    }
+//  ]
+//}
+
 db.createRole({
     role: "revokeRole",
-    privileges: [{
-        resource: { db: "projects", collection: "project" }, actions: [ "find" ] },
-        { resource : { db: "admin", collection: "" }, actions : ["grantRole"] }
+    privileges: [
+        { resource: { db: "projects", collection: "project" }, actions: [ "find" ] },
+        { resource: { db: "projects", collection: "project" }, actions: ["grantRole"] }
     ],
     roles: [{ role: "readWrite", db: "projects" }]
 });
+
+// {
+//   "role": "revokeRole",
+//   "privileges": [
+//     {
+//       "resource": {
+//        "db": "projects",
+//         "collection": "project"
+//       },
+//       "actions": [
+//         "find"
+//       ]
+//     },
+//     {
+//       "resource": {
+//         "db": "projects",
+//         "collection": "project"
+//       },
+//       "actions": [
+//         "grantRole"
+//       ]
+//     }
+//   ],
+//   "roles": [
+//     {
+//       "role": "readWrite",
+//       "db": "projects"
+//     }
+//   ]
+// }
 
 db.updateUser( "usernew2", {
     roles: [
@@ -997,14 +1057,43 @@ db.updateUser( "usernew2", {
 db.runCommand({
     revokeRolesFromUser: "usernew2",
     roles: [
-        { role: "grantRolesToUser", db: "admin" }
+        { role: "grantRolesToUser", db: "projects" }
     ]
 });
+
+// {
+//   "ok": 1
+// }
 ```
 
 5. Listar todos os usuários com seus papéis e ações.
 ```JS
 db.getUsers();
+
+// [
+//   {
+//     "_id": "projects.usernew",
+//     "user": "usernew",
+//     "db": "projects",
+//     "roles": [
+//       {
+//         "role": "read",
+//         "db": "projects"
+//       }
+//     ]
+//   },
+//   {
+//     "_id": "projects.usernew2",
+//     "user": "usernew2",
+//     "db": "projects",
+//     "roles": [
+//       {
+//         "role": "revokeRole",
+//         "db": "projects"
+//       }
+//     ]
+//   }
+// ]
 ```
 
 ## Cluster
