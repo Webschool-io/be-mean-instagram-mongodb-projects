@@ -931,7 +931,7 @@ db.project.remove({ tag: { $in: tag } })
 db.createUser({
     user: "usernew",
     pwd: "123456",
-    roles: [{ role: "read", db: "admin" }]
+    roles: [{ role: "read", db: "projects" }]
 });
 
 // Successfully added user: {
@@ -939,7 +939,7 @@ db.createUser({
 //   "roles": [
 //     {
 //       "role": "read",
-//       "db": "admin"
+//       "db": "projects"
 //     }
 //   ]
 // }
@@ -950,7 +950,7 @@ db.createUser({
 db.createUser({
     user: "usernew2",
     pwd: "123456",
-    roles: [{ role: "readWrite", db: "admin" }]
+    roles: [{ role: "readWrite", db: "projects" }]
 });
 
 // Successfully added user: {
@@ -958,7 +958,7 @@ db.createUser({
 //   "roles": [
 //     {
 //       "role": "readWrite",
-//       "db": "admin"
+//       "db": "projects"
 //     }
 //   ]
 // };
