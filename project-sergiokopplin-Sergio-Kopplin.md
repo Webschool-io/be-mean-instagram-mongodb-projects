@@ -206,7 +206,7 @@ membersByProject.forEach(function(obj, x){
 // - cada um com pelo menos 3 tags diferentes;
 // - escolha 1 *tag* onde deva ficar em 2 projetos;
 // - escolha 1 *tag* onde deva ficar em 3 projetos;
-var tags = [ "framework", "css", "less", "sass", "stylus", "js", "angular", "react", "mvc", "jquery", "backbone", "ember
+var tags = [ "framework", "css", "less", "sass", "stylus", "js", "angular", "react", "mvc", "jquery", "backbone", "ember" ];
 
 var tagsList = [
     [ "framework", "less", "sass" ],
