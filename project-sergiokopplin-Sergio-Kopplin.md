@@ -206,7 +206,8 @@ membersByProject.forEach(function(obj, x){
 // - cada um com pelo menos 3 tags diferentes;
 // - escolha 1 *tag* onde deva ficar em 2 projetos;
 // - escolha 1 *tag* onde deva ficar em 3 projetos;
-var tags = [ "framework", "css", "less", "sass", "stylus", "js", "angular", "react", "mvc", "jquery", "backbone", "ember" ];
+var tags = [ "framework", "css", "less", "sass", "stylus", "js", "angular", "react", "mvc", "jquery", "backbone", "ember
+
 var tagsList = [
     [ "framework", "less", "sass" ],
     [ "framework", "stylus", "js" ],
@@ -854,7 +855,7 @@ insert = {
     }
 
     db.project.update({ name: /Yahoo/i }, insert, { upsert: true });
-});
+};
 
 // Updated 1 new record(s) in 1ms
 // WriteResult({
@@ -1114,17 +1115,105 @@ sudo mkdir rs1
 sudo mkdir rs2
 sudo mkdir rs3
 
-sudo mongod --replSet replicacao --port 27017 --dbpath /data/rs1
-sudo mongod --replSet replicacao --port 27018 --dbpath /data/rs2
-sudo mongod --replSet replicacao --port 27019 --dbpath /data/rs3
-mongo --port 27017
+// $ ls
+// db  rs1 rs2 rs3
 
-var rsconf = { _id: "replicacao", members: [{ _id: 0, host: "127.0.0.1:27017" }]};
+sudo mongod --replSet replicacao --port 27027 --dbpath /data/rs1
+
+/*
+2016-02-23T23:20:38.979-0300 I CONTROL  [initandlisten] MongoDB starting : pid=6257 port=27027 dbpath=/data/rs1 64-bit host=Sergios-Mac-Pro.local
+2016-02-23T23:20:38.979-0300 I CONTROL  [initandlisten] db version v3.2.1
+2016-02-23T23:20:38.979-0300 I CONTROL  [initandlisten] git version: a14d55980c2cdc565d4704a7e3ad37e4e535c1b2
+2016-02-23T23:20:38.979-0300 I CONTROL  [initandlisten] allocator: system
+2016-02-23T23:20:38.979-0300 I CONTROL  [initandlisten] modules: none
+2016-02-23T23:20:38.979-0300 I CONTROL  [initandlisten] build environment:
+2016-02-23T23:20:38.979-0300 I CONTROL  [initandlisten]     distarch: x86_64
+2016-02-23T23:20:38.979-0300 I CONTROL  [initandlisten]     target_arch: x86_64
+2016-02-23T23:20:38.979-0300 I CONTROL  [initandlisten] options: { net: { port: 27027 }, replication: { replSet: "replicacao" }, storage: { dbPath: "/data/rs1" } }
+2016-02-23T23:20:38.980-0300 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=4G,session_max=20000,eviction=(threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),checkpoint=(wait=60,log_size=2GB),statistics_log=(wait=0),
+2016-02-23T23:20:42.740-0300 I CONTROL  [initandlisten] ** WARNING: You are running this process as the root user, which is not recommended.
+2016-02-23T23:20:42.740-0300 I CONTROL  [initandlisten]
+2016-02-23T23:20:42.803-0300 I REPL     [initandlisten] Did not find local voted for document at startup;  NoMatchingDocument Did not find replica set lastVote document in local.replset.election
+2016-02-23T23:20:42.803-0300 I REPL     [initandlisten] Did not find local replica set configuration document at startup;  NoMatchingDocument Did not find replica set configuration document in local.system.replset
+2016-02-23T23:20:42.803-0300 I NETWORK  [HostnameCanonicalizationWorker] Starting hostname canonicalization worker
+2016-02-23T23:20:42.803-0300 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/data/rs1/diagnostic.data'
+2016-02-23T23:20:42.864-0300 I NETWORK  [initandlisten] waiting for connections on port 27027
+*/
+
+sudo mongod --replSet replicacao --port 27028 --dbpath /data/rs2
+
+/*
+2016-02-23T23:21:31.664-0300 I CONTROL  [initandlisten] MongoDB starting : pid=6296 port=27028 dbpath=/data/rs2 64-bit host=Sergios-Mac-Pro.local
+2016-02-23T23:21:31.665-0300 I CONTROL  [initandlisten] db version v3.2.1
+2016-02-23T23:21:31.665-0300 I CONTROL  [initandlisten] git version: a14d55980c2cdc565d4704a7e3ad37e4e535c1b2
+2016-02-23T23:21:31.665-0300 I CONTROL  [initandlisten] allocator: system
+2016-02-23T23:21:31.665-0300 I CONTROL  [initandlisten] modules: none
+2016-02-23T23:21:31.665-0300 I CONTROL  [initandlisten] build environment:
+2016-02-23T23:21:31.665-0300 I CONTROL  [initandlisten]     distarch: x86_64
+2016-02-23T23:21:31.665-0300 I CONTROL  [initandlisten]     target_arch: x86_64
+2016-02-23T23:21:31.665-0300 I CONTROL  [initandlisten] options: { net: { port: 27028 }, replication: { replSet: "replicacao" }, storage: { dbPath: "/data/rs2" } }
+2016-02-23T23:21:31.665-0300 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=4G,session_max=20000,eviction=(threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),checkpoint=(wait=60,log_size=2GB),statistics_log=(wait=0),
+2016-02-23T23:21:38.839-0300 I CONTROL  [initandlisten] ** WARNING: You are running this process as the root user, which is not recommended.
+2016-02-23T23:21:38.839-0300 I CONTROL  [initandlisten]
+2016-02-23T23:21:38.912-0300 I REPL     [initandlisten] Did not find local voted for document at startup;  NoMatchingDocument Did not find replica set lastVote document in local.replset.election
+2016-02-23T23:21:38.912-0300 I REPL     [initandlisten] Did not find local replica set configuration document at startup;  NoMatchingDocument Did not find replica set configuration document in local.system.replset
+2016-02-23T23:21:38.912-0300 I NETWORK  [HostnameCanonicalizationWorker] Starting hostname canonicalization worker
+2016-02-23T23:21:38.912-0300 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/data/rs2/diagnostic.data'
+2016-02-23T23:21:38.976-0300 I NETWORK  [initandlisten] waiting for connections on port 27028
+*/
+
+sudo mongod --replSet replicacao --port 27029 --dbpath /data/rs3
+
+/*
+2016-02-23T23:21:50.440-0300 I CONTROL  [initandlisten] MongoDB starting : pid=6328 port=27029 dbpath=/data/rs3 64-bit host=Sergios-Mac-Pro.local
+2016-02-23T23:21:50.441-0300 I CONTROL  [initandlisten] db version v3.2.1
+2016-02-23T23:21:50.441-0300 I CONTROL  [initandlisten] git version: a14d55980c2cdc565d4704a7e3ad37e4e535c1b2
+2016-02-23T23:21:50.441-0300 I CONTROL  [initandlisten] allocator: system
+2016-02-23T23:21:50.441-0300 I CONTROL  [initandlisten] modules: none
+2016-02-23T23:21:50.441-0300 I CONTROL  [initandlisten] build environment:
+2016-02-23T23:21:50.441-0300 I CONTROL  [initandlisten]     distarch: x86_64
+2016-02-23T23:21:50.441-0300 I CONTROL  [initandlisten]     target_arch: x86_64
+2016-02-23T23:21:50.441-0300 I CONTROL  [initandlisten] options: { net: { port: 27029 }, replication: { replSet: "replicacao" }, storage: { dbPath: "/data/rs3" } }
+2016-02-23T23:21:50.441-0300 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=4G,session_max=20000,eviction=(threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),checkpoint=(wait=60,log_size=2GB),statistics_log=(wait=0),
+2016-02-23T23:21:54.874-0300 I CONTROL  [initandlisten] ** WARNING: You are running this process as the root user, which is not recommended.
+2016-02-23T23:21:54.874-0300 I CONTROL  [initandlisten]
+2016-02-23T23:21:54.943-0300 I REPL     [initandlisten] Did not find local voted for document at startup;  NoMatchingDocument Did not find replica set lastVote document in local.replset.election
+2016-02-23T23:21:54.943-0300 I REPL     [initandlisten] Did not find local replica set configuration document at startup;  NoMatchingDocument Did not find replica set configuration document in local.system.replset
+2016-02-23T23:21:54.943-0300 I NETWORK  [HostnameCanonicalizationWorker] Starting hostname canonicalization worker
+2016-02-23T23:21:54.943-0300 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/data/rs3/diagnostic.data'
+2016-02-23T23:21:55.015-0300 I NETWORK  [initandlisten] waiting for connections on port 27029
+*/
+
+mongo --port 27027
+
+/*
+MongoDB shell version: 3.2.1
+connecting to: 127.0.0.1:27027/test
+Mongo-Hacker 0.0.12
+Server has startup warnings:
+2016-02-23T23:20:42.740-0300 I CONTROL  [initandlisten] ** WARNING: You are running this process as the root user, which is not recommended.
+2016-02-23T23:20:42.740-0300 I CONTROL  [initandlisten]
+*/
+
+var rsconf = { _id: "replicacao", members: [{ _id: 0, host: "127.0.0.1:27027" }]};
 
 rs.initiate(rsconf)
 
-rs.add("127.0.0.1:27018")
-rs.add("127.0.0.1:27019")
+{
+  "ok": 1
+}
+
+rs.add("127.0.0.1:27028")
+
+{
+  "ok": 1
+}
+
+rs.add("127.0.0.1:27029")
+
+{
+  "ok": 1
+}
 ```
 
 - Shardings
@@ -1132,34 +1221,127 @@ rs.add("127.0.0.1:27019")
 ```JS
 /data
 
-mongod --configsvr --port 27010
+mongod --configsvr --port 27020
+
+/*
+2016-02-23T23:23:43.845-0300 I CONTROL  [initandlisten] MongoDB starting : pid=6413 port=27020 dbpath=/data/configdb master=1 64-bit host=Sergios-Mac-Pro.local
+2016-02-23T23:23:43.846-0300 I CONTROL  [initandlisten] db version v3.2.1
+2016-02-23T23:23:43.846-0300 I CONTROL  [initandlisten] git version: a14d55980c2cdc565d4704a7e3ad37e4e535c1b2
+2016-02-23T23:23:43.846-0300 I CONTROL  [initandlisten] allocator: system
+2016-02-23T23:23:43.846-0300 I CONTROL  [initandlisten] modules: none
+2016-02-23T23:23:43.846-0300 I CONTROL  [initandlisten] build environment:
+2016-02-23T23:23:43.846-0300 I CONTROL  [initandlisten]     distarch: x86_64
+2016-02-23T23:23:43.846-0300 I CONTROL  [initandlisten]     target_arch: x86_64
+2016-02-23T23:23:43.846-0300 I CONTROL  [initandlisten] options: { net: { port: 27020 }, sharding: { clusterRole: "configsvr" } }
+2016-02-23T23:23:43.846-0300 I STORAGE  [initandlisten] exception in initAndListen: 29 Data directory /data/configdb not found., terminating
+2016-02-23T23:23:43.846-0300 I CONTROL  [initandlisten] dbexit:  rc: 100
+*/
+
 ```
 
 - Cria Router
 
 ```JS
-mongos --configdb localhost:27010 --port 27011
+mongos --configdb localhost:27020 --port 27021
+MongoDB shell version: 2.6.11
+connecting to: localhost:27020/test
+Mongo-Hacker 0.0.9
+mongos> 
 ```
 
 - Cria Shards
 
 ```JS
+mkdir 777 -R sha1
+mkdir 777 -R sha2
+mkdir 777 -R sha3
+
+$ ls
+db   rs1  rs2  rs3  sha1 sha2 sha3
+
 chmod 777 -R sha1
 chmod 777 -R sha2
 chmod 777 -R sha3
 
-mongod --port 27012 --dbpath /data/sha1
+mongod --port 27022 --dbpath /data/sha1
 
-mongod --port 27013 --dbpath /data/sha2
+/*
+2016-02-23T23:27:32.108-0300 I CONTROL  [initandlisten] MongoDB starting : pid=6766 port=27022 dbpath=/data/sha1 64-bit host=Sergios-Mac-Pro.local
+2016-02-23T23:27:32.108-0300 I CONTROL  [initandlisten] db version v3.2.1
+2016-02-23T23:27:32.108-0300 I CONTROL  [initandlisten] git version: a14d55980c2cdc565d4704a7e3ad37e4e535c1b2
+2016-02-23T23:27:32.108-0300 I CONTROL  [initandlisten] allocator: system
+2016-02-23T23:27:32.109-0300 I CONTROL  [initandlisten] modules: none
+2016-02-23T23:27:32.109-0300 I CONTROL  [initandlisten] build environment:
+2016-02-23T23:27:32.109-0300 I CONTROL  [initandlisten]     distarch: x86_64
+2016-02-23T23:27:32.109-0300 I CONTROL  [initandlisten]     target_arch: x86_64
+2016-02-23T23:27:32.109-0300 I CONTROL  [initandlisten] options: { net: { port: 27022 }, storage: { dbPath: "/data/sha1" } }
+2016-02-23T23:27:32.109-0300 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=4G,session_max=20000,eviction=(threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),checkpoint=(wait=60,log_size=2GB),statistics_log=(wait=0),
+2016-02-23T23:27:35.705-0300 I NETWORK  [HostnameCanonicalizationWorker] Starting hostname canonicalization worker
+*/
 
-mongod --port 27014 --dbpath /data/sha3
+mongod --port 27023 --dbpath /data/sha2
 
-mongo --port 27011 --host localhost
+/*
+2016-02-23T23:27:48.296-0300 I CONTROL  [initandlisten] MongoDB starting : pid=6797 port=27023 dbpath=/data/sha2 64-bit host=Sergios-Mac-Pro.local
+2016-02-23T23:27:48.296-0300 I CONTROL  [initandlisten] db version v3.2.1
+2016-02-23T23:27:48.296-0300 I CONTROL  [initandlisten] git version: a14d55980c2cdc565d4704a7e3ad37e4e535c1b2
+2016-02-23T23:27:48.296-0300 I CONTROL  [initandlisten] allocator: system
+2016-02-23T23:27:48.296-0300 I CONTROL  [initandlisten] modules: none
+2016-02-23T23:27:48.296-0300 I CONTROL  [initandlisten] build environment:
+2016-02-23T23:27:48.296-0300 I CONTROL  [initandlisten]     distarch: x86_64
+2016-02-23T23:27:48.296-0300 I CONTROL  [initandlisten]     target_arch: x86_64
+2016-02-23T23:27:48.297-0300 I CONTROL  [initandlisten] options: { net: { port: 27023 }, storage: { dbPath: "/data/sha2" } }
+2016-02-23T23:27:48.297-0300 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=4G,session_max=20000,eviction=(threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),checkpoint=(wait=60,log_size=2GB),statistics_log=(wait=0),
+2016-02-23T23:27:52.074-0300 I NETWORK  [HostnameCanonicalizationWorker] Starting hostname canonicalization worker
+2016-02-23T23:27:52.074-0300 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/data/sha2/diagnostic.data'
+2016-02-23T23:27:52.162-0300 I NETWORK  [initandlisten] waiting for connections on port 27023
+*/
 
-> sh.addShard("localhost:27012")
-> sh.addShard("localhost:27013")
-> sh.addShard("localhost:27014")
+mongod --port 27024 --dbpath /data/sha3
 
-> sh.enableSharding("projeto")
+/*
+2016-02-23T23:28:04.492-0300 I CONTROL  [initandlisten] MongoDB starting : pid=6828 port=27024 dbpath=/data/sha3 64-bit host=Sergios-Mac-Pro.local
+2016-02-23T23:28:04.493-0300 I CONTROL  [initandlisten] db version v3.2.1
+2016-02-23T23:28:04.493-0300 I CONTROL  [initandlisten] git version: a14d55980c2cdc565d4704a7e3ad37e4e535c1b2
+2016-02-23T23:28:04.493-0300 I CONTROL  [initandlisten] allocator: system
+2016-02-23T23:28:04.493-0300 I CONTROL  [initandlisten] modules: none
+2016-02-23T23:28:04.493-0300 I CONTROL  [initandlisten] build environment:
+2016-02-23T23:28:04.493-0300 I CONTROL  [initandlisten]     distarch: x86_64
+2016-02-23T23:28:04.493-0300 I CONTROL  [initandlisten]     target_arch: x86_64
+2016-02-23T23:28:04.493-0300 I CONTROL  [initandlisten] options: { net: { port: 27024 }, storage: { dbPath: "/data/sha3" } }
+2016-02-23T23:28:04.494-0300 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=4G,session_max=20000,eviction=(threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),checkpoint=(wait=60,log_size=2GB),statistics_log=(wait=0),
+2016-02-23T23:28:10.413-0300 I NETWORK  [HostnameCanonicalizationWorker] Starting hostname canonicalization worker
+2016-02-23T23:28:10.413-0300 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/data/sha3/diagnostic.data'
+2016-02-23T23:28:10.490-0300 I NETWORK  [initandlisten] waiting for connections on port 27024
+*/
 
-> sh.shaCollection("projeto.project", {"_id" : 1})
+mongo --port 27021 --host localhost
+
+sh.addShard("localhost:27022")
+{
+  "shardAdded": "shard0000",
+  "ok": 1
+}
+
+sh.addShard("localhost:27023")
+{
+  "shardAdded": "shard0001",
+  "ok": 1
+}
+
+sh.addShard("localhost:27024")
+{
+  "shardAdded": "shard0002",
+  "ok": 1
+}
+
+sh.enableSharding("projects")
+{
+  "ok": 1
+}
+
+sh.shaCollection("projects.project", {"_id" : 1})
+{
+  "collectionsharded": "projects.project",
+  "ok": 1
+}
