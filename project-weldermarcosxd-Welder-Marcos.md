@@ -12,8 +12,8 @@ User: {
 	name: String,
 	bio: String,
 	date-register: Date,
-	avatar: Binary,
-	background: Binary,
+	avatar: BINARY,
+	background: BINARY,
 
 	auth:{
 		username: String,
@@ -44,7 +44,7 @@ Project:{
 
 	members:[{
 		type: [String],
-		_id: ObjectId,
+		_id: OBJECT_ID,
 		notify: String
 	}],
 
@@ -60,7 +60,7 @@ Project:{
 		historic: [Date],
 
 		activity:[{
-			_id: ObjectId
+			_id: OBJECT_ID
 		}]
 	}
 }
@@ -90,7 +90,7 @@ Activity:{
 		}]
 
 		member: {[
-			member_id: ObjectId,
+			member_id: OBJECT_ID,
 			notify: String
 		]}
 	}]
@@ -107,22 +107,50 @@ meu ver essa netodologia de modelagem também se justifica pelo fato de deixar o
 
 1. Cadastre 10 usuários diferentes.
 ```js
-var saap = "abracadabra";
 
-var users = [
-	{"name":"Alpha", bio:"alpha bio","date-register": new Date(),avatar:null, background:null, auth:{username:"alpha",email:"alpha@email",password:saap.split("").reverse().join(""),last_access: new Date(),online: (1 / _rand() % 2) > 1 ? true : false,disabled: (1 / _rand() % 2) > 1 ? true : false,hash_token: "XkqtIWPxrcL03/tl8BTqkN4JE1sAyYWrppufitxGTez"}},
-	{"name":"Beta", bio:"beta bio","date-register":new Date(),avatar:null, background:null, auth:{username:"beta",email:"beta@email",password:saap.split("").reverse().join(""),last_access: new Date(),online: (1 / _rand() % 2) > 1 ? true : false,disabled: (1 / _rand() % 2) > 1 ? true : false,hash_token: "XkqtIWPxrcL03/tl8BTqkN4JE1sAyYWrppufitxGTez"}},
-	{"name":"Gama", bio:"gama bio","date-register":new Date(),avatar:null, background:null, auth:{username:"gama",email:"gama@email",password:saap.split("").reverse().join(""),last_access: new Date(),online: (1 / _rand() % 2) > 1 ? true : false,disabled: (1 / _rand() % 2) > 1 ? true : false,hash_token: "XkqtIWPxrcL03/tl8BTqkN4JE1sAyYWrppufitxGTez"}},
-	{"name":"Delta", bio:"delta bio","date-register":new Date(),avatar:null, background:null, auth:{username:"delta",email:"delta@email",password:saap.split("").reverse().join(""),last_access: new Date(),online: (1 / _rand() % 2) > 1 ? true : false,disabled: (1 / _rand() % 2) > 1 ? true : false,hash_token: "XkqtIWPxrcL03/tl8BTqkN4JE1sAyYWrppufitxGTez"}},
-	{"name":"Epsilon", bio:"epsilon bio","date-register":new Date(),avatar:null, background:null, auth:{username:"epsilon",email:"epsilon@email",password:saap.split("").reverse().join(""),last_access: new Date(),online: (1 / _rand() % 2) > 1 ? true : false,disabled: (1 / _rand() % 2) > 1 ? true : false,hash_token: "XkqtIWPxrcL03/tl8BTqkN4JE1sAyYWrppufitxGTez"}},
-	{"name":"Zeta", bio:"zeta bio","date-register":new Date(),avatar:null, background:null, auth:{username:"zeta",email:"zeta@email",password:saap.split("").reverse().join(""),last_access: new Date(),online: (1 / _rand() % 2) > 1 ? true : false,disabled: (1 / _rand() % 2) > 1 ? true : false,hash_token: "XkqtIWPxrcL03/tl8BTqkN4JE1sAyYWrppufitxGTez"}},
-	{"name":"Eta", bio:"eta bio","date-register":new Date(),avatar:null, background:null, auth:{username:"eta",email:"eta@email",password:saap.split("").reverse().join(""),last_access: new Date(),online: (1 / _rand() % 2) > 1 ? true : false,disabled: (1 / _rand() % 2) > 1 ? true : false,hash_token: "XkqtIWPxrcL03/tl8BTqkN4JE1sAyYWrppufitxGTez"}},
-	{"name":"Theta", bio:"theta bio","date-register":new Date(),avatar:null, background:null, auth:{username:"theta",email:"theta@email",password:saap.split("").reverse().join(""),last_access: new Date(),online: (1 / _rand() % 2) > 1 ? true : false,disabled: (1 / _rand() % 2) > 1 ? true : false,hash_token: "XkqtIWPxrcL03/tl8BTqkN4JE1sAyYWrppufitxGTez"}},
-	{"name":"Iota", bio:"iota bio","date-register":new Date(),avatar:null, background:null, auth:{username:"iota",email:"iota@email",password:saap.split("").reverse().join(""),last_access: new Date(),online: (1 / _rand() % 2) > 1 ? true : false,disabled: (1 / _rand() % 2) > 1 ? true : false,hash_token: "XkqtIWPxrcL03/tl8BTqkN4JE1sAyYWrppufitxGTez"}},
-	{"name":"Kappa", bio:"kappa bio","date-register":new Date(),avatar:null, background:null, auth:{username:"kappa",email:"kappa@email",password:saap.split("").reverse().join(""),last_access: new Date(),online: (1 / _rand() % 2) > 1 ? true : false,disabled: (1 / _rand() % 2) > 1 ? true : false,hash_token: "XkqtIWPxrcL03/tl8BTqkN4JE1sAyYWrppufitxGTez"}}
-]
+var usersList = ["Alpha", "Beta","Gama","Delta","Epsilon","Zeta","Eta","Theta","Iota","Kappa"]
 
-db.users.insert(users);
+var toHash = function(s){
+	var hash = 0
+	if(s.length == 0){ return hash}
+	for(i = 0; i < s.length; i++){
+		char = s.charCodeAt(i)
+		hash = ((hash<<5)-hash)+char
+		hash = hash & hash
+	}
+	return hash
+}
+
+usersList.forEach(function(u){
+	var user = {
+		name: u,
+		bio: u + " bio",
+		date_register: new Date(new Date().getTime() - (24 * parseInt(_rand() * 1000)) * 60 * 60 * 1000),
+		avatar: null,
+		background: null,
+		auth: {
+			username: u.substr(0,3),
+			email: u + "@email.com",
+			password: u.split("").reverse().join(""),
+			last_acess: new Date(new Date().getTime() - (24 * parseInt(_rand() * 1000)) * 60 * 60 * 1000),
+			online: (parseInt(_rand() * 1000) % 2) == 1 ? true : false,
+			disabled: false,
+			hash_token: toHash(u)
+		}
+	}
+	db.users.insert(user)
+})
+
+Inserted 1 record(s) in 2ms
+Inserted 1 record(s) in 2ms
+Inserted 1 record(s) in 2ms
+Inserted 1 record(s) in 2ms
+Inserted 1 record(s) in 1ms
+Inserted 1 record(s) in 2ms
+Inserted 1 record(s) in 2ms
+Inserted 1 record(s) in 2ms
+Inserted 1 record(s) in 2ms
+Inserted 1 record(s) in 1ms
 ```
 2. Cadastre 5 projetos diferentes.
     - cada um com 5 membros, sempre diferentes dentro dos projetos;
