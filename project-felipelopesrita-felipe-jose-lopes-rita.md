@@ -1,11 +1,11 @@
 # MongoDb - Projeto Final
 **Autor:** Felipe José Lopes Rita
-**Data** 1455850109228
+**Data** 1456776496894
 
-##1. Para qual sistema você usaria o MongoDB (diferente desse)?
+## Para qual sistema você usaria o MogoDB (diferente desse)?
 Antigamente não cogitava a utilização de bancos NoSQL, por não conhecer e julgar que a curva de aprendizado seria lenta e não produtiva. Agora que conheço, posso dizer que fiquei fascinado com a simplicidade e praticidade que o banco proporciona. Sendo assim, eu usaria MongoDB em quase todas as minhas aplicações web, devido as suas vantagens que apontei antes. Obviamente, talvez fossem necessários outros bancos para casos mais específicos (grafos e tudo mais), mas então eu poderia utilizá-los em conjunto com o mongo, tendo uma aplicação com múltiplos bancos de dados, como o Suissa comentou que existiam, na primeira aula de mongo.
 
-##2. Qual a modelagem da sua coleção de `users`?
+## Qual a modelagem da sua coleção de `users`?
 ```js
 {
 	name: String,
@@ -24,7 +24,7 @@ Antigamente não cogitava a utilização de bancos NoSQL, por não conhecer e ju
 }
 ```
 
-##3. Qual a modelagem da sua coleção de `projects`?
+## Qual a modelagem da sua coleção de `projects`?
 ```js
 {
 	name: String,
@@ -59,7 +59,7 @@ Antigamente não cogitava a utilização de bancos NoSQL, por não conhecer e ju
 }
 ```
 
-##4. Qual a modelagem da sua coleção retirada de `projects`?
+## Qual a modelagem da sua coleção retirada de `projects`?
 ```js
 activity: {
 	name: String,
@@ -89,8 +89,8 @@ activity: {
 ```
 Retirei essa coleção de projects. O principal é que tendo em mente o tipo de busca realizada pelo sistema, as atividades não seriam buscadas em conjunto. Isso é, tendo em mente que a busca do usuário seria algo por projects e goals, faz sentido manter estes campos na mesma coleção, para que toda informação seja trazida de uma vez na busca. Porém, atividades provavelmente serão buscadas apenas após você ter informações sobre os projects e goals, então ela poderia ficar numa coleção separada.
 
-##5. Create - cadastro
-#####5.1 Cadastro de usuários
+## Create - cadastro
+#####1. Cadastre 10 usuários diferentes
 ```js
 var users = [];
 var usernames = [ "Felipe", "Jorge", "Lucas", "Matheus", "Robson", "Adiana", "Bianca", "Luciana", "Bruna", "Heloise" ]
@@ -128,7 +128,7 @@ BulkWriteResult({
 })
 ```
 
-#####5.1 Cadastro de projetos
+#####2. Cadastre 5 projetos diferentes
 ```js
 /* Ids dos usuarios */
 var resul = db.users.find({}, {_id:1})
@@ -270,8 +270,8 @@ BulkWriteResult({
 })
 ```
 
-##6. Retrieve - busca
-#####6.1 Usuários de um projeto
+## Retrieve - busca
+#####1. Liste as informações dos membros de 1 projeto específico que deve ser buscado pelo seu nome de forma a não ligar para maiúsculas e minúsculas
 ```js
 function getInfoUsers( arr ){
 	var info = [];
@@ -361,7 +361,7 @@ StarKiller(mongod-3.2.0) be-mean-projeto> members
   }
 ]
 ```
-#####6.2 Projeto com a tag presente em 3 projetos
+#####Liste todos os projetos com a tag que você escolheu para os 3 projetos em comum
 ```js
 var query = { tags: { $in: [/Be Mean/i] } }
 StarKiller(mongod-3.2.0) be-mean-projeto> db.project.find(query)
@@ -523,7 +523,7 @@ StarKiller(mongod-3.2.0) be-mean-projeto> db.project.find(query)
 }
 Fetched 3 record(s) in 4ms
 ```
-#####6.3 Lista nome das atividades
+#####Liste apenas os nomes de todas as atividades para todos os projetos
 ```js
 function getNameActivity( obj ) { return db.activity.findOne( {_id: obj}, {name:1, _id:0} ) }
 var resul = db.project.find({})
@@ -564,7 +564,7 @@ StarKiller(mongod-3.2.0) be-mean-projeto> namesActivities
   }
 ]
 ```
-#####6.4  Lista de projetos que não possuam uma tag
+#####Liste todos os projetos que não possuam uma tag
 ```js
 var query = { tags: { $not: {$in:[/'Be MEAN/i]} } }
 StarKiller(mongod-3.2.0) be-mean-projeto> db.project.find(query, {name:1})
@@ -591,7 +591,7 @@ StarKiller(mongod-3.2.0) be-mean-projeto> db.project.find(query, {name:1})
 Fetched 5 record(s) in 14ms
 ```
 
-#####6.5 Lista de usuários que não estão na primeira pesquisa
+#####Liste todos os usuários que não fazem parte do primeiro projeto cadastrado
 ```js
 var query = { _id: ObjectId("56c49ad25ca97b410b38fbfc") }
 var members = [];
@@ -600,8 +600,8 @@ db.project.findOne(query).members.forEach(function(ObjId){
 })
 db.users.find({ _id: { $not: { $in: members } } }, {name:1})
 ```
-##7. Update - alteração
-#####7.1 Adição de campo a todos os projetos
+## Update - alteração
+#####1. Adicione para todos os projetos o campo views: 0
 ```js
 var mod = { $set: { views: 0 } }
 var opt = { multi: true }
@@ -613,7 +613,7 @@ WriteResult({
   "nModified": 5
 })
 ```
-#####7.2 Adicionar uma tag diferente para cada projeto
+#####2. Adicione 1 tag diferente para cada projeto
 ```js
 var idProj = db.project.find({}, {_id: 1})
 var cont = db.project.count()
@@ -633,7 +633,7 @@ WriteResult({
   "nModified": 1
 })
 ```
-#####7.3 Adicionar dois usuarios diferentes a todos os projetos
+#####3. Adicione 2 membros diferentes para cada projeto
 ```js
 
 /* Ids dos usuarios */
@@ -664,7 +664,7 @@ WriteResult({
   "nModified": 1
 })
 ```
-#####7.4 Adicione um comentário em cada atividade (um sem)
+#####4. Adicione 1 comentário em cada atividade, deixe apenas 1 projeto sem
 ```js
 /* Ids dos usuarios */
 var resul = db.users.find({}, {_id:1})
@@ -691,7 +691,7 @@ WriteResult({
   "nModified": 1
 })
 ```
-#####7.5 Adicionar projeto com Upsert
+#####5. Adicione 1 projeto inteiro com UPSERT
 ```js
 var query = {name: "Bootstrap+CSS3"}
 var opt = {upsert: true}
@@ -722,8 +722,8 @@ WriteResult({
 })
 ```
 
-##8. Delete - remoção
-#####8.1 Deletar projetos que não possuam tags
+## Delete - remoção
+#####1. Apague todos os projetos que não possuam tags
 ```js
 db.project.remove({ tags : { $exists : 0 } })
 Removed 1 record(s) in 3ms
@@ -731,14 +731,14 @@ WriteResult({
   "nRemoved": 1
 })
 ```
-#####8.2 Excluir projetos sem comentários nas atividades
+#####2. Apague todos os projetos que não possuam comentários nas atividades
 ```js
 function removeProjct(objId){
   db.projects.remove({"goals.activities.activity_id":  objId._id});
 }
 db.activity.find({'comments.0': {$exists: false}}).forEach(removeProjct)
 ```
-#####8.3 Excluir projetos sem atividades
+#####3. Apague todos os projetos que não possuam atividades
 ```js
 var query = { 'goals.activities': [ ] }
 db.project.remove(query)
@@ -747,7 +747,7 @@ WriteResult({
   "nRemoved": 1
 })
 ```
-#####8.4 Apagar projetos que dois usuários fazem parte
+#####4. Escolha 2 usuário e apague todos os projetos em que os 2 fazem parte
 ```js
 var users = [
 	{"_id": ObjectId("56c47f5b5586eacfc2e60545")},
@@ -757,56 +757,14 @@ users.forEach(function(x){ db.project.remove({'members.user_id': x._id}) })
 Removed 3 record(s) in 2ms
 Removed 1 record(s) in 2ms
 ```
-#####8.5 Apagar projeto com uma tag em goal
+#####5. Apague todos os projetos que possuam uma determinada tag em goal
 ```js
 var query = { 'goals.tags': 'Youtube' }
 db.project.remove(query)
 ```
 
-##9. Sharding
-```js
-mkdir /data/configdb
-mongod --configsvr --port 27010
-mongos --configdb localhost:27010 --port 27011
-mongod --port 27012 --dbpath /data/shard1
-mongod --port 27013 --dbpath /data/shard2
-mongod --port 27014 --dbpath /data/shard3
-mongo --port 27011 --host localhost
-mongos> sh.addShard("localhost:27012")
-mongos> sh.addShard("localhost:27013")
-mongos> sh.addShard("localhost:27014")
-mongos> sh.enableSharding("be-mean-projeto")
-mongos> sh.shardCollection("be-mean-projeto.project", {"_id" : 1})
-mongos> sh.shardCollection("be-mean-projeto.users", {"_id" : 1})
-mongos> sh.shardCollection("be-mean-projeto.activity", {"_id" : 1})
-```
-
-##10. Replica
-```js
-mkdir /data/rs1
-mkdir /data/rs2
-mkdir /data/rs3
-mongod --replSet replica_set --port 27017 --dbpath /data/rs1
-mongod --replSet replica_set --port 27018 --dbpath /data/rs2
-mongod --replSet replica_set --port 27019 --dbpath /data/rs3
-mongo --port 27017
-mongo> rsconf =
-{
-  "_id": "replica_set",
-  "members": [
-    {
-      "_id": 0,
-      "host": "127.0.0.1:27017"
-    }
-  ]
-}
-rs.initiate(rsconf)
-rs.add("127.0.0.1:27018")
-rs.add("127.0.0.1:27019")
-```
-
-##11. Gerenciamento de usuários
-##### Usuário com permissões APENAS de Leitura
+## Gerenciamento de usuários
+#####1. Crie um usuário com permissões **APENAS** de Leitura
 ```js
 db.createUser(
     {
@@ -816,7 +774,7 @@ db.createUser(
     }
 )
 ```
-#####Crie um usuário com permissões de Escrita e Leitura.
+#####2. Crie um usuário com permissões de Escrita e Leitura
 ```js
 db.createUser(
     {
@@ -826,7 +784,7 @@ db.createUser(
     }
 )
 ```
-#####Adicionar o papel grantRolesToUser e revokeRole para o usuário com Escrita e Leitura
+#####3. Adicionar o papel grantRolesToUser e revokeRole para o usuário com Escrita e Leitura
 ```js
 db.runCommand({ createRole: "grantRolesToUser",
 	privileges: [
@@ -845,14 +803,14 @@ db.grantRolesToUser(
   [ "grantRolesToUser", "revokeRole" ]
 )
 ```
-##### Remover o papel grantRolesToUser para o usuário com Escrita e Leitura
+#####4. Remover o papel grantRolesToUser para o usuário com Escrita e Leitura
 ```js
 db.revokeRolesFromUser(
     "usuario-leitura-escrita",
     [ "grantRolesToUser" ]
 )
 ```
-#####Listar todos os usuários com seus papéis e ações.
+#####5. Listar todos os usuários com seus papéis e ações
 ```js
 {
   "_id": "admin.usuario-leitura",
@@ -897,6 +855,48 @@ db.revokeRolesFromUser(
   ]
 }
 Fetched 2 record(s) in 4ms
+```
+
+## Sharding
+```js
+mkdir /data/configdb
+mongod --configsvr --port 27010
+mongos --configdb localhost:27010 --port 27011
+mongod --port 27012 --dbpath /data/shard1
+mongod --port 27013 --dbpath /data/shard2
+mongod --port 27014 --dbpath /data/shard3
+mongo --port 27011 --host localhost
+mongos> sh.addShard("localhost:27012")
+mongos> sh.addShard("localhost:27013")
+mongos> sh.addShard("localhost:27014")
+mongos> sh.enableSharding("be-mean-projeto")
+mongos> sh.shardCollection("be-mean-projeto.project", {"_id" : 1})
+mongos> sh.shardCollection("be-mean-projeto.users", {"_id" : 1})
+mongos> sh.shardCollection("be-mean-projeto.activity", {"_id" : 1})
+```
+
+## Replica
+```js
+mkdir /data/rs1
+mkdir /data/rs2
+mkdir /data/rs3
+mongod --replSet replica_set --port 27017 --dbpath /data/rs1
+mongod --replSet replica_set --port 27018 --dbpath /data/rs2
+mongod --replSet replica_set --port 27019 --dbpath /data/rs3
+mongo --port 27017
+mongo> rsconf =
+{
+  "_id": "replica_set",
+  "members": [
+    {
+      "_id": 0,
+      "host": "127.0.0.1:27017"
+    }
+  ]
+}
+rs.initiate(rsconf)
+rs.add("127.0.0.1:27018")
+rs.add("127.0.0.1:27019")
 ```
 
 
