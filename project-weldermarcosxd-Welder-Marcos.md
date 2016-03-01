@@ -37,18 +37,18 @@ Project:{
 	date_dream: Date,
 	date_end: Date,
 	visible: Boolean,
-	realocate: Date,
-	expired: Date,
+	realocate: Boolean,
+	expired: Boolean,
 	visualizable_mod: Boolean,
 	tags: [String],
 
 	members:[{
 		type: [String],
 		_id: OBJECT_ID,
-		notify: String
+		notify: Boolean
 	}],
 
-	goals:{
+	goals:[{
 		name: String,
 		tags: [String],
 		description: String,
@@ -62,7 +62,7 @@ Project:{
 		activity:[{
 			_id: OBJECT_ID
 		}]
-	}
+	}]
 }
 ```
 
@@ -76,8 +76,8 @@ Activity:{
 	date_begin: Date,
 	date_dream: Date,
 	date_end: Date,
-	realocate: Date,
-	expired: Date,
+	realocate: Boolean,
+	expired: Boolean,
 
 	comments:[{
 		text: String,
@@ -91,7 +91,7 @@ Activity:{
 
 		member: {[
 			member_id: OBJECT_ID,
-			notify: String
+			notify: Boolean
 		]}
 	}]
 }
@@ -107,9 +107,10 @@ meu ver essa netodologia de modelagem também se justifica pelo fato de deixar o
 
 1. Cadastre 10 usuários diferentes.
 ```js
-
+//Lista de usuários
 var usersList = ["Alpha", "Beta","Gama","Delta","Epsilon","Zeta","Eta","Theta","Iota","Kappa"]
 
+//Função pra criação do campo hash nas autenticações, neste caso usei o nome como paramentro
 var toHash = function(s){
 	var hash = 0
 	if(s.length == 0){ return hash}
@@ -165,114 +166,171 @@ Inserted 1 record(s) in 1ms
 
 //Atividades *************************
 
-//inicializa a variável de atividades vazia
-activity = [];
-
-//loop de inserção de atividades
-for(i = 0; i < 10; i++){
-
-	//armazena um usuário randomico para ser usado como autor do comentário
-	var u = db.users.aggregate([ { $sample: { size: 1 } } ])
-
-	//incrementa o array de atividades
-	activity.push({
-		"name": "Activity " + (i+1),
-		"tags": ["Activity " + (i+1)],
-		"description": "Activity " + (i+1) + " description",
-		"date_begin": new Date(),
-		"date_dream": new Date(),
-		"date_end": new Date(),
-		"realocate": new Date(),
-		"expired": new Date(),
-
-		 comments:[{
-		 	"text": "Activity "+ (i+1) + " comment",
-		 	"date_comment": new Date(),
-
-			files: [{
-				"name": "Activity "+ (i+1) + " file",
-				"weight": (_rand() * 100) + "kb",
-				"path": "/home/Activity"+ (i+1) + "/"
-			}],
-
-			member: [{
-				"member_id": u.result[0]._id,
-				"notify": "Always"
-			}]
-		 }]
-	})
+//função chamada a cada vez que uma atividade for inserida em um projeto
+var insertAct = function (project, goalName){
+  print(goalName)
+	//lista dos usuários
+  var users = db.users.find({},{_id: 1}).toArray()
+	//projeto onde a atividade será inserida
+  var projects = db.projects.findOne(project)
+	//contador de atividades (apenas pra gerar um número sequêncial para os títulos)
+  var c = 0
+	//conta quantas atividades já existem no projeto
+  if(projects != null){
+    projects.goals.forEach(function(a){
+      a.activity.forEach(function(id){
+        c++
+      })
+    })
+  }else{
+    c++
+  }
+	//objeto que irá receber os dados da atividade inserida
+  var act = {
+    name: "Activity " + (c+1) + " from " + project.name,
+    tags: [(parseInt(_rand() * 1000) % 2) == 1 ? "Prioridade Alta" : "Prioridade Baixa"],
+    description: "Activity " + (c+1) + " description",
+    date_begin: new Date(new Date().getTime() - (24 * parseInt(_rand() * 1000)) * 60 * 60 * 1000),
+    date_dream: new Date(new Date().getTime()),
+    date_end: new Date(new Date().getTime() + (24 * parseInt(_rand() * 1000)) * 60 * 60 * 1000),
+    realocate: (parseInt(_rand() * 1000) % 2) == 1 ? true : false,
+    expired: (parseInt(_rand() * 1000) % 2) == 1 ? true : false,
+    comments:[{
+      text: "Activity " + (c+1) + " comment ",
+      date_comment: new Date(new Date().getTime() - (24 * parseInt(_rand() * 1000)) * 60 * 60 * 1000),
+      files: [{
+        name: "Activity " + (c+1) + " file ",
+        weight: (parseInt(_rand() * 1000)) + "Kb",
+        path: "/home/" + project.name + "/" + goalName + "/" + "Activity " + (c+1) + "/"
+      }],
+      member: [{
+        member_id: users[parseInt(_rand() * 10)]._id,
+        notify: (parseInt(_rand() * 1000) % 2) == 1 ? true : false,
+      }]
+    }]
+  }
+	//insere a atividade na coleção de atividades
+  db.activities.insert(act)
+  var retorno = db.activities.findOne(act, {_id: 1})._id
+	//retorna a o _id da atividade inserida para o projeto
+  return retorno
 }
 
-//insere o array de atividade na coleção de atividades
-db.activities.insert(activity);
 
 //Projetos *************************
 
-//Array de projetos
-var project = [];
+//arrays de usuários disponíveis para o projeto
+var users = db.users.find({},{_id: 1}).toArray()
 
-//Array de ids de todas os usuários cadastrados
-var u = db.users.find({},{_id: 1});
+//loop que criará os 5 projetos
+for(i = 0; i < 5; i++){
 
-//Array de ids de todas as atividades cadastradas
-var a = db.activities.find({},{_id: 1});
+  //armazena o nome do projeto
+  var projectName = "Project " + (i+1)
 
-//loop de criação dos projetos
-for(i=0; i<5; i++){
+  //Array de membros, precisa estar limpo a cada projeto para que sejam usuários diferentes
+  var member = []
 
-	//Array de membros, precisa estar limpo a cada projeto para que sejam usuários diferentes
-	member = []
+  //loop de inicialização dos dados de cada membro
+  for(j=0; j<5; j++){
+      member.push({
+        "type": (j == 0) ? "Leader" : "Staff "+j,
+        "_id": users[i+j]._id,
+        "notify": (j == 0) ? true : false
+      })
+  }
 
-	//loop de inicialização dos dados de cada membro
-	for(j=0; j<5; j++){
-			member.push({
-				"type": (j == 0) ? "Leader" : "Staff "+j,
-				"_id": u[parseInt(_rand() * 10)]._id,
-				"notify": (j == 0) ? "Always" : "Never"
-			})
-	}
+  //objeto que armazenará o projeto a ser inserido
+  var project = {
 
-	//incrementando o Array de projetos a cada iteração
-	project.push({
-		"name": "Projeto "+(i+1),
-		"description": "Descrição do projeto "+(i+1),
-		"date_begin": new Date(new Date().getTime() - 24 * 60 * 60 * 1000),
-		"date_dream": new Date(),
-		"date_end": new Date(new Date().getTime() + 24 * 60 * 60 * 1000),
-		"visible": (1 / _rand() % 2) > 1 ? true : false,disabled: (1 / _rand() % 2) > 1 ? true : false,
-		"realocate": new Date(new Date().getTime() - (24 * 10) * 60 * 60 * 1000),
-		"expired": new Date(new Date().getTime() + (24 * 10) * 60 * 60 * 1000),
-		"visualizable_mod": (1 / _rand() % 2) > 1 ? true : false,"disabled": (1 / _rand() % 2) > 1 ? true : false,
-		"tags": [(i < 2) ? "MongoDB" : "Be-Mean", "Modulo " +(i+1)+ " MongoDB", "Aula " + parseInt((_rand() * 10))],
+  	name: projectName,
+  	description: projectName + " description",
+  	date_begin: new Date(new Date().getTime() - (24 * parseInt(_rand() * 1000)) * 60 * 60 * 1000),
+  	date_dream: new Date(),
+  	date_end: new Date(new Date().getTime() + (24 * parseInt(_rand() * 1000)) * 60 * 60 * 1000),
+  	visible: (parseInt(_rand() * 1000) % 2) == 1 ? true : false,
+  	realocate: (parseInt(_rand() * 1000) % 2) == 1 ? true : false,
+  	expired: (parseInt(_rand() * 1000) % 2) == 1 ? true : false,
+  	visualizable_mod: (parseInt(_rand() * 1000) % 2) == 1 ? true : false,
+  	tags: [i > 2 ? "MongoDB" : "Be-Mean", "Módulo " + (i+1), "Aula " + (parseInt(_rand() * 100)) ],
 
-		//Inserindo os objetos de membros previamente inicializados
-		members:[
-			member[0],
-			member[1],
-			member[2],
-			member[3],
-			member[4]
-		],
+    //Inserindo os objetos de membros previamente inicializados
+    members:[
+      member[0],
+      member[1],
+      member[2],
+      member[3],
+      member[4]
+    ],
 
-		//inserindo 1 goal a cada projeto
-		goals:[{
-				"name": "Goal " + parseInt(_rand() * 100) + " do projeto " + (i+1),
-				"tags": ["Project " + (i+1), "Project Leader: " + member[0]._id, "Duração: " + parseInt(_rand() * 10) + " Semanas"],
-				"description": "Project " +(i+1)+ " goal",
-				"date_begin": new Date(new Date().getTime() - 24 * 60 * 60 * 1000),
-				"date_dream": new Date,
-				"date_end": new Date(new Date().getTime() + 24 * 60 * 60 * 1000),
-				"realocate": new Date(new Date().getTime() - (24 * 10) * 60 * 60 * 1000),
-				"expired": new Date(new Date().getTime() + (24 * 200) * 60 * 60 * 1000),
-				"historic": [new Date(),new Date(new Date().getTime() + 24 * 60 * 60 * 1000)],
+    goals:[{
+      name: "Goal from " + projectName,
+      tags: [projectName, (parseInt(_rand() * 1000) % 2) == 1 ? "Prioridade Alta" : "Prioridade Baixa", "Project Leader: " + db.users.findOne({_id: member[0]._id}).name],
+      description: "Goal from " + projectName + " description",
+      date_begin: new Date(new Date().getTime() - (24 * parseInt(_rand() * 1000)) * 60 * 60 * 1000),
+      date_dream: new Date(new Date().getTime()),
+      date_end: new Date(new Date().getTime() + (24 * parseInt(_rand() * 1000)) * 60 * 60 * 1000),
+      realocate: (parseInt(_rand() * 1000) % 2) == 1 ? true : false,
+      expired: (parseInt(_rand() * 1000) % 2) == 1 ? true : false,
+      historic: [new Date(new Date().getTime() - (24 * parseInt(_rand() * 1000)) * 60 * 60 * 1000)],
 
-				//inserindo 2 atividades da lista de atividades previamente populada e pulando o ultimo projeto
-				"activity": (i > 3) ? [] : [{"_id":a[parseInt(_rand() * 10)]._id},{"_id":a[parseInt(_rand() * 10)]._id}]
-		}]
-	})
+      activity:[]
+    }]
+  }
+  //insere o projeto ainda incompleto na coleção devida
+  db.projects.insert(project)
+
+  //se não é o quinto projeto
+  if(i < 4){
+    //entra no loop para inserir 2 atividades
+    for(b = 0; b < 2; b++){
+
+      var goalName = "Goal from " + projectName
+      //chama o método que cria a atividade e armazena o _id da mesma
+      var id = insertAct(project, goalName)
+
+      //objeto com a atividade gerada
+      var activityPush = {
+        _id: id
+      }
+      //atualiza o projeto inserindo a objeto no array de atividades no goal especificado
+      //o ideal para a busca do projeto seria o _id, mas o Timestamp juntamente com o goal filtra tão bem como
+      db.projects.update({date_begin: project.date_begin,'goals.name': goalName},{$push: {'goals.$.activity': activityPush}})
+    }
+  }
 }
-
-db.projects.insert(project);
+Inserted 1 record(s) in 3ms
+Goal from Project 1
+Inserted 1 record(s) in 1ms
+Updated 1 existing record(s) in 2ms
+Goal from Project 1
+Inserted 1 record(s) in 1ms
+Updated 1 existing record(s) in 2ms
+Inserted 1 record(s) in 2ms
+Goal from Project 2
+Inserted 1 record(s) in 2ms
+Updated 1 existing record(s) in 1ms
+Goal from Project 2
+Inserted 1 record(s) in 1ms
+Updated 1 existing record(s) in 1ms
+Inserted 1 record(s) in 1ms
+Goal from Project 3
+Inserted 1 record(s) in 1ms
+Updated 1 existing record(s) in 1ms
+Goal from Project 3
+Inserted 1 record(s) in 0ms
+Updated 1 existing record(s) in 0ms
+Inserted 1 record(s) in 1ms
+Goal from Project 4
+Inserted 1 record(s) in 0ms
+Updated 1 existing record(s) in 0ms
+Goal from Project 4
+Inserted 1 record(s) in 1ms
+Updated 1 existing record(s) in 1ms
+Inserted 1 record(s) in 1ms
+WriteResult({
+  "nInserted": 1
+})
 ```
 
 ## Retrieve - busca
