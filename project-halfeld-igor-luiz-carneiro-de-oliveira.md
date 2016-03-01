@@ -314,7 +314,7 @@ WriteResult({
 #### Liste as informações dos membros de 1 projeto específico que deve ser buscado pelo seu nome de forma a não ligar para maiúsculas e minúsculas.
 
 ```js
-fedora(mongod-3.0.8) project> db.project.find({name: "project - 2.521"}, {members: true})
+fedora(mongod-3.0.8) project> db.project.find({name: /project - 2.521/i}, {members: true})
 {
   "_id": ObjectId("56bfedf544fa400ec8996ff8"),
   "members": [
@@ -724,7 +724,7 @@ Inserted 1 record(s) in 0ms
 
 // Adicionando os 2 usuários nos projetos
 
-var members = db.users.find({}, {_id: true}).toArray().slice(10,20);
+var members = db.users.find({}, {_id: true}).toArray().reverse();
 var infoProjects = db.project.find({}, {name: true}).toArray();
 
 function user() {
@@ -746,15 +746,14 @@ function updateProjects() {
         db.project.update({name: infoProjects[x].name}, mod)
         x++;
     }
-
 }
 
 fedora(mongod-3.0.8) project> updateProjects()
-Updated 1 existing record(s) in 3ms
-Updated 1 existing record(s) in 1ms
-Updated 1 existing record(s) in 1ms
 Updated 1 existing record(s) in 1ms
 Updated 1 existing record(s) in 0ms
+Updated 1 existing record(s) in 3ms
+Updated 1 existing record(s) in 2ms
+Updated 1 existing record(s) in 1ms
 ```
 
 #### Adicione 1 comentário em cada atividade, deixe apenas 1 projeto sem.
@@ -840,11 +839,6 @@ function randomDate() {
     return new Date(randomTime);
 }
 
-function randomNumber() {
-    var number = (Math.random() * 2) + 1;
-    return number.toFixed(3);
-}
-
 /**
  * Início
  */
@@ -877,8 +871,8 @@ function goalInsert() {
 
 function registerProject() {
 
-    db.project.insert({
-        name: "project - " + randomNumber(),
+    db.project.update({name: /project - 000/i }, {$set: {
+        name: "project - 000",
         decription: "CreatedAt - " + randomDate(),
         date_begin: new Date("Tue Jan 08 1980 03:31:44 GMT-0300 (BRT)"),
         date_dream: new Date("Sun Oct 20 2002 17:17:13 GMT-0300 (BRT)"),
@@ -894,11 +888,17 @@ function registerProject() {
 
         goal: goalInsert()
             
-    });
+    } }, {upsert: true});
 }
 
 fedora(mongod-3.0.8) project> registerProject()
-Inserted 1 record(s) in 2ms
+Updated 1 new record(s) in 5ms
+WriteResult({
+  "nMatched": 0,
+  "nUpserted": 1,
+  "nModified": 0,
+  "_id": ObjectId("56bfedf544fa400ec8996ff0")
+})
 ```
 
 
@@ -919,50 +919,16 @@ WriteResult({
 ```js
 
 // Pequisei na collection 'activities' qual actividade não possui comments.
-
-fedora(mongod-3.0.8) project> db.activities.find({comments: {$eq: [] }})
+fedora(mongod-3.0.8) project> db.activities.find({comments: {$eq: [] }}, {_id: 1, comments: 1})
 {
   "_id": ObjectId("56c00434f7dd4d5c1d141dc4"),
-  "name": "Ensinar",
-  "description": "Lorem Ipsum é simplesmente uma simulação de texto da indústria.",
-  "date_begin": ISODate("1980-01-08T06:31:44Z"),
-  "date_dream": ISODate("2002-10-20T20:17:13Z"),
-  "date_end": ISODate("2015-03-09T08:38:07Z"),
-  "realocate": true,
-  "expired": false,
-  "tags": [
-    "computador",
-    "laptop"
-  ],
-  "historic": [
-    {
-      "date_realocate": ISODate("2003-10-20T20:17:13Z")
-    }
-  ],
-  "members": [
-    {
-      "_id": ObjectId("56bd4a8185cfc160a30c1a57")
-    },
-    {
-      "_id": ObjectId("56bd4a8285cfc160a30c1a58")
-    },
-    {
-      "_id": ObjectId("56bd4a8285cfc160a30c1a59")
-    },
-    {
-      "_id": ObjectId("56bd4a8285cfc160a30c1a5a")
-    },
-    {
-      "_id": ObjectId("56bd4a8285cfc160a30c1a5b")
-    }
-  ],
   "comments": [ ]
 }
 Fetched 1 record(s) in 2ms
 
 // removendo o projeto com o _id da atividade
 
-var mod = {
+var query = {
     goal: [
     {
       activities: [
@@ -976,13 +942,22 @@ var mod = {
   ]
 }
 
-db.project.remove(mod)
+db.project.remove(query)
 
-fedora(mongod-3.0.8) project> db.project.remove(mod)
+fedora(mongod-3.0.8) project> db.project.remove(query)
 Removed 1 record(s) in 2ms
 WriteResult({
   "nRemoved": 1
 })  
+
+// Removendo a 'activities'
+
+fedora(mongod-3.0.8) project> db.activities.remove({comments: {$eq: [] }})
+Removed 1 record(s) in 6ms
+WriteResult({
+  "nRemoved": 1
+})
+
 ```
 
 
@@ -1017,6 +992,8 @@ WriteResult({
 })
 ```
 
+>OBS: Os projetos que ficaram tem atividade iquais porém diferentes entre si.
+>As 4 atividades que sobraram na collection correspondem a elas.
 
 
 ## Gerenciamento de Usuários
