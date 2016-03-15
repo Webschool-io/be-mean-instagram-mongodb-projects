@@ -117,6 +117,9 @@ activity: {
 	}]
 }
 ```
+### Motivo
+
+Separei a coleção `activities` da coleção `projects` porque um projeto pode ter várias atividades, e como uma atividade pode se tornar uma coleção grande, resolvi separar e não carregá-la desnecessariamente toda vez que a coleção projects for buscada.
 
 ## Create - cadastro
 
