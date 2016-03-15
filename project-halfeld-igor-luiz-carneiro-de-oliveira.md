@@ -81,6 +81,8 @@ project: {
 
 ## Qual a modelagem da sua coleção retirada de `projects`?
 
+Escolhi retirar a coleção `activities`, os motivos da minha escolha foram, primeiro, para não sobrecarregar a collection projects, melhorando a visulização mesmo depois dos dados inseridos, segundo, a manutenção dos dados é facilitada pois nada melhor que organizar seus arquivos dividindo-os em modulos, tendo assim um entendimento melhor.
+
 ```js
 
 activities: {
