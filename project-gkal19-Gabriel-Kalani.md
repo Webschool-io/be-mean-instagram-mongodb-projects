@@ -102,6 +102,11 @@ activity:{
 
 }
 ```
+
+A arquitetura dessa minha modelagem foi feita para a melhor forma da aplicação, ela pode armazenar um quantidade de dados.
+Separadamente, a coleção de atividades foi feita para que devido ao grande numero de inserções que pode ocorrer em um unico projeto.
+Retirei de `activities ` pelo motivo que pode aumentar o limite do arquivo.
+
 ## Create - cadastro
 
 Primeiramente criei uma variável `names` com o valor dos 10 nomes dos usuários.
