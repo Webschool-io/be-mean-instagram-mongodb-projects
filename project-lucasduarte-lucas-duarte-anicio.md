@@ -655,187 +655,92 @@ Fetched 3 record(s) in 6ms
 
 **3. Liste apenas os nomes de todas as atividades para todos os projetos.**
 ```js
-be-mean> db.projects.find({}, {"goals.activities": 1})
+be-mean> db.projects.find({}, {"goals.activities.result.name": 1})
 {
-  "_id": ObjectId("56d8cc1ff8b6cd6dd0bf7ea2"),
+  "_id": ObjectId("56edc9b962ff07f0a4aef703"),
   "goals": [
     {
       "activities": [
         {
-          "waitedMS": NumberLong("0"),
           "result": [
             {
-              "_id": ObjectId("56d613b98609f803e485e5fb"),
-              "name": "Activity 0",
-              "description": "Description",
-              "date-begin": ISODate("2016-03-01T22:12:09.650Z"),
-              "date-dream": "Tue Mar 01 2016 19:12:09 GMT-0300 (BRT)10",
-              "date-end": "Tue Mar 01 2016 19:12:09 GMT-0300 (BRT)20",
-              "realocate": false,
-              "expired": "Tue Mar 01 2016 19:12:09 GMT-0300 (BRT)50",
-              "tags": [ ],
-              "members": [ ],
-              "historic": [ ],
-              "comments": [ ]
+              "name": "Activity 1"
             },
             {
-              "_id": ObjectId("56d613b98609f803e485e5fc"),
-              "name": "Activity 1",
-              "description": "Description",
-              "date-begin": ISODate("2016-03-01T22:12:09.667Z"),
-              "date-dream": "Tue Mar 01 2016 19:12:09 GMT-0300 (BRT)10",
-              "date-end": "Tue Mar 01 2016 19:12:09 GMT-0300 (BRT)20",
-              "realocate": false,
-              "expired": "Tue Mar 01 2016 19:12:09 GMT-0300 (BRT)50",
-              "tags": [ ],
-              "members": [ ],
-              "historic": [ ],
-              "comments": [ ]
+              "name": "Activity 0"
             }
-          ],
-          "ok": 1
+          ]
         }
       ]
     }
   ]
 }
 {
-  "_id": ObjectId("56d8cc1ff8b6cd6dd0bf7ea3"),
+  "_id": ObjectId("56edc9b962ff07f0a4aef704"),
   "goals": [
     {
       "activities": [
         {
-          "waitedMS": NumberLong("0"),
           "result": [
             {
-              "_id": ObjectId("56d613b98609f803e485e5fc"),
-              "name": "Activity 1",
-              "description": "Description",
-              "date-begin": ISODate("2016-03-01T22:12:09.667Z"),
-              "date-dream": "Tue Mar 01 2016 19:12:09 GMT-0300 (BRT)10",
-              "date-end": "Tue Mar 01 2016 19:12:09 GMT-0300 (BRT)20",
-              "realocate": false,
-              "expired": "Tue Mar 01 2016 19:12:09 GMT-0300 (BRT)50",
-              "tags": [ ],
-              "members": [ ],
-              "historic": [ ],
-              "comments": [ ]
+              "name": "Activity 0"
             },
             {
-              "_id": ObjectId("56d613b98609f803e485e5fb"),
-              "name": "Activity 0",
-              "description": "Description",
-              "date-begin": ISODate("2016-03-01T22:12:09.650Z"),
-              "date-dream": "Tue Mar 01 2016 19:12:09 GMT-0300 (BRT)10",
-              "date-end": "Tue Mar 01 2016 19:12:09 GMT-0300 (BRT)20",
-              "realocate": false,
-              "expired": "Tue Mar 01 2016 19:12:09 GMT-0300 (BRT)50",
-              "tags": [ ],
-              "members": [ ],
-              "historic": [ ],
-              "comments": [ ]
+              "name": "Activity 1"
             }
-          ],
-          "ok": 1
+          ]
         }
       ]
     }
   ]
 }
 {
-  "_id": ObjectId("56d8cd1af8b6cd6dd0bf7ea4"),
+  "_id": ObjectId("56edc9c262ff07f0a4aef705"),
   "goals": [
     {
       "activities": [
         {
-          "waitedMS": NumberLong("0"),
           "result": [
             {
-              "_id": ObjectId("56d613b98609f803e485e5fc"),
-              "name": "Activity 1",
-              "description": "Description",
-              "date-begin": ISODate("2016-03-01T22:12:09.667Z"),
-              "date-dream": "Tue Mar 01 2016 19:12:09 GMT-0300 (BRT)10",
-              "date-end": "Tue Mar 01 2016 19:12:09 GMT-0300 (BRT)20",
-              "realocate": false,
-              "expired": "Tue Mar 01 2016 19:12:09 GMT-0300 (BRT)50",
-              "tags": [ ],
-              "members": [ ],
-              "historic": [ ],
-              "comments": [ ]
+              "name": "Activity 0"
             },
             {
-              "_id": ObjectId("56d613b98609f803e485e5fb"),
-              "name": "Activity 0",
-              "description": "Description",
-              "date-begin": ISODate("2016-03-01T22:12:09.650Z"),
-              "date-dream": "Tue Mar 01 2016 19:12:09 GMT-0300 (BRT)10",
-              "date-end": "Tue Mar 01 2016 19:12:09 GMT-0300 (BRT)20",
-              "realocate": false,
-              "expired": "Tue Mar 01 2016 19:12:09 GMT-0300 (BRT)50",
-              "tags": [ ],
-              "members": [ ],
-              "historic": [ ],
-              "comments": [ ]
+              "name": "Activity 1"
             }
-          ],
-          "ok": 1
+          ]
         }
       ]
     }
   ]
 }
 {
-  "_id": ObjectId("56d8cd1af8b6cd6dd0bf7ea5"),
+  "_id": ObjectId("56edc9c262ff07f0a4aef706"),
   "goals": [
     {
       "activities": [
         {
-          "waitedMS": NumberLong("0"),
           "result": [
             {
-              "_id": ObjectId("56d613b98609f803e485e5fb"),
-              "name": "Activity 0",
-              "description": "Description",
-              "date-begin": ISODate("2016-03-01T22:12:09.650Z"),
-              "date-dream": "Tue Mar 01 2016 19:12:09 GMT-0300 (BRT)10",
-              "date-end": "Tue Mar 01 2016 19:12:09 GMT-0300 (BRT)20",
-              "realocate": false,
-              "expired": "Tue Mar 01 2016 19:12:09 GMT-0300 (BRT)50",
-              "tags": [ ],
-              "members": [ ],
-              "historic": [ ],
-              "comments": [ ]
+              "name": "Activity 1"
             },
             {
-              "_id": ObjectId("56d613b98609f803e485e5fc"),
-              "name": "Activity 1",
-              "description": "Description",
-              "date-begin": ISODate("2016-03-01T22:12:09.667Z"),
-              "date-dream": "Tue Mar 01 2016 19:12:09 GMT-0300 (BRT)10",
-              "date-end": "Tue Mar 01 2016 19:12:09 GMT-0300 (BRT)20",
-              "realocate": false,
-              "expired": "Tue Mar 01 2016 19:12:09 GMT-0300 (BRT)50",
-              "tags": [ ],
-              "members": [ ],
-              "historic": [ ],
-              "comments": [ ]
+              "name": "Activity 0"
             }
-          ],
-          "ok": 1
+          ]
         }
       ]
     }
   ]
 }
 {
-  "_id": ObjectId("56d8cd48f8b6cd6dd0bf7ea6"),
+  "_id": ObjectId("56edc9cb62ff07f0a4aef707"),
   "goals": [
     {
       "activities": [ ]
     }
   ]
 }
+
 Fetched 5 record(s) in 4ms
 ```
 
