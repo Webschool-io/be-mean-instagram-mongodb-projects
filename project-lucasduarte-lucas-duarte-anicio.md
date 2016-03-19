@@ -3,7 +3,12 @@
 **Data** 1456491787525
 
 ## Para qual sistema você usaria o MogoDB (diferente desse)?
-Para sistemas que possuem um grande fluxo de usuários e que necessitam de escalabilidade.
+Para sistemas que possuem um grande fluxo de usuários e que necessitam de escalabilidade de dados, disponibilidade e altas cargas de escrita.
+Ex:
+-Chats
+-Redes sociais
+-Forums
+
 ## Qual a modelagem da sua coleção de `users`?
 ```js
 users = {
@@ -67,6 +72,7 @@ projects = {
 ```
 
 ## Qual a modelagem da sua coleção retirada de `projects`?
+Foi retirada a coleção `activities` de `projects` visando a melhor eficiência na aplicação reduzindo as buscas desnecessárias de dados no banco, visto que as `activities` somente serão exibidas caso sejam requisitados os dados de algum `goal`
 ```
 activity = {
 	"name": String,
@@ -162,7 +168,8 @@ for(i = 0; i<2; i++) {
 Inserted 1 record(s) in 17ms
 Inserted 1 record(s) in 1ms
 
-
+//Busca as activities que serão utilizadas.
+var activities = db.activities.find()
 
 //1 Tag em dois projetos
 for(var i=0; i<2; i++){
@@ -177,7 +184,7 @@ for(var i=0; i<2; i++){
     	"expired": new Date(),
     	"visualizable_mod": "Teste",
     	"tags": ["Tag1", "random" + i, "anothertag" + i],
-    	"members": [ db.users.aggregate([{ $sample: { size:5 }}]) ],
+    	"members": [ db.users.aggregate([{ $sample: { size:5 }}]).result ],
     	"historic": [ ],
     	"goals": [{
 			"name": "goal",
@@ -188,7 +195,7 @@ for(var i=0; i<2; i++){
 			"realocate": false,
 			"expired": new Date(),
 			"tags":["tag1", "tag2", "tag3"],
-			"activities": [ db.activities.aggregate([{ $sample: { size:2 }}]) ]	
+			"activities": [ activities[0]._id, activities[1]._id ]	
     	}]
     }
     
@@ -210,7 +217,7 @@ for(var i=2; i<4; i++){
     	"expired": new Date(),
     	"visualizable_mod": "Teste",
     	"tags": ["Tag2", "randomtag" + i, "anothertagrandom" + i],
-    	"members": [ db.users.aggregate([{ $sample: { size:5 }}]) ],
+    	"members": [ db.users.aggregate([{ $sample: { size:5 }}]).result ],
     	"historic": [ ],
     	"goals": [{
 			"name": "goal",
@@ -222,7 +229,7 @@ for(var i=2; i<4; i++){
 			"expired": new Date(),
 			"tags":["tag1", "tag2", "tag3"],
 			"activities": [ 
-			        db.activities.aggregate([{ $sample: { size:2 }}]) 
+			        activities[0]._id, activities[1]._id
 			 ]	
     	}]
     }
@@ -243,7 +250,7 @@ var project = {
    	"expired": new Date(),
    	"visualizable_mod": "Teste",
    	"tags": ["Tag2", "randomtag5", "anothertagrandom5"],
-   	"members": [ db.users.aggregate([{ $sample: { size:5 }}]) ],
+   	"members": [ db.users.aggregate([{ $sample: { size:5 }}]).result ],
    	"historic": [ ],
    	"goals": [{
 		"name": "goal",
