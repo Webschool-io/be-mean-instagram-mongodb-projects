@@ -71,6 +71,9 @@ Project: {
 ``` 
 
 ## Qual a modelagem da sua coleção retirada de `projects`?
+
+A coleção retirada foi ```activity```, pois poderia vir a armazenar uma grande quantidade de dados e diminuir a perfomarce do banco já que quando fosse carregar ```projects``` a coleção ```activity``` também seria carregada.
+
 ```js
 activity {
   name: String,
