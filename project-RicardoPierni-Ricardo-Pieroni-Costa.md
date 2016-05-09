@@ -97,6 +97,10 @@ activity: {
 }
 ```
 
+####Retirei a coleção `activities` da coleção `projects` porque várias atividades  pode ter um projeto, e  a atividade(coleção) pode se crescer em larga escala, resolvi separar e não carregá-la junta a coleção projects.
+ 
+
+
 
 ## Create - cadastro
 #### Usuario
