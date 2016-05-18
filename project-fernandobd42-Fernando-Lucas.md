@@ -1,11 +1,13 @@
 # MongoDb - Projeto Final
-**Autor:** Fernando Lucas
-**Data** Date.now() //em timestamp
+Autor: Fernando Lucas
+Data: 1463602185226
 
 ## Para qual sistema você usaria o MogoDB (diferente desse)?
 Para qualquer sistema que tenha como requisito não-funcional performance, que responda de imediato com as respostas adequadas as requisições do usuário. Basicamente o MongoDB se enquadra em qualquer sistema desde que não seja necessário relacionamento de dados, caso for necessário algum relacionamento, ele deve ser realizado a nível de aplicação.
 
-
+## OBS:
+Criei a tabela activities separada de projects porque o MongoDB limita em 16MB os documentos, portanto é necessário ter uma boa noção para estruturar um sistema, caso acumule muitos dados em uma
+só collections facilmente poderá ultrapassar os 16MB 
 
 ## Qual a modelagem da sua coleção de `users`?
 ```
@@ -94,7 +96,7 @@ activity:
 }
 ```
 
-##1 Cadastrando 10 usuários.
+## 1 Cadastrando 10 usuários.
 ```
 var user = [
 {name: "Rafael Jose", username: "rafabd", password: "rafa123" },
@@ -133,7 +135,7 @@ user.forEach(function(u){
 ```
 
 
-##2 Cadastrando 5 Atividades
+## 2 Cadastrando 5 Atividades
 //Usei o distinct para pegar o id dos meus usuários
 ```
 fernando(mongod-3.2.6) projeto> db.users.distinct("_id")
@@ -281,7 +283,7 @@ db.activities.insert(act);
 ```
 
 
-##3 Cadastrando 5 projetos
+## 3 Cadastrando 5 projetos
 //Usei o distinct para pegar o id das minhas atividades
 ```
 fernando(mongod-3.2.6) projeto> db.activities.distinct("_id")
@@ -294,7 +296,7 @@ fernando(mongod-3.2.6) projeto> db.activities.distinct("_id")
 ]
 ```
 
-##Adicionando os 5 projetos manualmente
+## Adicionando os 5 projetos manualmente
 ```
 var pro = [
 {
@@ -599,8 +601,8 @@ BulkWriteResult({
 ```
 
 
-#Retrieve - busca
-##1. Liste as informações dos membros de 1 projeto especifico que deve ser buscado pelo seu nome de forma a não ligar para maiúsculas e minúsculas.
+# Retrieve - busca
+## 1. Liste as informações dos membros de 1 projeto especifico que deve ser buscado pelo seu nome de forma a não ligar para maiúsculas e minúsculas.
 ```
 fernando(mongod-3.2.6) projeto> var query = {name: /mobile as never/i}
 fernando(mongod-3.2.6) projeto> var fields = {members:1, _id: 0}
@@ -637,7 +639,7 @@ fernando(mongod-3.2.6) projeto> db.projects.find(query, fields)
 Fetched 1 record(s) in 3ms
 ```
 
-##2. Liste todos os projetos com a tag que voce escolheu para os 3 projetos em comum.
+## 2. Liste todos os projetos com a tag que voce escolheu para os 3 projetos em comum.
 ```
 fernando(mongod-3.2.6) projeto> var query = {tags: /technology/i}
 fernando(mongod-3.2.6) projeto> db.projects.find(query)
@@ -842,7 +844,7 @@ fernando(mongod-3.2.6) projeto> db.projects.find(query)
 Fetched 3 record(s) in 17ms
 
 
-##3. Liste apenas os nomes de todas as atividades para todos os projeto
+## 3. Liste apenas os nomes de todas as atividades para todos os projeto
 fernando(mongod-3.2.6) projeto> var query = {}
 fernando(mongod-3.2.6) projeto> var fields = {name: 1}
 fernando(mongod-3.2.6) projeto> db.activities.find(query, fields)
@@ -869,13 +871,13 @@ fernando(mongod-3.2.6) projeto> db.activities.find(query, fields)
 Fetched 5 record(s) in 3ms
 
 
-##4. Liste todos os projetos que não possuam uma tag.
+## 4. Liste todos os projetos que não possuam uma tag.
 fernando(mongod-3.2.6) projeto>  var query = {tags: []}
 fernando(mongod-3.2.6) projeto> db.projects.find(query)
 Fetched 0 record(s) in 1ms
 
 
-##5. Liste todos os usuários que não fazem parte do primeiro projeto cadastrado.
+## 5. Liste todos os usuários que não fazem parte do primeiro projeto cadastrado.
 fernando(mongod-3.2.6) projeto> var query = { _id: ObjectId("573397ec837c494bb996cda0")}
 fernando(mongod-3.2.6) projeto> var members = [];
 fernando(mongod-3.2.6) projeto> db.projects.findOne(query).members.forEach(function(arr){
@@ -905,8 +907,8 @@ Fetched 5 record(s) in 3ms
 ```
 
 
-#Update - alteração
-##1. Adicione para todos os projetos o campo views: 0
+# Update - alteração
+## 1. Adicione para todos os projetos o campo views: 0
 ```
 fernando(mongod-3.2.6) projeto> var query = {}
 fernando(mongod-3.2.6) projeto> var mod = {$set: {views: 0}}
@@ -920,7 +922,7 @@ WriteResult({
 })
 ```
 
-##2. Adicione 1 tag diferente para cada projeto.
+## 2. Adicione 1 tag diferente para cada projeto.
 ```
 fernando(mongod-3.2.6) projeto> var projects = db.projects.find()
 fernando(mongod-3.2.6) projeto> var tag = function(proj){proj.tags.push(proj.name+" Copyright"); db.projects.save(proj);};
@@ -932,7 +934,7 @@ Updated 1 existing record(s) in 4ms
 Updated 1 existing record(s) in 2ms
 ```
 
-##3. Adicione 2 membros diferentes para cada projeto.
+## 3. Adicione 2 membros diferentes para cada projeto.
 ```
 var query = {name: /system erp professional/i}
 var mod = {$pushAll :{members: [{user_id: ObjectId("5733838ce91d903cf5e25a6c"), type_member: "Programmer", notify: false},
@@ -964,7 +966,7 @@ var mod = {$pushAll :{members: [{user_id: ObjectId("5733838ce91d903cf5e25a6a"), 
 db.projects.update(query, mod)
 ```
 
-##4. Adicione 1 comentário em cada atividade, deixe apenas 1 projeto sem.
+## 4. Adicione 1 comentário em cada atividade, deixe apenas 1 projeto sem.
 ```
 var cm = ["Ce é loko mesmo em doido", "Ce é loko mesmo em cachueira", "Ce é loco mesmo em pia", "Ce é loco mesmo em bixo"];
 for(var i = 0; i < 4; i++){
@@ -975,7 +977,7 @@ for(var i = 0; i < 4; i++){
 }
 ```
 
-##5. Adicione 1 projeto inteiro com UPSERT
+## 5. Adicione 1 projeto inteiro com UPSERT
 ```
 var query = {name : /project upsert/i};
 var mod = {
@@ -1036,8 +1038,8 @@ WriteResult({
 
 
 
-#Delete - remoção
-##1. Apague todos os projeto que não possuam tags.
+# Delete - remoção
+## 1. Apague todos os projeto que não possuam tags.
 ```
 fernando(mongod-3.2.6) projeto> db.projects.remove({tags: {$exists: 0}})
 Removed 0 record(s) in 2ms
@@ -1047,7 +1049,7 @@ WriteResult({
 ```
 
 
-##2. Apague todos os projetos que não possuam comentários.
+## 2. Apague todos os projetos que não possuam comentários.
 ```
 var cm = {comment: {$size: 0}};
 var act = db.activities.find(cm, {_id: 1}).toArray();
@@ -1061,7 +1063,7 @@ WriteResult({
 })
 ```
 
-##3. Apague todos os projetos que não possuam atividades.
+## 3. Apague todos os projetos que não possuam atividades.
 ```
 fernando(mongod-3.2.6) projeto> db.projects.remove({activity: {$eq: []}}, {multi: 1})
 Removed 0 record(s) in 1ms
@@ -1070,7 +1072,7 @@ WriteResult({
 })
 ```
 
-##4. Escolha 2 usuários e apague todos os projetos que os 2 fazem parte
+## 4. Escolha 2 usuários e apague todos os projetos que os 2 fazem parte
 ```
 var users = [
 {"_id": ObjectId("5733838ce91d903cf5e25a70")},
@@ -1081,7 +1083,7 @@ Removed 5 record(s) in 3ms
 Removed 0 record(s) in 2ms
 ```
 
-##5. Apague todos os projetos que possuam uma determinada tag em goals.
+## 5. Apague todos os projetos que possuam uma determinada tag em goals.
 ```
 var query = {"goals.tags": "speed"}
 fernando(mongod-3.2.6) projeto> db.projects.remove(query)
@@ -1093,8 +1095,8 @@ WriteResult({
 
 
 
-#Gerenciamento de Usuários
-##1. Crie um usuário com permissão apenas para leitura.
+# Gerenciamento de Usuários
+## 1. Crie um usuário com permissão apenas para leitura.
 ```
 fernando(mongod-3.2.6) projeto> db.createUser(
 ...   {
@@ -1111,7 +1113,7 @@ Successfully added user: {
 }
 ```
 
-##2. Crie um usuário com permissão para leitura e escrita.
+## 2. Crie um usuário com permissão para leitura e escrita.
 ```
 fernando(mongod-3.2.6) projeto> db.createUser(
 ...   {
@@ -1128,7 +1130,7 @@ Successfully added user: {
 }
 ```
 
-##3. Adicionaro papel grantRolesToUser e revoke para o usuário com leitura e escrita.
+## 3. Adicionaro papel grantRolesToUser e revoke para o usuário com leitura e escrita.
 ```
 fernando(mongod-3.2.6) projeto> use admin
 switched to db admin
@@ -1192,7 +1194,7 @@ fernando(mongod-3.2.6) admin> db.grantRolesToUser(
 ...   )
 ```
 
-##4. Remover o papel grantRolesToUser do usuário com leitura e escrita.
+## 4. Remover o papel grantRolesToUser do usuário com leitura e escrita.
 ```
 fernando(mongod-3.2.6) admin> db.revokeRolesFromUser(
 ...   "Leitura-Escrita",
@@ -1200,7 +1202,7 @@ fernando(mongod-3.2.6) admin> db.revokeRolesFromUser(
 ...   )
 ```
 
-##5. Listar todos os usuários com seus papéis e ações.
+## 5. Listar todos os usuários com seus papéis e ações.
 ```
 fernando(mongod-3.2.6) admin> db.runCommand({   usersInfo: 1 })
 {
@@ -1236,7 +1238,7 @@ fernando(mongod-3.2.6) admin> db.runCommand({   usersInfo: 1 })
 }
 ```
 
-#Sharding
+# Sharding
 ```
 ➜  fernando git:(master) ✗ mkdir /data/configdb
 ➜  fernando git:(master) ✗ mkdir /data/shard1 && mkdir /data/shard2 && mkdir /data/shard3
@@ -1271,7 +1273,7 @@ fernando:27421(mongos-3.2.6)[mongos] test> sh.shardCollection("projeto.activitie
 ```
 
 
-#Replica
+# Replica
 ```
 ➜  fernando git:(master) ✗ mkdir /data/rs1 && mkdir /data/rs2 && mkdir /data/rs3 
 ➜  fernando git:(master) ✗ mongod --replSet replica_set --port 27017 -dbpath /data/rs1
