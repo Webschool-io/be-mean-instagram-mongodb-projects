@@ -1,4 +1,3 @@
-ga
 # MongoDb - Projeto Final
 **Autor:** Jackson Ricardo Schroeder
 **Usuário:** [xereda](https://github.com/xereda)
@@ -15,21 +14,21 @@ ga
 
 ##### [Modelagem](#modelagem)
 
-* [Algumas considerações](#algumas-considerações)
+* [Observações referente a modelagem adotada](#observações-referente-a-modelagem-adotada)
 
 ##### [Operações CRUD](#operações-crud)
 
-* [Observações referente a modelagem adotada](#observações-referente-a-modelagem-adotada)
-* [Inserindo documentos](#inserindo-documentos)
+* [Inserindo usuários](#Inserindo-usuários)
+* [Inserindo projetos](#Inserindo-projetos)
 * [Listando dados dos membros de um projeto](#listando-dados-dos-membros-de-um-projeto)
-* [Listando projetos com uma tag específica](#listando-projetos-com-uma-tag-específica)
+* [Listando projetos com uma tag específica](#Liste-todos-os-projetos-com-a-tag-que-você-escolheu-para-os-3-projetos-em-comum)
 * [Listando apenas os nomes de todas as atividades](#listando-apenas-os-nomes-de-todas-as-atividades)
 * [Listando todos os projetos sem tags](#listando-todos-os-projetos-sem-tags)
 * [Listando todos os usuários que não fazem parte do primeiro projeto](#listando-todos-os-usuários-que-não-fazem-parte-do-primeiro-projeto)
 * [Adicionando o campo views com valor 0 em todos os projetos](#adicionando-o-campo-views-com-valor-0-em-todos-os-projetos)
 * [Adicionando uma tag nova a cada projeto](#adicionando-uma-tag-nova-a-cada-projeto)
 * [Adicionando 2 novos membros para cada projeto](#adicionando-2-novos-membros-para-cada-projeto)
-* [Adicionando 1 comentário em cada atividade (exceto nas atividades 7 e 8)](#adicionando-1-comentário-em-cada-atividade-exceto-nas-atividades-7-e-8)
+* [Adicione 1 comentário em cada atividade, deixe apenas as ATIVIDADES 3 e 5 sem](#Adicione-1-comentário-em-cada-atividade,-deixe-apenas-as-ATIVIDADES-3-e-5-sem)
 * [Adicionando um projeto com upsert](#adicionando-um-projeto-com-upsert)
 * [Removendo todos os projetos que não possuem tags](#removendo-todos-os-projetos-que-não-possuem-tags)
 * [Removendo todos os projetos que não possuem comentários em suas atividades](#removendo-todos-os-projetos-que-não-possuem-comentários-em-suas-atividades)
@@ -37,7 +36,7 @@ ga
 * [Removendo todos os projetos dos quais dois usuários específicos fazem parte](#removendo-todos-os-projetos-dos-quais-dois-usuários-específicos-fazem-parte)
 * [Removendo todos os projetos com uma tag específica em goals](#removendo-todos-os-projetos-com-uma-tag-específica-em-goals)
 
-##### [Controle de acesso](#controle-de-acesso-1)
+##### [Gerenciamento de usuários](#Gerenciamento-de-usuários)
 
 * [Criando um usuário com permissões de leitura apenas](#criando-um-usuário-com-permissões-de-leitura-apenas)
 * [Criando um usuário com permissões de escrita e leitura](#criando-um-usuário-com-permissões-de-escrita-e-leitura)
@@ -45,14 +44,10 @@ ga
 * [Removendo o papel userAdmin](#removendo-o-papel-useradmin)
 * [Listando todos os usuários e seus papéis](#listando-todos-os-usuários-e-seus-papéis)
 
-##### [Sharding e replica set](#sharding-e-replica-set-1)
+##### [Sharding](#sharding)
 
-* [Iniciando um config server](#iniciando-um-config-server)
-* [Iniciando um router](#iniciando-um-router)
-* [Iniciando os shards](#iniciando-os-shards)
-* [Registrando os shards](#registrando-os-shards)
-* [Habilitando sharding para a collection activities na database be-mean-project](#habilitando-sharding-para-a-collection-activities-na-database-be-mean-project)
-* [Criando uma réplica para cada shard](#criando-uma-réplica-para-cada-shard)
+##### [Replica](#Replica)
+
 
 # Introdução
 
@@ -743,7 +738,7 @@ Updated 1 existing record(s) in 1ms
 
 ```
 
-## Adicione 2 membros diferentes para cada projeto.
+## Adicionando o campo views com valor 0 em todos os projetos.
 
 ```js
 
@@ -851,7 +846,7 @@ db.projects.update(query, mod, options);
 
 ```
 
-## Apague todos os projetos que não possuam tags.
+## Removendo todos os projetos que não possuem tags.
 
 ```js
 
@@ -864,7 +859,7 @@ WriteResult({
 
 ```
 
-## Apague todos os projetos que não possuam comentários nas atividades.
+## Removendo todos os projetos que não possuem comentários em suas atividades.
 
 ```js
 
@@ -882,7 +877,7 @@ Removed 1 record(s) in 1ms
 
 ```
 
-## Apague todos os projetos que não possuam atividades.
+## Removendo todos os projetos que não possuem atividades.  
 
 ```js
 
@@ -895,7 +890,7 @@ WriteResult({
 
 ```
 
-## Escolha 2 usuário e apague todos os projetos em que os 2 fazem parte.
+## Removendo todos os projetos dos quais dois usuários específicos fazem parte.
 
 ```js
 
@@ -911,7 +906,7 @@ WriteResult({
 
 ```
 
-## Apague todos os projetos que possuam uma determinada tag em goal.
+## Removendo todos os projetos com uma tag específica em goals.
 
 ```js
 
@@ -926,7 +921,7 @@ WriteResult({
 
 # Gerenciamento de usuários
 
-## Crie um usuário com permissões APENAS de Leitura.
+## Criando um usuário com permissões de leitura apenas.
 
 ```js
 
