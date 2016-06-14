@@ -1489,23 +1489,23 @@ corsair(mongod-3.2.7) projeto-final>
 ```
 ## Sharding
 ```
-***Server***
+**Server**
 
 mkdir /data/config 
 mongod --configsvr --port 27010
 
-***Router***
+**Router**
 
 mongos --configdb localhost:27010 --port 27011
 
-***Shardings***
+**Shardings**
 
 mongod --port 27012 --dbpath /data/shard1
 mongod --port 27013 --dbpath /data/shard2
 mongod --port 27014 --dbpath /data/shard3
 
 
-***Conectando e adicionando*** 
+**Conectando e adicionando**
 
 mongo --port 27011 --host localhost
 
@@ -1520,13 +1520,13 @@ mongos> sh.shardCollection("projeto-final.activity", {"_id" : 1})
 ```
 ## Réplica
 ```
-***Subindo as replicas***
+**Subindo as replicas**
 
 mongod --replSet replica_set --port 27017 --dbpath /data/rs1
 mongod --replSet replica_set --port 27018 --dbpath /data/rs2
 mongod --replSet replica_set --port 27019 --dbpath /data/rs3
 
-***Conectando na réplica primaria***
+**Conectando na réplica primaria**
 
 mongo --port 27017
 
